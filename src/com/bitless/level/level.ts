@@ -11,9 +11,11 @@ import {Updatable} from "../ntfc/updatable.js";
 export class Level
     implements Renderable, Updatable
 {
-    
+    x:number = 0;
+
     update(delta:number)
     {
+        this.x++; if( this.x >= 640) this.x=0;
 
     }
   
@@ -23,7 +25,7 @@ export class Level
         ctx.fillRect(0,0, 640, 480); 
 
         ctx.fillStyle = "white";
-        ctx.fillText( "TEST", 100, 100 );
+        ctx.fillText( "TEST", this.x, 100 );
 
     }
     

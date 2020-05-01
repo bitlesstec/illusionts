@@ -1,4 +1,5 @@
 import { GameState } from "../manager/gamestate.js";
+import { Camera } from "../camera/camera.js";
 /**
  * this class will represent a level in the game, will
  * contain sprites for player, enemies and other objects, background
@@ -6,13 +7,16 @@ import { GameState } from "../manager/gamestate.js";
  */
 // export abstract 
 export class BaseLevel {
-    constructor() {
-        this.imageMap = new Map(); //new Map();
-        //@todo
-        //create camera
-        //actual gameState of the level, by default loading!
+    constructor(levelWidht, levelHeight, viewWidth, viewHeight) {
         this.gameState = GameState.LOADING;
-    }
+        this.imageMap = new Map();
+        this.levelWidth = levelWidht;
+        this.levelHeight = levelHeight;
+        if (viewWidth !== undefined && viewHeight !== undefined)
+            this.camera = new Camera(levelWidht, levelHeight, viewWidth, viewHeight);
+        else
+            this.camera = new Camera(levelWidht, levelHeight);
+    } //
     render(ctx) { }
     update(delta) { }
     //Input Events, all this are eventListeners attached to canvas

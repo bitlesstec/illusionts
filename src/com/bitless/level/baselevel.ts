@@ -1,10 +1,10 @@
-
 import {Renderable} from "../ntfc/renderable.js";
 import {Updatable} from "../ntfc/updatable.js";
 import { Touchable } from "../ntfc/input/touchable.js";
 import { Mousable } from "../ntfc/input/mousable.js";
 import { Keyable } from "../ntfc/input/keyable.js";
 import { GameState } from "../manager/gamestate.js";
+import { Camera } from "../camera/camera.js";
 
 /**
  * this class will represent a level in the game, will
@@ -17,19 +17,33 @@ export abstract class BaseLevel
 {
 
 //used to load all images( backround / sprites ) in a level
-imageList: HTMLImageElement[];
-
-imageMap: Map< string, HTMLImageElement> = new Map<string, HTMLImageElement>();//new Map();
-
-//@todo
-//create camera
+imageMap: Map< string, HTMLImageElement>;
+camera: Camera;
 
 //actual gameState of the level, by default loading!
-gameState:GameState=GameState.LOADING;
+gameState:GameState;
+
+levelWidth:number;
+levelHeight:number;
+
+
+constructor( levelWidht:number, levelHeight:number, viewWidth?:number, viewHeight?:number )
+{
+this.gameState = GameState.LOADING;
+this.imageMap = new Map<string, HTMLImageElement>();
+this.levelWidth = levelWidht; 
+this.levelHeight = levelHeight;
+
+if( viewWidth !== undefined && viewHeight !== undefined )
+    this.camera = new Camera( levelWidht, levelHeight, viewWidth, viewHeight );
+else
+    this.camera = new Camera( levelWidht, levelHeight );
+
+}//
+
 
 render( ctx:CanvasRenderingContext2D ){}
 update( delta:number ){}
-
 
 //Input Events, all this are eventListeners attached to canvas
 touchStart( event ){}

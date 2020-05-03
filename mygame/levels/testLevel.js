@@ -1,9 +1,10 @@
-import { BaseLevel } from "./baselevel.js";
-import { Background } from "../graphic/background.js";
-import { GameState } from "../manager/gamestate.js";
-import { Sprite } from "../graphic/sprite.js";
-import { CollisionUtil } from "../util/collisionutil.js";
-import { Task } from "../task/task.js";
+import { BaseLevel } from "../../src/com/bitless/level/baselevel.js";
+import { Background } from "../../src/com/bitless/graphic/background.js";
+import { GameState } from "../../src/com/bitless/manager/gamestate.js";
+import { Sprite } from "../../src/com/bitless/graphic/sprite.js";
+import { CollisionUtil } from "../../src/com/bitless/util/collisionutil.js";
+import { Task } from "../../src/com/bitless/task/task.js";
+import { GameManager } from "../../src/com/bitless/manager/gamemanager.js";
 export class TestLevel extends BaseLevel {
     constructor() {
         super(640, 480);
@@ -31,6 +32,7 @@ export class TestLevel extends BaseLevel {
                 // let assetLoaded :boolean = true;
                 // console.log( "updating in LOADIN" );
                 //     this.background.image.onload = ()=> { assetLoaded = assetLoaded && true; }
+                GameManager.getInstance().setFontSize(25);
                 this.step++;
                 if (this.step >= 60) {
                     this.step = 0;
@@ -56,6 +58,9 @@ export class TestLevel extends BaseLevel {
                 let col = this.collisionUtil.spriteRectangleCollision(this.sqrSprite, this.explosionSprite);
                 if (col)
                     console.log("clision: " + col);
+                if (this.logTask.getCounter() > 0) {
+                    console.log("counter: " + this.logTask.getCounter());
+                }
                 //this task will log some text in cosole at 100 thics
                 this.logTask.process(() => { console.log("this line of text comes from a task | " + this.logTask.getCounter()); });
                 break;

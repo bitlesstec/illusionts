@@ -23,6 +23,17 @@ export class CollisionUtil {
     getDistance(p1, w1, p2, w2) {
         return (p2 + w2 / 2) - (p1 + w1 / 2);
     }
+    /**
+     * return the total distance (magnitude) of box1( x, y, w, h ) and box2( x2, y2, w2, h2)
+     * @param x
+     * @param w
+     * @param y
+     * @param h
+     * @param x2
+     * @param w2
+     * @param y2
+     * @param h2
+     */
     getMagnitude(x, w, y, h, x2, w2, y2, h2) {
         let vx = this.getDistance(x, w, x2, w2);
         let vy = this.getDistance(y, h, y2, h2);

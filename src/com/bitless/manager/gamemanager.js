@@ -1,26 +1,33 @@
-import { TestLevel } from "../level/testLevel.js";
+// import { TestLevel } from "../level/testLevel.js";
 /**
  * gameManager will be responsible to initialize the game:
  * create the main thread, load the first level, update and
  * render the game, etc.
+ *
+ * this is a singleton due there should be only GameManager instance per game
  */
-class GameManager {
+export class GameManager {
     // constructor( firstLevel: BaseLevel )
     constructor() {
+        this.DEFAULT_FONT = "press-start";
         this.delta = 0;
         this.oldTimestamp = 0;
         this.fps = 1 / 30; //30 fps
+        this.fontName = this.DEFAULT_FONT;
+        this.setFont(this.fontName, "/src/com/bitless/font/press-start.ttf");
         this.canvas = document.getElementById("canvas"); //canvas;
         this.context = this.canvas.getContext("2d");
         // this.loadLevel( firstLevel );
         // this.currentLevel = firstLevel; // new BaseLevel();
         //game start
         //this.run();
+        this.context.font = "10px press-start";
     }
-    // constructor(canvasWidth:number, canvasHeight:number )
-    // {
-    // super();
-    // }
+    static getInstance() {
+        if (this.instance == null)
+            this.instance = new GameManager();
+        return this.instance;
+    }
     //this is the gameloop
     run() {
         let now = Date.now();
@@ -53,10 +60,35 @@ class GameManager {
         this.canvas.addEventListener("keydown", (event) => this.currentLevel.keyDown(event));
         this.canvas.addEventListener("keyup", (event) => this.currentLevel.keyUp(event));
     }
+    /**
+     * this function will create a new style element with the font face
+     * and url where the font file ( tttf ) reside, afther that the element
+     * will be added to html in header tag
+     * @param fontName
+     * @param fontPath
+     */
+    setFont(fontName, fontPath) {
+        this.fontName = fontName;
+        let styleElement = document.createElement('style');
+        let fontFaceNode = `@font-face
+    {
+        font-family:'${fontName}';
+        src: url( ${fontPath} );
+    }`;
+        styleElement.appendChild(document.createTextNode(fontFaceNode));
+        document.head.appendChild(styleElement);
+    }
+    /**
+     * this will change the current font size
+     * @param size
+     */
+    setFontSize(size) {
+        this.context.font = `${size}px ${this.fontName}`;
+    }
 } //
 // @TODO below code must be in a separate class maybe a game.js class that will be added to the html
 //set the game instance, load the first level and start the game
-let game = new GameManager();
-game.loadLevel(new TestLevel());
-window.onload = function () { game.run(); };
+// let game = new GameManager();
+// game.loadLevel( new TestLevel() );
+// window.onload =function(){game.run();} 
 // se puede usar el windows onload aqui antes de ejecutar todo

@@ -11,7 +11,6 @@ import { Camera } from "../camera/camera.js";
  * contain sprites for player, enemies and other objects, background
  * images, etc.
  */
-// export abstract 
 export abstract class BaseLevel
        implements Renderable, Updatable, Touchable, Mousable, Keyable
 {
@@ -25,7 +24,6 @@ gameState:GameState;
 
 levelWidth:number;
 levelHeight:number;
-
 
 constructor( levelWidht:number, levelHeight:number, viewWidth?:number, viewHeight?:number )
 {
@@ -46,6 +44,7 @@ render( ctx:CanvasRenderingContext2D ){}
 update( delta:number ){}
 
 //Input Events, all this are eventListeners attached to canvas
+//NOTE:if below lines are commented they will cause an issue with GameManager.loadLevel function
 touchStart( event ){}
 touchMove( event ){}
 touchEnd( event ){}

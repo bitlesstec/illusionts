@@ -19,7 +19,7 @@ export class BaseLevel {
     render(ctx) { }
     update(delta) { }
     //Input Events, all this are eventListeners attached to canvas
-    //NOTE:if below lines are commented they will cause an issue with GameManager.loadLevel function
+    //@note:if below lines are commented they will cause an issue with GameManager.loadLevel function
     touchStart(event) { }
     touchMove(event) { }
     touchEnd(event) { }

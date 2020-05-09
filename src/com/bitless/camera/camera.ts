@@ -48,6 +48,8 @@ private marginBottom:number;
 constructor( levelWidth:number, levelHeight:number, viewWidth?:number, viewHeight?:number )
 {
 
+    this.x = 0;
+    this.y = 0;
     this.levelWidth = levelWidth;
     this.levelHeight = levelHeight;
     this.viewWidth = viewWidth;
@@ -100,6 +102,7 @@ moveX(xspd: number)
     this.x -= xspd;
     this.viewX += xspd;
 
+    console.log( `X: ${this.x} - VX: ${this.viewX}` );
         /**
          * minimum value of camx should be 0, is the starting point
          * camx is not mayor than 0

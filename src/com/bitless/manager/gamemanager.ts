@@ -20,17 +20,19 @@ import {BaseLevel} from "../level/baselevel.js";
    export class  GameManager
                  implements Runnable
 {
+ 
     
+
     static instance:GameManager;
 
     readonly DEFAULT_FONTNAME ="press-start";
 
      delta: number;
-     oldTimestamp: number;
+     lastUpdate: number;
     //  currentTimestamp:number;
 
      fps: number;
-
+     step:number;
      currentLevel: BaseLevel; 
      canvas:HTMLCanvasElement;
      context: CanvasRenderingContext2D;
@@ -41,8 +43,9 @@ import {BaseLevel} from "../level/baselevel.js";
     private constructor()
     {
         this.delta = 0;
-        this.oldTimestamp = 0;
-        this.fps = 1/30;  //30 fps
+        this.lastUpdate = 0;
+        this.fps = 60;// 1000/30;  //30 fps, use 1000/60 to set it to 60 fps
+        this.step = 1/this.fps;
         this.fontName = this.DEFAULT_FONTNAME;
         this.setFont( this.fontName, "/src/com/bitless/font/press-start.ttf" );
 
@@ -67,14 +70,29 @@ import {BaseLevel} from "../level/baselevel.js";
     run()
     {
         let now = Date.now();
-        this.delta = ( now - this.oldTimestamp );
-        
+        this.delta = ( now - this.lastUpdate ) / 1000;//this.fps;
+        this.lastUpdate = now;
         this.currentLevel.update( this.delta );
         this.currentLevel.render( this.context );
         requestAnimationFrame( this.run.bind(this) );
-
-        this.oldTimestamp = now;
     }
+
+    // run()
+    // {
+        
+    //     let now = Date.now();
+    //     this.delta = Math.min( 1, ( now - this.lastUpdate ) / 1000 );
+    //     while( this.delta > this.step )
+    //     {
+    //         this.delta = this.delta - this.step;
+    //         this.currentLevel.update( this.delta );
+            
+    //     }
+    //     this.currentLevel.render( this.context );
+    //     this.lastUpdate = now;
+    //     requestAnimationFrame( this.run.bind(this) );
+
+    // }//
 
     /**
      * this is the method that will load the current level events of the canvas

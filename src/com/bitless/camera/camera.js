@@ -10,6 +10,8 @@ export class Camera {
      * @param viewHeight
      */
     constructor(levelWidth, levelHeight, viewWidth, viewHeight) {
+        this.x = 0;
+        this.y = 0;
         this.levelWidth = levelWidth;
         this.levelHeight = levelHeight;
         this.viewWidth = viewWidth;
@@ -47,6 +49,7 @@ export class Camera {
         //      in order to display some text in the same position of the view 
         this.x -= xspd;
         this.viewX += xspd;
+        console.log(`X: ${this.x} - VX: ${this.viewX}`);
         /**
          * minimum value of camx should be 0, is the starting point
          * camx is not mayor than 0

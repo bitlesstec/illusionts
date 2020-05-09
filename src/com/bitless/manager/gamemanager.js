@@ -4,16 +4,20 @@
  * create the main thread, load the first level, update and
  * render the game, etc.
  *
- * this is a singleton due there should be only GameManager instance per game
+ * - this is a singleton due there should be only GameManager instance per game.
+ * - by default it implements press-start font, but you can change it later for
+ *   something more convenient for your project.
+ *
  */
 export class GameManager {
     // constructor( firstLevel: BaseLevel )
     constructor() {
-        this.DEFAULT_FONT = "press-start";
+        this.DEFAULT_FONTNAME = "press-start";
         this.delta = 0;
-        this.oldTimestamp = 0;
-        this.fps = 1 / 30; //30 fps
-        this.fontName = this.DEFAULT_FONT;
+        this.lastUpdate = 0;
+        this.fps = 60; // 1000/30;  //30 fps, use 1000/60 to set it to 60 fps
+        this.step = 1 / this.fps;
+        this.fontName = this.DEFAULT_FONTNAME;
         this.setFont(this.fontName, "/src/com/bitless/font/press-start.ttf");
         this.canvas = document.getElementById("canvas"); //canvas;
         this.context = this.canvas.getContext("2d");
@@ -31,12 +35,25 @@ export class GameManager {
     //this is the gameloop
     run() {
         let now = Date.now();
-        this.delta = (now - this.oldTimestamp);
+        this.delta = (now - this.lastUpdate) / 1000; //this.fps;
+        this.lastUpdate = now;
         this.currentLevel.update(this.delta);
         this.currentLevel.render(this.context);
         requestAnimationFrame(this.run.bind(this));
-        this.oldTimestamp = now;
     }
+    // run()
+    // {
+    //     let now = Date.now();
+    //     this.delta = Math.min( 1, ( now - this.lastUpdate ) / 1000 );
+    //     while( this.delta > this.step )
+    //     {
+    //         this.delta = this.delta - this.step;
+    //         this.currentLevel.update( this.delta );
+    //     }
+    //     this.currentLevel.render( this.context );
+    //     this.lastUpdate = now;
+    //     requestAnimationFrame( this.run.bind(this) );
+    // }//
     /**
      * this is the method that will load the current level events of the canvas
      *

@@ -6,12 +6,13 @@
 import { BaseLevel } from "../../src/com/bitless/level/baselevel.js";
 import { GameManager } from "../../src/com/bitless/manager/gamemanager.js";
 import { TestLevel } from "./testLevel.js";
+import { TileLevel } from "./tilelevel.js";
 // import { AssetLoadable } from "../../src/com/bitless/ntfc/assetLoadable.js";
 export class MenuLevel extends BaseLevel {
     constructor() {
         super(640, 480);
         this.levelSelector = 1;
-        this.maxSelector = 1;
+        this.maxSelector = 2;
     } //
     update(delta) {
     } //
@@ -19,11 +20,13 @@ export class MenuLevel extends BaseLevel {
         ctx.fillStyle = "#000";
         ctx.fillRect(0, 0, this.levelWidth, this.levelHeight);
         ctx.fillStyle = "#FFF";
+        //draw arc
         ctx.beginPath();
         ctx.arc(20, this.levelSelector * 20, 3, 0, 2 * Math.PI, false);
         ctx.fill();
         ctx.closePath();
         ctx.fillText("TESTLEVEL1", 40, 24);
+        ctx.fillText("TILELEVEL", 40, 48);
     } //
     /**
      * events for key down, to select desired option from menu
@@ -53,6 +56,9 @@ export class MenuLevel extends BaseLevel {
                 switch (this.levelSelector) {
                     case 1:
                         GameManager.getInstance().loadLevel(new TestLevel());
+                        break;
+                    case 2:
+                        GameManager.getInstance().loadLevel(new TileLevel());
                         break;
                 }
                 break;

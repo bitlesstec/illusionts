@@ -4,7 +4,7 @@
  * you can add more if you want
  */
 export enum GameState
-{
+{ 
 LOADING,
 PLAYING,
 GAMEOVER,

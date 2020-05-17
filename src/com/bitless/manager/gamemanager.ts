@@ -52,6 +52,8 @@ import {BaseLevel} from "../level/baselevel.js";
         this.canvas = <HTMLCanvasElement>document.getElementById("canvas"); //canvas;
         this.context = <CanvasRenderingContext2D>this.canvas.getContext("2d");
 
+        this.context.textBaseline = "top";
+
         // this.loadLevel( firstLevel );
         // this.currentLevel = firstLevel; // new BaseLevel();
         //game start

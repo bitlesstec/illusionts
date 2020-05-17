@@ -12,7 +12,10 @@ import { Colorizable } from "../ntfc/colorizable.js";
  * this class will display a background on related
  * x & y position, this class can be also used as a tile instead 
  * background...
- * by default X & Y position is 0,0
+ * by default X & Y position is 0,0,
+ * there is also a color property with default value to black 
+ * and there is a method call renderCOlor which will 
+ * display current color instead background image. 
  */
 export class Background extends Point
              implements Positionable, Renderable, Colorizable
@@ -25,17 +28,11 @@ export class Background extends Point
     visible: boolean;
 
 
-    // constructor()
-    // {
-    // super();
-    // }
-
     constructor( image: HTMLImageElement )
     {
         super();
-        this.image = new Image( );
-        this.image =image;
-        this.visible = false;
+        this.image = image;
+        this.visible = true;
         this.image.onload = () =>
         {
         //console.log("image loaded");
@@ -60,6 +57,7 @@ export class Background extends Point
      */
     render( ctx: CanvasRenderingContext2D ):void
     {
+        if( this.visible )
         ctx.drawImage( this.image, this.x, this.y, this.w, this.h );
     }
 
@@ -70,8 +68,12 @@ export class Background extends Point
      */
     renderColor( ctx: CanvasRenderingContext2D ):void
     {
-        ctx.fillStyle = this.color;
-        ctx.fillRect( this.x, this.y, this.w, this.h );
+        if( this.visible )
+        {
+            ctx.fillStyle = this.color;
+            ctx.fillRect( this.x, this.y, this.w, this.h );
+        }
+      
     }
 
 

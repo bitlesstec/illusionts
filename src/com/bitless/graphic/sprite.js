@@ -54,6 +54,7 @@ export class Sprite extends BaseSprite {
                 ctx.translate(this.x + this.w / 2, this.y + this.h / 2);
                 ctx.rotate(this.angle);
                 ctx.scale(this.xScale, this.yScale);
+                ctx.translate(-(this.x + this.w / 2), -(this.y + this.h / 2));
             }
             /// here check some effect updates 
             ctx.drawImage(this.image, this.currentFrame * this.w, 0, this.w, this.h, Math.floor(this.x), Math.floor(this.y), this.w, this.h);

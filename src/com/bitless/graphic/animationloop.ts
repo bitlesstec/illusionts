@@ -7,6 +7,7 @@
  */
 export enum AnimationLoop
 {
+NONE,
 FORWARD,
 BACKWARD,
 STOPATEND

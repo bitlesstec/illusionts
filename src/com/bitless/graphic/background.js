@@ -3,18 +3,16 @@ import { Point } from "./point.js";
  * this class will display a background on related
  * x & y position, this class can be also used as a tile instead
  * background...
- * by default X & Y position is 0,0
+ * by default X & Y position is 0,0,
+ * there is also a color property with default value to black
+ * and there is a method call renderCOlor which will
+ * display current color instead background image.
  */
 export class Background extends Point {
-    // constructor()
-    // {
-    // super();
-    // }
     constructor(image) {
         super();
-        this.image = new Image();
         this.image = image;
-        this.visible = false;
+        this.visible = true;
         this.image.onload = () => {
             //console.log("image loaded");
             this.w = this.image.width;
@@ -33,7 +31,8 @@ export class Background extends Point {
      * @param ctx
      */
     render(ctx) {
-        ctx.drawImage(this.image, this.x, this.y, this.w, this.h);
+        if (this.visible)
+            ctx.drawImage(this.image, this.x, this.y, this.w, this.h);
     }
     /**
      * this method will render a rectanle from X & Y of W & H size, of the stablished
@@ -41,7 +40,9 @@ export class Background extends Point {
      * @param
      */
     renderColor(ctx) {
-        ctx.fillStyle = this.color;
-        ctx.fillRect(this.x, this.y, this.w, this.h);
+        if (this.visible) {
+            ctx.fillStyle = this.color;
+            ctx.fillRect(this.x, this.y, this.w, this.h);
+        }
     }
 }

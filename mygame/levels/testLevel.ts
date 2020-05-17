@@ -106,17 +106,15 @@ export class TestLevel extends BaseLevel
 
 
             //moving and check collision with sqrSprite
-           let col = this.collisionUtil.spriteRectangleCollision(
-                                        this.sqrSprite, this.explosionSprite ) ;
+           let col = this.collisionUtil.spriteRectangleCollision(this.sqrSprite, this.explosionSprite ) ;
 
-                                        if( col )
-                                        console.log( "clision: "+  col );
+                if( col )console.log( "collision: "+  col );
 
-
-if( this.logTask.getCounter() > 0 )
-{
-    console.log( "counter: "+this.logTask.getCounter());
-}
+            //EJECUTING TASK
+            if( this.logTask.getCounter() > 0 )
+            {
+                console.log( "counter: "+this.logTask.getCounter());
+            }
             //this task will log some text in cosole at 100 thics
             this.logTask.process( 
                 () => { console.log( "this line of text comes from a task | "+this.logTask.getCounter() ) } );

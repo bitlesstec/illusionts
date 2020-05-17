@@ -47,7 +47,6 @@ export class Sprite extends BaseSprite
         this.setNewAnimation( image, frameWidth, frameHeight );
      }
 
-
     }//
 
 
@@ -94,11 +93,10 @@ export class Sprite extends BaseSprite
 
             if( this.angle != 0 || this.xScale != 1 || this.yScale != 1 )
             {
-
                 ctx.translate( this.x + this.w/2, this.y + this.h/2 );
                 ctx.rotate( this.angle );
                 ctx.scale( this.xScale, this.yScale );
-                
+                ctx.translate( -( this.x + this.w/2 ), -( this.y + this.h/2 ) );
             }
 
             /// here check some effect updates 

@@ -16,7 +16,7 @@ export class MathUtil {
      * @param angleDirection
      */
     static lengthDirX(lenght, angleDirection) {
-        return Math.cos(angleDirection * (Math.PI / 180)) * lenght;
+        return Math.cos(angleDirection /* ( Math.PI / 180 ) */) * lenght;
     }
     /**
      *
@@ -26,7 +26,7 @@ export class MathUtil {
      * @param angleDirection
      */
     static lengthDirY(lenght, angleDirection) {
-        return Math.sin(angleDirection * (Math.PI / 180)) * lenght;
+        return Math.sin(angleDirection /* ( Math.PI / 180 ) */) * lenght;
     }
     /**
      * if value is mayor than max value, max value will be returned

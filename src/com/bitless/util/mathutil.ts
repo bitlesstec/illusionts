@@ -21,7 +21,7 @@ export class MathUtil
      */
     static lengthDirX( lenght:number, angleDirection:number ):number
     {
-        return Math.cos( angleDirection * ( Math.PI / 180 ) ) * lenght;
+        return Math.cos( angleDirection /* ( Math.PI / 180 ) */ ) * lenght;
     }
 
     /**
@@ -33,7 +33,7 @@ export class MathUtil
      */
     static lengthDirY( lenght:number, angleDirection:number ):number
     {
-        return Math.sin( angleDirection * ( Math.PI / 180 ) ) * lenght;
+        return Math.sin( angleDirection /* ( Math.PI / 180 ) */ ) * lenght;
     }
 
     /**

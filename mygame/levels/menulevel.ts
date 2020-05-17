@@ -8,6 +8,10 @@ import { BaseLevel } from "../../src/com/bitless/level/baselevel.js";
 import { GameManager } from "../../src/com/bitless/manager/gamemanager.js";
 import { TestLevel } from "./testLevel.js";
 import { TileLevel } from "./tilelevel.js";
+import { RotateLevel } from "./rotatelevel.js";
+import { DemoSpriteLevel } from "./demospritelevel.js";
+import { CollisionLevel } from "./collisionlevel.js";
+import { MovingSpritesLevel } from "./movinspriteslevel.js";
 // import { AssetLoadable } from "../../src/com/bitless/ntfc/assetLoadable.js";
 
 
@@ -24,7 +28,7 @@ export class MenuLevel extends BaseLevel
     {
         super( 640, 480 );
         this.levelSelector = 1;
-        this.maxSelector = 2;
+        this.maxSelector = 6;
     }//
 
 
@@ -50,9 +54,12 @@ export class MenuLevel extends BaseLevel
         ctx.fill();
         ctx.closePath();
 
-        ctx.fillText( "TESTLEVEL1", 40, 24);
-        ctx.fillText( "TILELEVEL", 40, 48);
-
+        ctx.fillText( "TEST LEVEL1", 40, 24);
+        ctx.fillText( "TILE LEVEL", 40, 48);
+        ctx.fillText( "ROTATION LEVEL", 40, 68);
+        ctx.fillText( "SPRITES LEVEL", 40, 88);
+        ctx.fillText( "COLLISION LEVEL", 40, 108);
+        ctx.fillText( "MOVING SPRITES LEVEL", 40, 128);
 
     }//
 
@@ -81,7 +88,7 @@ export class MenuLevel extends BaseLevel
             case 40: //arrowDown
                 this.levelSelector += 1;
                 if( this.levelSelector >= this.maxSelector )
-                { this.levelSelector >= this.maxSelector; }
+                { this.levelSelector = this.maxSelector; }
             break;
 
             case 13: //enter
@@ -96,6 +103,19 @@ export class MenuLevel extends BaseLevel
                     case 2:
                         GameManager.getInstance().loadLevel( new TileLevel() );
                         break;
+                    case 3:
+                        GameManager.getInstance().loadLevel( new RotateLevel() );
+                        break;
+                    case 4:
+                        GameManager.getInstance().loadLevel( new DemoSpriteLevel() );
+                        break;
+                    case 5:
+                        GameManager.getInstance().loadLevel( new CollisionLevel() );
+                        break;
+                        case 5:
+                    GameManager.getInstance().loadLevel( new MovingSpritesLevel() );
+                        break;
+ 
                 }
             break;
             

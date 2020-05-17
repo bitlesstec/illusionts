@@ -9,6 +9,7 @@ export class BaseLevel {
     constructor(levelWidht, levelHeight, viewWidth, viewHeight) {
         this.gameState = GameState.LOADING;
         this.imageMap = new Map();
+        this.spriteList = [];
         this.levelWidth = levelWidht;
         this.levelHeight = levelHeight;
         if (viewWidth !== undefined && viewHeight !== undefined)

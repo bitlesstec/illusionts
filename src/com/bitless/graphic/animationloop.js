@@ -6,7 +6,8 @@
  */
 export var AnimationLoop;
 (function (AnimationLoop) {
-    AnimationLoop[AnimationLoop["FORWARD"] = 0] = "FORWARD";
-    AnimationLoop[AnimationLoop["BACKWARD"] = 1] = "BACKWARD";
-    AnimationLoop[AnimationLoop["STOPATEND"] = 2] = "STOPATEND";
+    AnimationLoop[AnimationLoop["NONE"] = 0] = "NONE";
+    AnimationLoop[AnimationLoop["FORWARD"] = 1] = "FORWARD";
+    AnimationLoop[AnimationLoop["BACKWARD"] = 2] = "BACKWARD";
+    AnimationLoop[AnimationLoop["STOPATEND"] = 3] = "STOPATEND";
 })(AnimationLoop || (AnimationLoop = {}));

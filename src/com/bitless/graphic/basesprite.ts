@@ -33,8 +33,8 @@ export abstract class BaseSprite
 
         this.x = 0;
         this.y = 0;
-        //  this.w = 1;
-        //  this.h = 1;
+         this.w = 1;
+         this.h = 1;
         this.angle = 0;
         this.alpha = 1;
         this.xScale = 1;

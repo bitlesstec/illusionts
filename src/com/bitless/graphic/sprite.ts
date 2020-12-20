@@ -31,22 +31,23 @@ export class Sprite extends BaseSprite
     // constructor( image: HTMLImageElement, frameWidth:number, frameHeight:number );
     constructor( image: HTMLImageElement, frameWidth?:number, frameHeight?:number )
     {
-     super();
-     
-     this.animationEnd = false;
+        super();
+        
+        this.animationEnd = false;
+        this.lastFrame = 0;
+        
+        this.animationLoop = AnimationLoop.FORWARD;
+        this.animationStep = 0;
+        this.animationStepLimit = 10;
 
-     this.animationLoop = AnimationLoop.FORWARD;
-     this.animationStep = 0;
-     this.animationStepLimit = 10;
-
-     this.currentFrame = 0;
-     //when the image is loaded then we set measures
-     this.image = image;
-     this.image.onload = () => 
-     {
-        this.setNewAnimation( image, frameWidth, frameHeight );
-     }
-
+        this.currentFrame = 0;
+        //when the image is loaded then we set measures
+        this.image = image;
+        this.image.onload = () => 
+        {
+            this.setNewAnimation( image, frameWidth, frameHeight );
+        }
+        
     }//
 
 

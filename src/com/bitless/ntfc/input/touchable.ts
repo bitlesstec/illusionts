@@ -11,9 +11,9 @@ touchcancel	Fired when a touch gesture is canceled, for instance if the user mov
  */
 export interface Touchable
 {
-touchStart( event );
-touchMove( event );
-touchEnd( event );
-touchLeave( event );
-touchCancel( event );
+touchStart( event: TouchEvent ):void;
+touchMove( event: TouchEvent ):void;
+touchEnd( event: TouchEvent ):void;
+touchLeave( event: TouchEvent ):void;
+touchCancel( event: TouchEvent ):void;
 }

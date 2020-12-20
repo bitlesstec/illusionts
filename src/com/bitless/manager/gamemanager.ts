@@ -59,6 +59,7 @@ import {BaseLevel} from "../level/BaseLevel.js";
         //game start
         //this.run();
         this.context.font = "10px press-start";
+        // this.currentLevel = new BaseLevel(640,480);
     }
 
     static getInstance():GameManager
@@ -71,11 +72,16 @@ import {BaseLevel} from "../level/BaseLevel.js";
     //this is the gameloop
     run()
     {
+        //@NOTE: check if current level !== undefined
         let now = Date.now();
         this.delta = ( now - this.lastUpdate ) / 1000;//this.fps;
         this.lastUpdate = now;
-        this.currentLevel.update( this.delta );
-        this.currentLevel.render( this.context );
+        if( this.currentLevel !== undefined )
+        {
+            this.currentLevel.update( this.delta );
+            this.currentLevel.render( this.context );
+        }
+        
         requestAnimationFrame( this.run.bind(this) );
     }
 
@@ -104,9 +110,7 @@ import {BaseLevel} from "../level/BaseLevel.js";
     {
         this.currentLevel = level;
 
-        //set canvas events
-        
-        // mouse events
+        // canvas/keyboard/touchmouse events
         this.canvas.addEventListener("mousedown", (event) => this.currentLevel.mouseDown(event));
         this.canvas.addEventListener("mousemove", (event) => this.currentLevel.mouseMove(event));
         this.canvas.addEventListener("mouseup", (event) => this.currentLevel.mouseUp(event));
@@ -123,6 +127,7 @@ import {BaseLevel} from "../level/BaseLevel.js";
         // keyboard events
         this.canvas.addEventListener("keydown", (event) => this.currentLevel.keyDown(event) );
         this.canvas.addEventListener("keyup", (event) => this.currentLevel.keyUp(event));
+        
     }
 
 /**

@@ -7,17 +7,17 @@ export interface Moveable
      * @param xspd 
      * @param yspd 
      */
-    move( xspd:number, yspd:number );
+    move( xspd:number, yspd:number ):void;
 
     /**
      * to move some object in X Axis
      * @param x 
      */
-    moveX( x:number );
+    moveX( x:number ):void;
 
     /**
      * to move some object in Y Axis
      * @param y 
      */
-    moveY( y:number );
+    moveY( y:number ):void;
 }

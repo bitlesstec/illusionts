@@ -45,7 +45,7 @@ private marginBottom:number;
  * @param viewWidth 
  * @param viewHeight 
  */
-constructor( levelWidth:number, levelHeight:number, viewWidth?:number, viewHeight?:number )
+constructor( levelWidth:number, levelHeight:number, viewWidth:number = 0, viewHeight:number = 0 )
 {
 
     this.x = 0;
@@ -79,6 +79,11 @@ constructor( levelWidth:number, levelHeight:number, viewWidth?:number, viewHeigh
     }
 
 
+
+this.marginLeft=0;
+this.marginRight=0;
+this.marginTop=0;
+this.marginBottom=0;
 
 }//
 

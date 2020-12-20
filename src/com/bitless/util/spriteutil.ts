@@ -89,7 +89,7 @@ export class SpriteUtil
      * @param sprFrom 
      * @param sprList 
      */
-    static spriteNearest( spr:Sprite, sprList:Sprite[] ):Sprite
+    static spriteNearest( spr:Sprite, sprList:Sprite[] ):Sprite | undefined
     {
         if( sprList.length === 0 )return;
 

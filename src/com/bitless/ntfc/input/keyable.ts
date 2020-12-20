@@ -9,6 +9,6 @@
  */
 export interface Keyable
 {
-keyDown( event );
-keyUp( event );
+keyDown( event:KeyboardEvent ):void;
+keyUp( event:KeyboardEvent ):void;
 }

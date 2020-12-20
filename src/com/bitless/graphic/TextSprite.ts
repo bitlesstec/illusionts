@@ -22,6 +22,7 @@ export class TextSprite extends BaseSprite
     constructor( message:string )
     {
     super();
+    this.message="";
     this.setMsg( message );
     this.color = "#FFF";
     this.fillText = true;

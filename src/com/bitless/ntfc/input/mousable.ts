@@ -11,9 +11,9 @@ mousemove      fired when  a mouse is dragged over an element
 
 export interface Mousable
 {
-mouseDown( event );
-mouseUp( event );
-mouseMove( event );
-mouseOut( event );
-mouseOver( event );
+mouseDown( event: MouseEvent ):void;
+mouseUp( event: MouseEvent ):void;
+mouseMove( event: MouseEvent ):void;
+mouseOut( event: MouseEvent ):void;
+mouseOver( event: MouseEvent ):void;
 }

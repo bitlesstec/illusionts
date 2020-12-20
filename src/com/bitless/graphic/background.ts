@@ -31,6 +31,8 @@ export class Background extends Point
     constructor( image: HTMLImageElement )
     {
         super();
+        this.w=0;
+        this.h=0;
         this.image = image;
         this.visible = true;
         this.image.onload = () =>

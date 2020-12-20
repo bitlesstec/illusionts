@@ -1,5 +1,5 @@
 
 export interface Executable
 {
-    execute();
+    execute():void;
 }

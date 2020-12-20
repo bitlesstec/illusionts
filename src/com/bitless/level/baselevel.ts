@@ -5,8 +5,6 @@ import { Mousable } from "../ntfc/input/Mousable.js";
 import { Keyable } from "../ntfc/input/Keyable.js";
 import { GameState } from "../manager/GameState.js";
 import { Camera } from "../camera/Camera.js";
-// import { BaseSprite } from "../graphic/basesprite.js";
-import { Sprite } from "../graphic/Sprite.js";
 import { BaseSprite } from "../graphic/BaseSprite.js";
 
 /**
@@ -20,7 +18,7 @@ export abstract class BaseLevel
 
 //used to load all images that can be used to create sprites or
 //set new animations for sprites 
-imageMap: Map< string, HTMLImageElement>;
+imageMap: Map<string, HTMLImageElement>;
 
 //used to maintain all the sprites in a single place, 
 //so we can iterate this map and use render method of each sprite for example
@@ -33,8 +31,6 @@ gameState:GameState;
 
 levelWidth:number;
 levelHeight:number;
-
-
 
 constructor( levelWidht:number, levelHeight:number, viewWidth?:number, viewHeight?:number )
 {
@@ -57,20 +53,20 @@ update( delta:number ){}
 
 //Input Events, all this are eventListeners attached to canvas
 //@note:if below lines are commented they will cause an issue with GameManager.loadLevel function
-touchStart( event ){}
-touchMove( event ){}
-touchEnd( event ){}
-touchLeave( event ){}
-touchCancel( event ){}
+touchStart( event: Event ){}
+touchMove( event: Event ){}
+touchEnd( event: Event ){}
+touchLeave( event: Event ){}
+touchCancel( event: Event ){}
 
-mouseDown( event ){}
-mouseUp( event ){}
-mouseMove( event ){}
-mouseOut( event ){}
-mouseOver( event ){}
+mouseDown( event: Event ){}
+mouseUp( event: Event ){}
+mouseMove( event: Event ){}
+mouseOut( event: Event ){}
+mouseOver( event: Event ){}
 
-keyDown( event ){}
-keyUp( event ){}
+keyDown( event: Event ){}
+keyUp( event: Event ){}
 
 }//
 

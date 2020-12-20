@@ -1,5 +1,5 @@
-import { BaseSprite } from "./basesprite.js";
-import { Renderable } from "../ntfc/renderable.js";
+import { BaseSprite } from "./BaseSprite.js";
+import { Renderable } from "../ntfc/Renderable.js";
 
 /**
  * this will create a line that can be displayed if used in render(ctx) method, 

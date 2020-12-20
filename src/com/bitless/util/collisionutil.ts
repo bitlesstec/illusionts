@@ -1,4 +1,4 @@
-import { Sprite } from "../graphic/sprite.js";
+import { Sprite } from "../graphic/Sprite.js";
 
 
 /**

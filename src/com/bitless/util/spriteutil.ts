@@ -1,6 +1,6 @@
-import { Sprite } from "../graphic/sprite.js";
-import { MathUtil } from "./mathutil.js";
-import { CollisionUtil } from "./collisionutil.js";
+import { Sprite } from "../graphic/Sprite.js";
+import { MathUtil } from "./MathUtil.js";
+import { CollisionUtil } from "./CollisionUtil.js";
 
 /**
  * this class provides some generic functions

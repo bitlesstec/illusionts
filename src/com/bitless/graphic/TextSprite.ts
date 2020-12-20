@@ -1,15 +1,15 @@
-import { BaseSprite } from "./basesprite.js";
-import { Renderable } from "../ntfc/renderable.js";
-import { GameManager } from "../manager/gamemanager.js";
+import { BaseSprite } from "./BaseSprite.js";
+import { Renderable } from "../ntfc/Renderable.js";
+import { GameManager } from "../manager/GameManager.js";
 
 
 
 /**
- * this class creates text that can be displayed as HUD or any other
- * message, you can grow and shrink as well change color of this text
+ * this class creates text that can be displayed as HUD
+ * you can grow and shrink as well change color of this text
  * is more usable than just put text directly in ctx.fillText.
  */
-export class Text extends BaseSprite
+export class TextSprite extends BaseSprite
                     implements Renderable
 {
 

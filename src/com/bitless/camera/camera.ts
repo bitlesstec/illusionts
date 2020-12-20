@@ -1,4 +1,4 @@
-import { Moveable } from "../ntfc/moveable";
+import { Moveable } from "../ntfc/Moveable";
 
 export class Camera
     implements Moveable

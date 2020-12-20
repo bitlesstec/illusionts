@@ -1,4 +1,4 @@
-import { Tile } from "../graphic/tile.js";
+import { Tile } from "../graphic/Tile.js";
 
 export class TileUtil
 {

@@ -1,8 +1,8 @@
 
-import { Positionable } from "../ntfc/positionable.js";
-import { Moveable } from "../ntfc/moveable.js";
-import { Config } from "../cfg/config.js";
-import { Renderable } from "../ntfc/renderable.js";
+import { Positionable } from "../ntfc/Positionable.js";
+import { Moveable } from "../ntfc/Moveable.js";
+import { Config } from "../cfg/Config.js";
+import { Renderable } from "../ntfc/Renderable.js";
 
 export abstract class BaseSprite 
     implements Positionable, Moveable, Renderable

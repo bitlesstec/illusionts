@@ -1,4 +1,4 @@
-import { Executable } from "../ntfc/executable.js";
+import { Executable } from "../ntfc/Executable.js";
 
 export class Task
 {

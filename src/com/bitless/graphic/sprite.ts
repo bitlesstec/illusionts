@@ -1,7 +1,7 @@
 
-import { BaseSprite } from "./basesprite.js";
-import { AnimationLoop } from "./animationloop.js";
-import { Renderable } from "../ntfc/renderable.js";
+import { BaseSprite } from "./BaseSprite.js";
+import { AnimationLoop } from "./AnimationLoop.js";
+import { Renderable } from "../ntfc/Renderable.js";
 
 
 export class Sprite extends BaseSprite

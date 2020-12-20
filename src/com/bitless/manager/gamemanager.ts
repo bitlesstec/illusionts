@@ -1,9 +1,9 @@
 
 //ntfcs
-import {Runnable} from "../ntfc/runnable.js";
+import {Runnable} from "../ntfc/Runnable.js";
 
 //classes
-import {BaseLevel} from "../level/baselevel.js";
+import {BaseLevel} from "../level/BaseLevel.js";
 // import { TestLevel } from "../level/testLevel.js";
 
 

@@ -11,10 +11,13 @@
     "url": "git+https://gitlab.com/pavul/illusionts.git"
   },
   "keywords": [],
-  "author": "",
+  "author": "pavul zavala",
   "license": "ISC",
   "bugs": {
     "url": "https://gitlab.com/pavul/illusionts/issues"
   },
-  "homepage": "https://gitlab.com/pavul/illusionts#readme"
+  "homepage": "https://gitlab.com/pavul/illusionts#readme",
+  "devDependencies": {
+    "typescript": "^4.1.3"
+  }
 }

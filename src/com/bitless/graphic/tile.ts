@@ -1,4 +1,4 @@
-import { Point } from "./point.js";
+import { Point } from "./Point.js";
 
 export class Tile extends Point
 {

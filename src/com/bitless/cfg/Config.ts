@@ -2,7 +2,10 @@
 export class Config
 {
 
-static readonly SPRITE_ID_COUNTER:number = 1000;
+/**
+* every sprite isntance created will have its own id
+*/
+static SPRITE_ID_COUNTER:number = 1000;
 
 static readonly DEFAULT_FONT_NAME:string = "press-start";
 

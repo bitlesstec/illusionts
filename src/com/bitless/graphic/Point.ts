@@ -1,7 +1,8 @@
 
 
 /**
- * this class is the basic data to represent any graphic entity, image based
+ * this class is the basic representation of any graphic entity image based
+ * @NOTE to me: maybe can be called SpritePoint
  */
 export abstract class Point
 {

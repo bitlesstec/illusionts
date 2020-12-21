@@ -1,11 +1,11 @@
-import {Renderable} from "../ntfc/Renderable.js";
-import {Updatable} from "../ntfc/Updatable.js";
-import { Touchable } from "../ntfc/Input/Touchable.js.js";
-import { Mousable } from "../ntfc/Input/Mousable.js.js";
-import { Keyable } from "../ntfc/Input/Keyable.js.js";
-import { GameState } from "../manager/GameState.js";
-import { Camera } from "../camera/Camera.js";
-import { BaseSprite } from "../graphic/BaseSprite.js";
+import {Renderable} from "../ntfc/Renderable";
+import {Updatable} from "../ntfc/Updatable";
+import { Touchable } from "../ntfc/input/Touchable";
+import { Mousable } from "../ntfc/input/Mousable";
+import { Keyable } from "../ntfc/input/Keyable";
+import { GameState } from "../manager/GameState";
+import { Camera } from "../camera/Camera";
+import { BaseSprite } from "../graphic/BaseSprite";
 
 /**
  * this class will represent a level in the game, will

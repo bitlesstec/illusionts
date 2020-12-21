@@ -1,7 +1,7 @@
 
-import {Runnable} from "../ntfc/Runnable.js";
-import {BaseLevel} from "../level/BaseLevel.js";
-import { Config } from "../cfg/Config.js";
+import {Runnable} from "../ntfc/Runnable";
+import {BaseLevel} from "../level/BaseLevel";
+import { Config } from "../cfg/Config";
 
 
 /**

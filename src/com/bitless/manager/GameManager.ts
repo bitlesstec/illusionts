@@ -1,11 +1,7 @@
 
-//ntfcs
 import {Runnable} from "../ntfc/Runnable.js";
-
-//classes
 import {BaseLevel} from "../level/BaseLevel.js";
 import { Config } from "../cfg/Config.js";
-// import { TestLevel } from "../level/testLevel.js";
 
 
 /**

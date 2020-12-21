@@ -2,10 +2,10 @@
 export class Config
 {
 
-static SPRITE_ID_COUNTER:number = 1000;
+static readonly SPRITE_ID_COUNTER:number = 1000;
 
-static FONT:string = "";
+static readonly DEFAULT_FONT_NAME:string = "press-start";
 
-static RADIAN:number = ( 180 / Math.PI );
+static readonly RADIAN:number = ( 180 / Math.PI );
 
 }

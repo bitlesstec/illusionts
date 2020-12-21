@@ -4,6 +4,7 @@ import {Runnable} from "../ntfc/Runnable.js";
 
 //classes
 import {BaseLevel} from "../level/BaseLevel.js";
+import { Config } from "../cfg/Config.js";
 // import { TestLevel } from "../level/testLevel.js";
 
 
@@ -25,8 +26,6 @@ import {BaseLevel} from "../level/BaseLevel.js";
 
     static instance:GameManager;
 
-    readonly DEFAULT_FONTNAME ="press-start";
-
      delta: number;
      lastUpdate: number;
     //  currentTimestamp:number;
@@ -39,17 +38,21 @@ import {BaseLevel} from "../level/BaseLevel.js";
 
      fontName:string;
     
-    // constructor( firstLevel: BaseLevel )
-    private constructor()
+    /**
+     * create a GameManager Instance, this manager starts the 
+     * game loop, it gets 
+     * @param canvasId id of teh canvas to show the game if not specified id will be 'canvas' 
+     */
+    private constructor( canvasId:string = "canvas" )
     {
         this.delta = 0;
         this.lastUpdate = 0;
         this.fps = 60;// 1000/30;  //30 fps, use 1000/60 to set it to 60 fps
         this.step = 1/this.fps;
-        this.fontName = this.DEFAULT_FONTNAME;
+        this.fontName = Config.DEFAULT_FONT_NAME;
         this.setFont( this.fontName, "/src/com/bitless/font/press-start.ttf" );
 
-        this.canvas = <HTMLCanvasElement>document.getElementById("canvas"); //canvas;
+        this.canvas = <HTMLCanvasElement>document.getElementById( canvasId );
         this.context = <CanvasRenderingContext2D>this.canvas.getContext("2d");
 
         this.context.textBaseline = "top";
@@ -61,6 +64,7 @@ import {BaseLevel} from "../level/BaseLevel.js";
         this.context.font = "10px press-start";
         // this.currentLevel = new BaseLevel(640,480);
     }
+
 
     static getInstance():GameManager
     {
@@ -81,7 +85,6 @@ import {BaseLevel} from "../level/BaseLevel.js";
             this.currentLevel.update( this.delta );
             this.currentLevel.render( this.context );
         }
-        
         requestAnimationFrame( this.run.bind(this) );
     }
 
@@ -103,9 +106,12 @@ import {BaseLevel} from "../level/BaseLevel.js";
     // }//
 
     /**
-     * this is the method that will load the current level events of the canvas
-     * 
-     */
+     * this is the method that will load  level specified and will
+     * become the current level ( even if there was another level oreviously)
+     *  after that events of keyboard, mouse, touch events will be set in the canvas
+     * @param level new level to load must be an implementation of BaseLevel
+     *      
+     * */
     loadLevel( level:BaseLevel )
     {
         this.currentLevel = level;
@@ -166,14 +172,3 @@ setFontSize( size:number ):void
 
 
 }//
-
-// @TODO below code must be in a separate class maybe a game.js class that will be added to the html
-//set the game instance, load the first level and start the game
-// let game = new GameManager();
-
-
-// game.loadLevel( new TestLevel() );
-
-// window.onload =function(){game.run();} 
-
-// se puede usar el windows onload aqui antes de ejecutar todo

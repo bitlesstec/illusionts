@@ -1,0 +1,23 @@
+{
+  "name": "illusionts",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "build": "tsc"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://gitlab.com/pavul/illusionts.git"
+  },
+  "keywords": [],
+  "author": "pavulzavala <pavulzavala@gmail.com>",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://gitlab.com/pavul/illusionts/issues"
+  },
+  "homepage": "https://gitlab.com/pavul/illusionts#readme",
+  "devDependencies": {
+    "typescript": "^4.1.3"
+  }
+}

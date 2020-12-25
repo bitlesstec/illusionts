@@ -1,14 +1,12 @@
-import { AssetLoadable } from "../../src/com/bitless/ntfc/assetLoadable.js";
-import { GameState } from "../../src/com/bitless/manager/gamestate.js";
-import { BaseLevel } from "../../src/com/bitless/level/baselevel.js";
-import { Text } from "../../src/com/bitless/graphic/text.js";
-import { Sprite } from "../../src/com/bitless/graphic/sprite.js";
-import { AnimationLoop } from "../../src/com/bitless/graphic/animationloop.js";
-import { LineSprite } from "../../src/com/bitless/graphic/linesprite.js";
-import { CollisionUtil } from "../../src/com/bitless/util/collisionutil.js";
-import { MathUtil } from "../../src/com/bitless/util/mathutil.js";
-import { Task } from "../../src/com/bitless/task/task.js";
-
+import { AssetLoadable } from "../lib/ntfc/AssetLoadable.js";
+import { GameState } from "../lib/manager/GameState.js";
+import { BaseLevel } from "../lib/level/BaseLevel.js";
+import { TextSprite } from "../lib/graphic/TextSprite.js";
+import { Sprite } from "../lib/graphic/Sprite.js";
+import { AnimationLoop } from "../lib/graphic/AnimationLoop.js";
+import { LineSprite } from "../lib/graphic/LineSprite.js";
+import { CollisionUtil } from "../lib/util/CollisionUtil.js";
+import { Task } from "../lib/task/Task.js";
 
 
 
@@ -17,7 +15,7 @@ export class MovingSpritesLevel extends BaseLevel
 {
 
 
-    HUD:Text;
+    HUD:TextSprite;
     arrow:Sprite;
     redSprite:Sprite;
     blueSprite:Sprite;
@@ -34,7 +32,7 @@ export class MovingSpritesLevel extends BaseLevel
 
         this.loadImages();
 
-        this.HUD = new Text( "Moving Sprites Level" );
+        this.HUD = new TextSprite( "Moving Sprites Level" );
         this.HUD.setPosition( this.levelWidth / 2, 30 );
 
         this.arrow = new Sprite ( this.imageMap.get( "arrowImage" ) );
@@ -149,7 +147,7 @@ export class MovingSpritesLevel extends BaseLevel
     }//
 
     // move the sprite
-    keyUp( event )
+    keyUp( event:KeyboardEvent )
     {
         switch( event.keyCode )
         {

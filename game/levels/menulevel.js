@@ -3,19 +3,19 @@
  * how this framework works, this menu is also a level with the only purpose
  * to select the desired working level
  */
-import { BaseLevel } from "../../src/com/bitless/level/baselevel.js";
-import { GameManager } from "../../src/com/bitless/manager/gamemanager.js";
+import { BaseLevel } from "../lib/level/BaseLevel.js";
+import { GameManager } from "../lib/manager/GameManager.js";
 import { TestLevel } from "./testLevel.js";
 import { TileLevel } from "./tilelevel.js";
 import { RotateLevel } from "./rotatelevel.js";
 import { DemoSpriteLevel } from "./demospritelevel.js";
 import { CollisionLevel } from "./collisionlevel.js";
-// import { AssetLoadable } from "../../src/com/bitless/ntfc/assetLoadable.js";
+import { MovingSpritesLevel } from "./movinspriteslevel.js";
 export class MenuLevel extends BaseLevel {
     constructor() {
         super(640, 480);
         this.levelSelector = 1;
-        this.maxSelector = 5;
+        this.maxSelector = 6;
     } //
     update(delta) {
     } //
@@ -33,6 +33,7 @@ export class MenuLevel extends BaseLevel {
         ctx.fillText("ROTATION LEVEL", 40, 68);
         ctx.fillText("SPRITES LEVEL", 40, 88);
         ctx.fillText("COLLISION LEVEL", 40, 108);
+        ctx.fillText("MOVING SPRITES LEVEL", 40, 128);
     } //
     /**
      * events for key down, to select desired option from menu
@@ -74,6 +75,9 @@ export class MenuLevel extends BaseLevel {
                         break;
                     case 5:
                         GameManager.getInstance().loadLevel(new CollisionLevel());
+                        break;
+                    case 5:
+                        GameManager.getInstance().loadLevel(new MovingSpritesLevel());
                         break;
                 }
                 break;

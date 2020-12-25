@@ -1,8 +1,8 @@
-import { BaseLevel } from "../../src/com/bitless/level/baselevel.js";
-import { Tile } from "../../src/com/bitless/graphic/tile.js";
-import { TileUtil } from "../../src/com/bitless/util/tileutil.js";
-import { GameState } from "../../src/com/bitless/manager/gamestate.js";
-import { AssetLoadable } from "../../src/com/bitless/ntfc/assetLoadable.js";
+import { AssetLoadable } from "../lib/ntfc/AssetLoadable.js";
+import { GameState } from "../lib/manager/GameState.js";
+import { BaseLevel } from "../lib/level/BaseLevel.js";
+import { TileUtil } from "../lib/util/TileUtil.js";
+import {Tile} from "../lib/graphic/Tile.js";
 
 /**
  * this class will demonstrate the usage of the camera
@@ -142,7 +142,7 @@ export class TileLevel extends BaseLevel
 
 
 
-    keyUp( event )
+    keyUp( event:KeyboardEvent )
     {
         switch( event.keyCode )
         {

@@ -1,6 +1,6 @@
-import { BaseSprite } from "./BaseSprite";
-import { Renderable } from "../ntfc/Renderable";
-import { GameManager } from "../manager/GameManager";
+import { BaseSprite } from "./BaseSprite.js";
+import { Renderable } from "../ntfc/Renderable.js";
+import { GameManager } from "../manager/GameManager.js";
 
 
 

@@ -1,9 +1,9 @@
-import { AssetLoadable } from "../../src/com/bitless/ntfc/assetLoadable.js";
-import { BaseLevel } from "../../src/com/bitless/level/baselevel.js";
-import { Sprite } from "../../src/com/bitless/graphic/sprite.js";
-import { AnimationLoop } from "../../src/com/bitless/graphic/animationloop.js";
-import { GameState } from "../../src/com/bitless/manager/gamestate.js";
-import { SpriteUtil } from "../../src/com/bitless/util/spriteutil.js";
+import { AssetLoadable } from "../lib/ntfc/AssetLoadable.js";
+import { GameState } from "../lib/manager/GameState.js";
+import { BaseLevel } from "../lib/level/BaseLevel.js";
+import { Sprite } from "../lib/graphic/Sprite.js";
+import { AnimationLoop } from "../lib/graphic/AnimationLoop.js";
+import { SpriteUtil } from "../lib/util/SpriteUtil.js";
 
 
 /**
@@ -144,7 +144,7 @@ export class DemoSpriteLevel extends BaseLevel
     }//
 
     // move the sprite
-    keyUp( event )
+    keyUp( event:KeyboardEvent )
     {
         switch( event.keyCode )
         {

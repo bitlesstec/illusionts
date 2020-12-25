@@ -1,6 +1,6 @@
-import { BaseLevel } from "../../src/com/bitless/level/baselevel.js";
-import { TileUtil } from "../../src/com/bitless/util/tileutil.js";
-import { GameState } from "../../src/com/bitless/manager/gamestate.js";
+import { GameState } from "../lib/manager/GameState.js";
+import { BaseLevel } from "../lib/level/BaseLevel.js";
+import { TileUtil } from "../lib/util/TileUtil.js";
 /**
  * this class will demonstrate the usage of the camera
  * and tilesets

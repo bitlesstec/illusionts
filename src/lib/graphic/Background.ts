@@ -1,11 +1,9 @@
 
 
-import {Point} from "./Point";
-
-import {Positionable} from "../ntfc/Positionable";
-
-import { Renderable } from "../ntfc/Renderable";
-import { Colorizable } from "../ntfc/Colorizable";
+import {Point} from "./Point.js";
+import {Positionable} from "../ntfc/Positionable.js";
+import { Renderable } from "../ntfc/Renderable.js";
+import { Colorizable } from "../ntfc/Colorizable.js";
 
 
 /**

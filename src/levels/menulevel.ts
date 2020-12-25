@@ -4,15 +4,14 @@
  * to select the desired working level
  */
 
-import { BaseLevel } from "../../src/com/bitless/level/baselevel.js";
-import { GameManager } from "../../src/com/bitless/manager/gamemanager.js";
+import { BaseLevel } from "../lib/level/BaseLevel.js";
+import { GameManager } from "../lib/manager/GameManager.js";
 import { TestLevel } from "./testLevel.js";
 import { TileLevel } from "./tilelevel.js";
 import { RotateLevel } from "./rotatelevel.js";
 import { DemoSpriteLevel } from "./demospritelevel.js";
 import { CollisionLevel } from "./collisionlevel.js";
 import { MovingSpritesLevel } from "./movinspriteslevel.js";
-// import { AssetLoadable } from "../../src/com/bitless/ntfc/assetLoadable.js";
 
 
 
@@ -69,7 +68,7 @@ export class MenuLevel extends BaseLevel
      * events for key down, to select desired option from menu
      * @param event 
      */
-    keyDown( event )
+    keyDown( event:KeyboardEvent )
     {
     // this.ev = event.key + event.keyCode;
     // console.log(event);

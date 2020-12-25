@@ -1,13 +1,14 @@
-import { BaseLevel } from "../../src/com/bitless/level/baselevel.js";
-import { Sprite } from "../../src/com/bitless/graphic/sprite.js";
-import { GameState } from "../../src/com/bitless/manager/gamestate.js";
-import { SpriteUtil } from "../../src/com/bitless/util/spriteutil.js";
-import { AnimationLoop } from "../../src/com/bitless/graphic/animationloop.js";
-import { Task } from "../../src/com/bitless/task/task.js";
+import { GameState } from "../lib/manager/GameState.js";
+import { BaseLevel } from "../lib/level/BaseLevel.js";
+import { Sprite } from "../lib/graphic/Sprite.js";
+import { AnimationLoop } from "../lib/graphic/AnimationLoop.js";
+import { Task } from "../lib/task/Task.js";
+import { SpriteUtil } from "../lib/util/SpriteUtil.js";
 /**
  * this class will show you how can you rotate or scale an sprite
  * and use other functions to move towards an object, or rotate an
  * sprite to another sprite, etc.
+ * there is also a bullet shoot at mouse pointer when SPACE is pressed
  */
 export class RotateLevel extends BaseLevel {
     constructor() {
@@ -106,13 +107,13 @@ export class RotateLevel extends BaseLevel {
      * @param event
      */
     mouseMove(event) {
+        // getting pointer angle every time is moved and making the arrow face that direction
         this.arrowSprite.angle =
             SpriteUtil.getangle(this.arrowSprite, event.clientX, event.clientY);
     }
     keyDown(event) {
         switch (event.keyCode) {
-            case 8: //BACK SPACE
-                console.log("mving bullet");
+            case 32: //SPACE
                 //every time you press space key, bullet will be set in the center of the arrow
                 //then will move towards the mouse with a speed of 3
                 this.bulletSprite.setPosition(this.arrowSprite.x + this.arrowSprite.w / 2, this.arrowSprite.y + this.arrowSprite.h / 2);

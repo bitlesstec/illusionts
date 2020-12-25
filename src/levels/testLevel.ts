@@ -1,11 +1,11 @@
-import { BaseLevel } from "../../src/com/bitless/level/baselevel.js";
-import { Background } from "../../src/com/bitless/graphic/background.js";
-import { GameState } from "../../src/com/bitless/manager/gamestate.js";
-import { AssetLoadable } from "../../src/com/bitless/ntfc/assetLoadable.js";
-import { Sprite } from "../../src/com/bitless/graphic/sprite.js";
-import { CollisionUtil } from "../../src/com/bitless/util/collisionutil.js";
-import { Task } from "../../src/com/bitless/task/task.js";
-import { GameManager } from "../../src/com/bitless/manager/gamemanager.js";
+import { AssetLoadable } from "../lib/ntfc/AssetLoadable.js";
+import { GameState } from "../lib/manager/GameState.js";
+import { BaseLevel } from "../lib/level/BaseLevel.js";
+import { Sprite } from "../lib/graphic/Sprite.js";
+import { CollisionUtil } from "../lib/util/CollisionUtil.js";
+import { Background} from "../lib/graphic/Background.js";
+import {Task} from "../lib/task/Task.js";
+
 
 export class TestLevel extends BaseLevel
                     implements AssetLoadable
@@ -72,7 +72,7 @@ export class TestLevel extends BaseLevel
             // console.log( "updating in LOADIN" );
             //     this.background.image.onload = ()=> { assetLoaded = assetLoaded && true; }
 
-            GameManager.getInstance().setFontSize( 25 );
+            // GameManager.getInstance().setFontSize( 25 );
 
             this.step++;
 
@@ -165,7 +165,7 @@ export class TestLevel extends BaseLevel
      * this will 
      * @param event 
      */
-    keyDown( event )
+    keyDown( event:KeyboardEvent )
     {
     // this.ev = event.key + event.keyCode;
     // console.log(event);

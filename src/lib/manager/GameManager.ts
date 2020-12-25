@@ -1,7 +1,7 @@
 
-import {Runnable} from "../ntfc/Runnable";
-import {BaseLevel} from "../level/BaseLevel";
-import { Config } from "../cfg/Config";
+import {Runnable} from "../ntfc/Runnable.js";
+import {BaseLevel} from "../level/BaseLevel.js";
+import { Config } from "../cfg/Config.js";
 
 
 /**
@@ -46,7 +46,7 @@ import { Config } from "../cfg/Config";
         this.fps = 60;// 1000/30;  //30 fps, use 1000/60 to set it to 60 fps
         this.step = 1/this.fps;
         this.fontName = Config.DEFAULT_FONT_NAME;
-        this.setFont( this.fontName, "/src/com/bitless/font/press-start.ttf" );
+        this.setFont( this.fontName, "/assets/font/press-start.ttf" );
 
         this.canvas = <HTMLCanvasElement>document.getElementById( canvasId );
         this.context = <CanvasRenderingContext2D>this.canvas.getContext("2d");

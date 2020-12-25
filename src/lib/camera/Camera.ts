@@ -1,4 +1,4 @@
-import { Moveable } from "../ntfc/Moveable";
+import { Moveable } from "../ntfc/Moveable.js";
 
 export class Camera
     implements Moveable

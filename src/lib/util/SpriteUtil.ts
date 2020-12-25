@@ -1,5 +1,4 @@
 import { Sprite } from "../graphic/Sprite.js";
-import { MathUtil } from "./MathUtil.js";
 import { CollisionUtil } from "./CollisionUtil.js";
 
 /**

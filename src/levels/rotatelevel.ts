@@ -1,11 +1,14 @@
-import { BaseLevel } from "../../src/com/bitless/level/baselevel.js";
-import { AssetLoadable } from "../../src/com/bitless/ntfc/assetLoadable.js";
-import { Sprite } from "../../src/com/bitless/graphic/sprite.js";
-import { GameState } from "../../src/com/bitless/manager/gamestate.js";
-import { MathUtil } from "../../src/com/bitless/util/mathutil.js";
-import { SpriteUtil } from "../../src/com/bitless/util/spriteutil.js";
-import { AnimationLoop } from "../../src/com/bitless/graphic/animationloop.js";
-import { Task } from "../../src/com/bitless/task/task.js";
+import { AssetLoadable } from "../lib/ntfc/AssetLoadable.js";
+import { GameState } from "../lib/manager/GameState.js";
+import { BaseLevel } from "../lib/level/BaseLevel.js";
+import { TextSprite } from "../lib/graphic/TextSprite.js";
+import { Sprite } from "../lib/graphic/Sprite.js";
+import { AnimationLoop } from "../lib/graphic/AnimationLoop.js";
+import { LineSprite } from "../lib/graphic/LineSprite.js";
+import { CollisionUtil } from "../lib/util/CollisionUtil.js";
+import { MathUtil } from "../lib/util/MathUtil.js";
+import {Task} from "../lib/task/Task.js";
+import {SpriteUtil} from "../lib/util/SpriteUtil.js";
 
 /**
  * this class will show you how can you rotate or scale an sprite
@@ -170,7 +173,7 @@ scaleTask:Task;
      * the arrow will point towards mouse pointer
      * @param event 
      */
-mouseMove( event )
+mouseMove( event:MouseEvent )
 {
     // getting pointer angle every time is moved and making the arrow face that direction
     this.arrowSprite.angle = 
@@ -178,7 +181,7 @@ mouseMove( event )
 
 }
 
-keyDown( event )
+keyDown( event:KeyboardEvent )
 {
 
     switch( event.keyCode )

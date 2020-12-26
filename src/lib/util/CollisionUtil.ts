@@ -3,9 +3,9 @@ import { Sprite } from "../graphic/Sprite.js";
 
 /**
  * this class is a singleton that will be used in the level, 
+ * it provides basic collision stuff...
  * if you want to use your own collision library or BOX2dJs then
- * this class wont becalled and wont be used memory that is the main
- * reason is a singleton
+ * you dont need to call this class.
  */
 export class CollisionUtil
 {
@@ -91,12 +91,6 @@ isInside( x:number,  y:number ,  w:number,  h:number,
     return ( x >= x2 && x+w <= x2+w2 && y >= y2 && y+h <= y2+h2 ); 
 }
 
-
-
-
-
-
-
 /**
  * returns true if the point defined by X & Y is inside the area
  * of x2, y2, w2, h2 ( a rectangle or square )
@@ -114,7 +108,6 @@ pointCollision( x:number, y:number,
             y >= y2 && y <= y2 + h2 );
 }
 
-
 /**
  * this will check if there is a collision with point defined by X & Y
  * and Sprite
@@ -126,7 +119,6 @@ spritePointCollision( x:number, y:number, spr:Sprite):boolean
 {
     return this.pointCollision( x, y, spr.x, spr.y, spr.w, spr.h );
 }//
-
 
 /**
  * returns true if there is a collision between 2 circles
@@ -147,9 +139,6 @@ circleCollision( cenx:number, ceny:number, rad:number,
  
     return magnitude < totalRadio;
 }
-
-
-
 
 
 spriteCircleColision( spr:Sprite, cenx:number, ceny:number, rad:number, fixOverlap:boolean = true ):boolean

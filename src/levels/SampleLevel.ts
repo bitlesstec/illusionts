@@ -3,7 +3,7 @@ import { Sprite } from '../lib/graphic/Sprite.js';
 import { BaseLevel } from '../lib/level/BaseLevel.js';
 import { GameState } from '../lib/manager/GameState.js';
 import { AssetLoadable } from '../lib/ntfc/AssetLoadable.js';
-
+//import axios from 'axios';
 
 
 /**

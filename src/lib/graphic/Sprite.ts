@@ -28,7 +28,6 @@ export class Sprite extends BaseSprite
      * @param frameWidth 
      * @param frameHeight 
      */
-    // constructor( image: HTMLImageElement, frameWidth:number, frameHeight:number );
     constructor( image: HTMLImageElement, frameWidth?:number, frameHeight?:number )
     {
         super();

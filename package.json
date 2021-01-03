@@ -1,17 +1,31 @@
 {
   "name": "illusionts",
+<<<<<<< HEAD
   "version": "0.0.1",
   "description": "Game Library to create 2d games using Typescript",
   "main": "index.js",
   "scripts": {
     "build": "tsc"
+=======
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "build": "tsc && cp src/game.html game/ && cp -r src/assets game/assets",
+    "build.win": "tsc && Xcopy /Y src\\game.html game && Xcopy /E/I/Y src\\assets game\\assets\\",
+    "start": "cd game && http-server"
+>>>>>>> master
   },
   "repository": {
     "type": "git",
     "url": "git+https://gitlab.com/pavul/illusionts.git"
   },
   "keywords": [],
+<<<<<<< HEAD
   "author": "pavul zavala",
+=======
+  "author": "pavulzavala <pavulzavala@gmail.com>",
+>>>>>>> master
   "license": "ISC",
   "bugs": {
     "url": "https://gitlab.com/pavul/illusionts/issues"
@@ -19,5 +33,12 @@
   "homepage": "https://gitlab.com/pavul/illusionts#readme",
   "devDependencies": {
     "typescript": "^4.1.3"
+<<<<<<< HEAD
+=======
+  },
+  "dependencies": {
+    "axios": "^0.21.1",
+    "http-server": "^0.12.3"
+>>>>>>> master
   }
 }

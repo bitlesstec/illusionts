@@ -8,12 +8,17 @@ export abstract class BaseSprite
     implements Positionable, Moveable, Renderable
 {
 
+    //unique identifier
     id: number;
+
+    //to set an sprite part of some group
     label: string;
+
+    //speed values
     spdX: number;
     spdY: number;
 
-    //coordinates, width and height
+    //coordinates, x, y, width and height
     x:number;
     y:number;
     w:number;

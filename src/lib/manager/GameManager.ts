@@ -46,7 +46,7 @@ import { Config } from "../cfg/Config.js";
         this.fps = 60;// 1000/30;  //30 fps, use 1000/60 to set it to 60 fps
         this.step = 1/this.fps;
         this.fontName = Config.DEFAULT_FONT_NAME;
-        this.setFont( this.fontName, "/assets/font/press-start.ttf" );
+        this.setFont( this.fontName, Config.DFLT_FNT_NAME_PATH );
 
         this.canvas = <HTMLCanvasElement>document.getElementById( canvasId );
         this.context = <CanvasRenderingContext2D>this.canvas.getContext("2d");

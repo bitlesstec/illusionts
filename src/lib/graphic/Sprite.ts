@@ -8,16 +8,20 @@ export class Sprite extends BaseSprite
        implements Renderable
 {
 
+    //sprite animation variables 
     animationLoop: AnimationLoop;
     animationStep: number;
     animationStepLimit: number;
     animationEnd:boolean;
+
+
     //current frame to be displayed
     currentFrame:number;
 
     //last frame of current image (strip image/animation)
     lastFrame:number;
 
+    //image to be rendered
     image: HTMLImageElement;
 
     /**
@@ -99,7 +103,7 @@ export class Sprite extends BaseSprite
                 ctx.translate( -( this.x + this.w/2 ), -( this.y + this.h/2 ) );
             }
 
-            /// here check some effect updates 
+            /// @TODO here check some effect updates 
 
             ctx.drawImage
             (

@@ -1,8 +1,7 @@
 
 import {Runnable} from "../ntfc/Runnable.js";
 import {BaseLevel} from "../level/BaseLevel.js";
-import { Config } from "../cfg/Config.js";
-
+import {Config} from "../cfg/Config.js";
 
 /**
  * gameManager will be responsible to initialize the game:
@@ -17,23 +16,24 @@ import { Config } from "../cfg/Config.js";
    export class  GameManager
                  implements Runnable
 {
- 
-    
-
     static instance:GameManager;
+    currentLevel:BaseLevel; 
+    
+    //this can be used to store some persistent data in player browser 
+    // static localStorage:Storage;
 
-     delta: number;
-     lastUpdate: number;
+    delta: number;
+    lastUpdate: number;
     //  currentTimestamp:number;
 
-     fps: number;
-     step:number;
-     currentLevel: BaseLevel; 
-     canvas:HTMLCanvasElement;
-     context: CanvasRenderingContext2D;
-
-     fontName:string;
+    fps:number;
+    step:number;
     
+    canvas:HTMLCanvasElement;
+    context: CanvasRenderingContext2D;
+    fontName:string;
+    
+
     /**
      * create a GameManager Instance, this manager starts the 
      * game loop, it gets 
@@ -45,10 +45,11 @@ import { Config } from "../cfg/Config.js";
         this.lastUpdate = 0;
         this.fps = 60;// 1000/30;  //30 fps, use 1000/60 to set it to 60 fps
         this.step = 1/this.fps;
-        this.fontName = Config.DEFAULT_FONT_NAME;
-        this.setFont( this.fontName, Config.DFLT_FNT_NAME_PATH );
+        this.setFont( Config.DEFAULT_FONT_NAME, Config.DFLT_FNT_NAME_PATH );
 
+        // localStorage = <Storage>window.localStorage;
         this.canvas = <HTMLCanvasElement>document.getElementById( canvasId );
+        this.canvas.click();
         this.context = <CanvasRenderingContext2D>this.canvas.getContext("2d");
 
         this.context.textBaseline = "top";
@@ -141,7 +142,7 @@ import { Config } from "../cfg/Config.js";
  */
 setFont( fontName:string, fontPath:string )
 {
-    this.fontName = fontName;
+    var fontName = fontName;
     let styleElement = document.createElement( 'style' );
 
     let fontFaceNode = 

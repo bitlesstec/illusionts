@@ -6,6 +6,7 @@ import { Keyable } from "../ntfc/input/Keyable.js";
 import { GameState } from "../manager/GameState.js";
 import { Camera } from "../camera/Camera.js";
 import { BaseSprite } from "../graphic/BaseSprite.js";
+import {AudioManager} from "../audio/AudioManager.js";
 
 /**
  * this class will represent a level in the game, will
@@ -15,6 +16,9 @@ import { BaseSprite } from "../graphic/BaseSprite.js";
 export abstract class BaseLevel
        implements Renderable, Updatable, Touchable, Mousable, Keyable
 {
+
+//
+audioManager:AudioManager;
 
 //used to load all images that can be used to create sprites or
 //set new animations for sprites 
@@ -34,9 +38,11 @@ levelHeight:number;
 
 constructor( levelWidht:number, levelHeight:number, viewWidth?:number, viewHeight?:number )
 {
+    
 this.gameState = GameState.LOADING;
+this.audioManager = new AudioManager();
 this.imageMap = new Map<string, HTMLImageElement>();
-this.spriteList =  [];
+this.spriteList = [];
 
 this.levelWidth = levelWidht; 
 this.levelHeight = levelHeight;
@@ -45,6 +51,8 @@ if( viewWidth !== undefined && viewHeight !== undefined )
     this.camera = new Camera( levelWidht, levelHeight, viewWidth, viewHeight );
 else
     this.camera = new Camera( levelWidht, levelHeight );
+
+    
 }//
 
 

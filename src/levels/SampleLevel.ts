@@ -1,6 +1,7 @@
 
 import { Sprite } from '../lib/graphic/Sprite.js';
 import { BaseLevel } from '../lib/level/BaseLevel.js';
+import { GameManager } from '../lib/manager/GameManager.js';
 import { GameState } from '../lib/manager/GameState.js';
 import { AssetLoadable } from '../lib/ntfc/AssetLoadable.js';
 //import axios from 'axios';
@@ -21,10 +22,12 @@ export class SampleLevel extends BaseLevel
         //setting level width and height
         super( 640, 480 );
         this.loadImages();
+        this.loadSounds();
        
         //create circle sprite instance
         this.circleSprite =  new Sprite( this.imageMap.get( "circleImage" ) );
         this.circleSprite.setPosition( 400, 100);
+        GameManager.getInstance().localStorage.setItem( "gamecode", "ASDASD");
     }
   
 
@@ -42,7 +45,11 @@ export class SampleLevel extends BaseLevel
         switch( this.gameState )
         {
             case GameState.LOADING:
-                if( this.isLoadComplete ) this.gameState=GameState.PLAYING;
+                if( this.isLoadComplete )
+                {
+                    this.audioManager.play( "bgmusic" );
+                    this.gameState=GameState.PLAYING;
+                }
                 console.log( "game is in LOADING state" );
             break;
             case GameState.PLAYING:
@@ -82,20 +89,53 @@ export class SampleLevel extends BaseLevel
     }
 
     loadSounds(): void {
-        throw new Error('Method not implemented.');
+        
+       var soundList = new Map<string,HTMLAudioElement>();
+
+       var bgmusic = new Audio();
+       bgmusic.src = "/assets/music/tomorrow.mp3";
+
+       var sfxSound = new Audio();
+       sfxSound.src = "/assets/music/snd_gun.wav";
+
+       soundList.set( "bgmusic", bgmusic );
+       soundList.set( "sfxsound", sfxSound );
+
+       this.audioManager.loadSounds( soundList );
     }
+
     loadData(): void {
         throw new Error('Method not implemented.');
     }
 
     isLoadComplete(): boolean {
         let loadedImgs = 0;
+        let loadedSounds = 0;
+
         for ( let img of this.imageMap.values() ) 
         {
-            if( img.complete )
-                loadedImgs++;
+            if( img.complete ) loadedImgs++;
         }
-        return this.imageMap.size === loadedImgs;
+
+        for( let snd of this.audioManager.audioList.values() )
+        {
+            if( snd.readyState )loadedSounds++;
+        }   
+
+        return this.imageMap.size === loadedImgs && this.audioManager.audioList.size === loadedSounds;
     }
+
+
+    keyUp( event:KeyboardEvent )
+    {
+        switch( event.keyCode )
+        {
+            // case 65: //A
+            case 32: //SPACE
+            this.audioManager.playSfx( "sfxsound" );
+            break;
+        }//
+    }
+
 
 }//

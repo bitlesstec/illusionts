@@ -16,11 +16,11 @@ import {Config} from "../cfg/Config.js";
    export class  GameManager
                  implements Runnable
 {
-    static instance:GameManager;
+    private static instance:GameManager;
     currentLevel:BaseLevel; 
     
     //this can be used to store some persistent data in player browser 
-    // static localStorage:Storage;
+    localStorage:Storage;
 
     delta: number;
     lastUpdate: number;
@@ -32,8 +32,10 @@ import {Config} from "../cfg/Config.js";
     canvas:HTMLCanvasElement;
     context: CanvasRenderingContext2D;
     fontName:string;
-    
 
+    //map to save persistent data along levels
+    gameData:Map<string, string>;
+    
     /**
      * create a GameManager Instance, this manager starts the 
      * game loop, it gets 
@@ -45,21 +47,17 @@ import {Config} from "../cfg/Config.js";
         this.lastUpdate = 0;
         this.fps = 60;// 1000/30;  //30 fps, use 1000/60 to set it to 60 fps
         this.step = 1/this.fps;
+        this.gameData= new Map<string, string>();
+
         this.setFont( Config.DEFAULT_FONT_NAME, Config.DFLT_FNT_NAME_PATH );
 
-        // localStorage = <Storage>window.localStorage;
+        this.localStorage = <Storage>window.localStorage;
         this.canvas = <HTMLCanvasElement>document.getElementById( canvasId );
-        this.canvas.click();
+        this.canvas.focus();//get canvas focus?
         this.context = <CanvasRenderingContext2D>this.canvas.getContext("2d");
-
         this.context.textBaseline = "top";
-
-        // this.loadLevel( firstLevel );
-        // this.currentLevel = firstLevel; // new BaseLevel();
-        //game start
-        //this.run();
         this.context.font = "10px press-start";
-        // this.currentLevel = new BaseLevel(640,480);
+        
     }
 
 
@@ -133,39 +131,37 @@ import {Config} from "../cfg/Config.js";
         
     }
 
-/**
- * this function will create a new style element with the font face
- * and url where the font file ( tttf ) reside, afther that the element
- * will be added to html in header tag
- * @param fontName 
- * @param fontPath 
- */
-setFont( fontName:string, fontPath:string )
-{
-    var fontName = fontName;
-    let styleElement = document.createElement( 'style' );
-
-    let fontFaceNode = 
-    `@font-face
+    /**
+     * this function will create a new style element with the font face
+     * and url where the font file ( tttf ) reside, afther that the element
+     * will be added to html in header tag
+     * @param fontName 
+     * @param fontPath 
+     */
+    setFont( fontName:string, fontPath:string )
     {
-        font-family:'${fontName}';
-        src: url( ${fontPath} );
-    }`;
+        var fontName = fontName;
+        let styleElement = document.createElement( 'style' );
 
-    styleElement.appendChild( document.createTextNode( fontFaceNode ) );
+        let fontFaceNode = 
+        `@font-face
+        {
+            font-family:'${fontName}';
+            src: url( ${fontPath} );
+        }`;
 
-    document.head.appendChild( styleElement );
-}
+        styleElement.appendChild( document.createTextNode( fontFaceNode ) );
 
-/**
- * this will change the current font size
- * @param size 
- */
-setFontSize( size:number ):void
-{
-    this.context.font = `${size}px ${ this.fontName }`;
-}
+        document.head.appendChild( styleElement );
+    }
 
-
+    /**
+     * this will change the current font size
+     * @param size 
+     */
+    setFontSize( size:number ):void
+    {
+        this.context.font = `${size}px ${ this.fontName }`;
+    }
 
 }//

@@ -27,6 +27,7 @@ export class SampleLevel extends BaseLevel
         //create circle sprite instance
         this.circleSprite =  new Sprite( this.imageMap.get( "circleImage" ) );
         this.circleSprite.setPosition( 400, 100);
+        GameManager.getInstance().localStorage.setItem( "gamecode", "ASDASD");
     }
   
 

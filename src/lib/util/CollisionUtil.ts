@@ -117,7 +117,7 @@ pointCollision( x:number, y:number,
  */
 spritePointCollision( x:number, y:number, spr:Sprite):boolean
 {
-    return this.pointCollision( x, y, spr.x, spr.y, spr.w, spr.h );
+    return this.pointCollision( x, y, spr.points[0].x, spr.points[0].y, spr.w, spr.h );
 }//
 
 /**
@@ -143,8 +143,8 @@ circleCollision( cenx:number, ceny:number, rad:number,
 
 spriteCircleColision( spr:Sprite, cenx:number, ceny:number, rad:number, fixOverlap:boolean = true ):boolean
 {
-let vx:number = (spr.x + spr.w/2) - cenx;
-let vy:number = (spr.y + spr.h/2) - ceny;
+let vx:number = (spr.points[0].x + spr.w/2) - cenx;
+let vy:number = (spr.points[0].y + spr.h/2) - ceny;
 
  //calculate distance between circles
 let magnitude:number = Math.sqrt( (vx * vx) + (vy * vy) );
@@ -161,8 +161,8 @@ let magnitude:number = Math.sqrt( (vx * vx) + (vy * vy) );
     let dx:number = vx / magnitude;
     let dy:number = vy / magnitude;
 
-    spr.x += overlap * dx;
-    spr.y += overlap * dy;
+    spr.points[0].x += overlap * dx;
+    spr.points[0].y += overlap * dy;
     }
 
 return res;
@@ -177,7 +177,7 @@ return res;
 spritesCircleCollision( spr1:Sprite, spr2:Sprite, fixOverlap:boolean = true):boolean
 {
 return this.spriteCircleColision( spr1, 
-    spr2.x + spr2.w/2, spr2.y + spr2.h/2, spr2.w/2, fixOverlap);
+    spr2.points[0].x + spr2.w/2, spr2.points[0].y + spr2.h/2, spr2.w/2, fixOverlap);
 }
 
 /**
@@ -209,8 +209,8 @@ return ( Math.abs( this.getDistance( x, w, x2, w2 ) ) < combinedHalfWidth &&
  */
 spriteRectangleCollision( spr1:Sprite, spr2:Sprite ):boolean
 {
-return this.rectangleCollision( spr1.x, spr1.y, spr1.w, spr1.h, 
-                                spr2.x, spr2.y, spr2.w, spr2.h );
+return this.rectangleCollision( spr1.points[0].x, spr1.points[0].y, spr1.w, spr1.h, 
+                                spr2.points[0].x, spr2.points[0].y, spr2.w, spr2.h );
 }
 
 /**
@@ -227,8 +227,8 @@ sideAndPushCollision( spr1:Sprite, spr2:Sprite, push:boolean = false ):string
     
 let collisionSide:string = "none";
 
-let vx:number = this.getDistance( spr2.x, spr2.w, spr1.x, spr1.w );
-let vy:number = this.getDistance( spr2.y, spr2.h, spr1.y, spr1.h );
+let vx:number = this.getDistance( spr2.points[0].x, spr2.w, spr1.points[0].x, spr1.w );
+let vy:number = this.getDistance( spr2.points[0].y, spr2.h, spr1.points[0].y, spr1.h );
 
 let combinedHalfWidth = this.getCombinedHalf( spr1.w, spr2.w );
 let combinedHalfHeight= this.getCombinedHalf( spr1.h, spr2.h );
@@ -247,14 +247,14 @@ let vyabs = Math.abs( vy );
                     if( vy > 0 )
                     {
                         collisionSide = "top";
-                        if( push )spr2.y-=1; 
-                        spr1.y+= overlapY;//   setY(s1.getY() + overlapY);
+                        if( push )spr2.points[0].y-=1; 
+                        spr1.points[0].y+= overlapY;//   setY(s1.getY() + overlapY);
                     }
                     else
                     {
                         collisionSide = "bottom";
-                        if( push )spr2.y+=1;//   .setY(spr2.getY()+1);
-                        spr1.y-= overlapY;//   setY(spr1.getY() - overlapY);
+                        if( push )spr2.points[0].y+=1;//   .setY(spr2.getY()+1);
+                        spr1.points[0].y-= overlapY;//   setY(spr1.getY() - overlapY);
                     }
 
             }
@@ -264,14 +264,14 @@ let vyabs = Math.abs( vy );
                         if( vx > 0 )
                         {
                             collisionSide = "left";
-                            if( push )spr2.x-=1;//   setX(spr2.getX()-1);
-                            spr1.x+=overlapX;         //  setX( spr1.getX() + overlapX );
+                            if( push )spr2.points[0].x-=1;//   setX(spr2.getX()-1);
+                            spr1.points[0].x+=overlapX;         //  setX( spr1.getX() + overlapX );
                         }
                         else
                         {
                             collisionSide = "right";
-                           if( push )spr2.x+=1;  //setX(spr2.getX()+1);
-                           spr1.x-=overlapX;    //setX(spr1.getX()-overlapX);
+                           if( push )spr2.points[0].x+=1;  //setX(spr2.getX()+1);
+                           spr1.points[0].x-=overlapX;    //setX(spr1.getX()-overlapX);
                         }
 
                 }//

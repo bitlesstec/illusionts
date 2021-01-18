@@ -1,12 +1,13 @@
 
-import { BaseSprite } from "./BaseSprite.js";
 import { AnimationLoop } from "./AnimationLoop.js";
-import { Renderable } from "../ntfc/Renderable.js";
+import { BaseShape } from "./shape/BaseShape.js";
 
 
-export class Sprite extends BaseSprite
-       implements Renderable
+export class Sprite extends BaseShape
 {
+
+    w:number;
+    h:number;
 
     //sprite animation variables 
     animationLoop: AnimationLoop;
@@ -35,7 +36,6 @@ export class Sprite extends BaseSprite
     constructor( image: HTMLImageElement, frameWidth?:number, frameHeight?:number )
     {
         super();
-        
         this.animationEnd = false;
         this.lastFrame = 0;
         
@@ -46,11 +46,12 @@ export class Sprite extends BaseSprite
         this.currentFrame = 0;
         //when the image is loaded then we set measures
         this.image = image;
-        this.image.onload = () => 
-        {
+    //    await this.image.onload = () => 
+    //     {
             this.setNewAnimation( image, frameWidth, frameHeight );
-        }
+    //     }
         
+        // this.image.
     }//
 
 
@@ -97,10 +98,10 @@ export class Sprite extends BaseSprite
 
             if( this.angle != 0 || this.xScale != 1 || this.yScale != 1 )
             {
-                ctx.translate( this.x + this.w/2, this.y + this.h/2 );
+                ctx.translate( this.points[0].x + this.w/2, this.points[0].y + this.h/2 );
                 ctx.rotate( this.angle );
                 ctx.scale( this.xScale, this.yScale );
-                ctx.translate( -( this.x + this.w/2 ), -( this.y + this.h/2 ) );
+                ctx.translate( -( this.points[0].x + this.w/2 ), -( this.points[0].y + this.h/2 ) );
             }
 
             /// @TODO here check some effect updates 
@@ -110,7 +111,7 @@ export class Sprite extends BaseSprite
                 this.image,
                 this.currentFrame * this.w, 0,
                 this.w, this.h,
-                Math.floor( this.x ), Math.floor( this.y ),
+                Math.floor( this.points[0].x ), Math.floor( this.points[0].y ),
                 this.w, this.h
             );
 

@@ -13,12 +13,12 @@ export interface AssetLoadable
     loadSounds():void;
 
     /**
-     * used if you want to load external data or to consume 
+     * used if you want to load external data or to call/consume 
      * a service
      */
     loadData():void;
     
     /** is used some logic in onload event to know if the assets were loaded */
-    isLoadComplete():boolean;
+    // isLoadComplete():boolean;
 
 }

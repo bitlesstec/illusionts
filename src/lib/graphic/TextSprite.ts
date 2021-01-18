@@ -1,23 +1,21 @@
-import { BaseSprite } from "./BaseSprite.js";
-import { Renderable } from "../ntfc/Renderable.js";
+
 import { GameManager } from "../manager/GameManager.js";
-
-
+import { BaseShape } from "./shape/BaseShape.js";
 
 /**
  * this class creates text that can be displayed as HUD
  * you can grow and shrink as well change color of this text
  * is more usable than just put text directly in ctx.fillText.
  */
-export class TextSprite extends BaseSprite
-                    implements Renderable
+export class TextSprite extends BaseShape
 {
-
+    w:number;
+    h:number;
+    
     private message:string;
     color:string;
     fillText:boolean; //to know if text will be filled or stroked when rendered
     maxWidth:number;//to set the maximum width of the text
-
 
     constructor( message:string )
     {
@@ -62,10 +60,10 @@ export class TextSprite extends BaseSprite
 
                 ctx.globalAlpha = this.alpha;
 
-                ctx.translate( this.x + this.w/2  , this.y + this.h/2 );
+                ctx.translate( this.points[0].x + this.w/2  , this.points[0].y + this.h/2 );
                 ctx.rotate( this.angle );
                 ctx.scale( this.xScale, this.yScale );
-                ctx.translate( -( this.x + this.w/2 ) , -( this.y + this.h/2 ) );
+                ctx.translate( -( this.points[0].x + this.w/2 ) , -( this.points[0].y + this.h/2 ) );
 
                 this.drawText( ctx );
 
@@ -86,15 +84,14 @@ export class TextSprite extends BaseSprite
         if(this.fillText)
         {
             ctx.fillStyle = this.color;
-            ctx.fillText( this.message, this.x, this.y );
+            ctx.fillText( this.message, this.points[0].x, this.points[0].y );
         }
         else
         {
             ctx.strokeStyle = this.color;
-            ctx.strokeText( this.message, this.x, this.y );
+            ctx.strokeText( this.message, this.points[0].x, this.points[0].y );
         }
 
     }
-
 
 }

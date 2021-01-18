@@ -4,6 +4,12 @@ import { BaseLevel } from '../lib/level/BaseLevel.js';
 import { GameManager } from '../lib/manager/GameManager.js';
 import { GameState } from '../lib/manager/GameState.js';
 import { AssetLoadable } from '../lib/ntfc/AssetLoadable.js';
+import { CircleShape } from '../lib/graphic/shape/CircleShape.js';
+import { ImageUtil } from '../lib/util/ImageUtil.js';
+import { Initiable } from '../lib/ntfc/Initiable.js';
+import { Point } from '../lib/graphic/Point.js';
+import { LineShape } from '../lib/graphic/shape/LineShape.js';
+import { PolygonShape } from '../lib/graphic/shape/PolygonShape.js';
 //import axios from 'axios';
 
 
@@ -13,23 +19,52 @@ import { AssetLoadable } from '../lib/ntfc/AssetLoadable.js';
  * set...
  */
 export class SampleLevel extends BaseLevel
-                        implements AssetLoadable
+                         implements AssetLoadable, Initiable
 {
-    circleSprite:Sprite;
+    circle:Sprite;
+    circleShape:CircleShape;
+    lineShape:LineShape;
+    triangle:PolygonShape;
+
+    angleCounter:number=0;
 
     constructor()
     {
+       
         //setting level width and height
         super( 640, 480 );
-        this.loadImages();
+        // this.init(); //init can be also here instead GAMESTATE.LOADING
+    }
+
+    async init()
+    {
+        console.log(this.gameState);
+        await this.loadImages();
         this.loadSounds();
        
         //create circle sprite instance
-        this.circleSprite =  new Sprite( this.imageMap.get( "circleImage" ) );
-        this.circleSprite.setPosition( 400, 100);
+        this.circle =  new Sprite( this.imageMap.get( "circleImage" ) );
+        this.circle.setPosition( 400, 100);
         GameManager.getInstance().localStorage.setItem( "gamecode", "ASDASD");
+
+        this.circleShape = new CircleShape( new Point(100,200), 50, "red" );
+        this.circleShape.endAngle=0;
+        this.circleShape.displayOutline=true;
+
+        this.lineShape = new LineShape(new Point(30,30), new Point(100,70) );
+
+        this.triangle = new PolygonShape([new Point(200,200), new Point(400,200), new Point(100,160)]);
+        this.triangle.fillColor="red";
+        this.triangle.strokeColor="green";
+        this.triangle.strokeLineWidth=3;
+        this.triangle.displayOutline=true;
+
+
+        this.gameState=GameState.PLAYING;
+        console.log(GameState.PLAYING);
     }
   
+
 
     /**
     * this method is used to get the input and process
@@ -45,15 +80,15 @@ export class SampleLevel extends BaseLevel
         switch( this.gameState )
         {
             case GameState.LOADING:
-                if( this.isLoadComplete )
-                {
-                    this.audioManager.play( "bgmusic" );
-                    this.gameState=GameState.PLAYING;
-                }
-                console.log( "game is in LOADING state" );
+                this.init();
             break;
             case GameState.PLAYING:
-                console.log( "game is in PLAYING state" );
+                // let cnt = Math.floor( ++this.angleCounter*delta);
+                console.log( "game is in PLAYING state: " );
+            let cnt = this.angleCounter++;
+            this.circleShape.endAngle= cnt;
+            if(this.angleCounter >= 360) this.angleCounter = 0;
+            console.log( `endAngle: ${this.circleShape.endAngle} - angleCont: ${this.angleCounter}`);
             break;
         }
     }
@@ -65,26 +100,49 @@ export class SampleLevel extends BaseLevel
      */
     render( ctx:CanvasRenderingContext2D)
     {
-        //set background to black color
-        ctx.fillStyle = "#000";
-        ctx.fillRect( 0, 0, this.levelWidth, this.levelHeight );
+        switch( this.gameState )
+        {
+            case GameState.LOADING:
+                ctx.fillStyle = "#000";
+                ctx.fillRect( 0, 0, this.levelWidth, this.levelHeight );
 
-        //set white color and print hello word in screen at 20, 20
-        ctx.fillStyle = "#FFF";
-        ctx.fillText( "Hello World" ,20,20);
+                //set white color and print hello word in screen at 20, 20
+                ctx.fillStyle = "#FFF";
+                ctx.fillText( "loading" ,this.levelWidth/2,20);
+            break;
+            case GameState.PLAYING:
+                 //set background to black color
+                ctx.fillStyle = "#000";
+                ctx.fillRect( 0, 0, this.levelWidth, this.levelHeight );
 
-        //this will render the sprice in the screen
-        this.circleSprite.render(ctx);
+                //set white color and print hello word in screen at 20, 20
+                ctx.fillStyle = "#FFF";
+                ctx.fillText( "Hello World" ,20,20);
+
+                //this will render the sprice in the screen
+                this.circle.render(ctx);
+
+                this.circleShape.render(ctx);
+
+                this.lineShape.render(ctx);
+
+                this.triangle.render(ctx);
+            break;
+        }
+
+       
     }
 
     /**
      * this function load the images before they can be used
      */
-    loadImages(): void {
+    async loadImages(): Promise<void> {
        
-        let circleImage =  new Image();
-        circleImage.src = "/assets/circle.png";
+        // let circleImage =  new Image();
+        // circleImage.src = "/assets/circle.png";
+        // this.imageMap.set( "circleImage", circleImage );
 
+        let circleImage = await ImageUtil.getImage("/assets/circle.png").then(img=>img);
         this.imageMap.set( "circleImage", circleImage );
     }
 

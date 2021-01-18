@@ -35,7 +35,13 @@ import {Config} from "../cfg/Config.js";
 
     //map to save persistent data along levels
     gameData:Map<string, string>;
-    
+
+    //below vars are for enable needed controls
+    //by default keyboard is enabled
+    enableKeyboardControl:boolean=true;
+    enableTouchControl:boolean=false;
+    enableMouseControl:boolean=false;
+
     /**
      * create a GameManager Instance, this manager starts the 
      * game loop, it gets 
@@ -105,29 +111,37 @@ import {Config} from "../cfg/Config.js";
      * become the current level ( even if there was another level oreviously)
      *  after that events of keyboard, mouse, touch events will be set in the canvas
      * @param level new level to load must be an implementation of BaseLevel
-     *      
      * */
     loadLevel( level:BaseLevel )
     {
         this.currentLevel = level;
 
-        // canvas/keyboard/touchmouse events
-        this.canvas.addEventListener("mousedown", (event) => this.currentLevel.mouseDown(event));
-        this.canvas.addEventListener("mousemove", (event) => this.currentLevel.mouseMove(event));
-        this.canvas.addEventListener("mouseup", (event) => this.currentLevel.mouseUp(event));
-        this.canvas.addEventListener("mouseout", (event) => this.currentLevel.mouseOut(event));
-        this.canvas.addEventListener("mouseover",(event) =>  this.currentLevel.mouseOver(event));
-
+        // mouse events
+        if(this.enableMouseControl)
+        {
+            this.canvas.addEventListener("mousedown", (event) => this.currentLevel.mouseDown(event));
+            this.canvas.addEventListener("mousemove", (event) => this.currentLevel.mouseMove(event));
+            this.canvas.addEventListener("mouseup", (event) => this.currentLevel.mouseUp(event));
+            this.canvas.addEventListener("mouseout", (event) => this.currentLevel.mouseOut(event));
+            this.canvas.addEventListener("mouseover",(event) =>  this.currentLevel.mouseOver(event));
+        }
+        
         // touch events
-        this.canvas.addEventListener("touchstart",(event) =>  this.currentLevel.touchStart(event));
-        this.canvas.addEventListener("touchmove", (event) => this.currentLevel.touchMove(event));
-        this.canvas.addEventListener("touchend",(event) =>  this.currentLevel.touchEnd(event));
-        this.canvas.addEventListener("touchcancel",(event) =>  this.currentLevel.touchCancel(event));
-        this.canvas.addEventListener("touchleave",(event) =>  this.currentLevel.touchLeave(event));
+        if(this.enableTouchControl)
+        {
+            this.canvas.addEventListener("touchstart",(event) =>  this.currentLevel.touchStart(event));
+            this.canvas.addEventListener("touchmove", (event) => this.currentLevel.touchMove(event));
+            this.canvas.addEventListener("touchend",(event) =>  this.currentLevel.touchEnd(event));
+            this.canvas.addEventListener("touchcancel",(event) =>  this.currentLevel.touchCancel(event));
+            this.canvas.addEventListener("touchleave",(event) =>  this.currentLevel.touchLeave(event));    
+        }
 
         // keyboard events
-        this.canvas.addEventListener("keydown", (event) => this.currentLevel.keyDown(event) );
-        this.canvas.addEventListener("keyup", (event) => this.currentLevel.keyUp(event));
+        if(this.enableKeyboardControl)
+        {
+            this.canvas.addEventListener("keydown", (event) => this.currentLevel.keyDown(event) );
+            this.canvas.addEventListener("keyup", (event) => this.currentLevel.keyUp(event));    
+        }
         
     }
 

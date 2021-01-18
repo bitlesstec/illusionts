@@ -4,15 +4,15 @@
  * this class is the basic representation of any graphic entity image based
  * @NOTE to me: maybe can be called SpritePoint
  */
-export abstract class Point
+export class Point
 {
     x:number;
     y:number;
 
-    constructor(  )
+    constructor(xCoord?:number, yCoord?:number )
     {
-        this.x = 0;
-        this.y = 0;
+        this.x = xCoord? xCoord: 0;
+        this.y = yCoord? yCoord: 0;
     }
 
 }

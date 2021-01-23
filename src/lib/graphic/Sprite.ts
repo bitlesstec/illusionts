@@ -1,11 +1,12 @@
 
 import { AnimationLoop } from "./AnimationLoop.js";
+import { ImageMeasures } from "./ImageMeasures.js";
 import { BaseShape } from "./shape/BaseShape.js";
 
 
 export class Sprite extends BaseShape
 {
-
+    //width & height
     w:number;
     h:number;
 
@@ -15,15 +16,23 @@ export class Sprite extends BaseShape
     animationStepLimit: number;
     animationEnd:boolean;
 
-
     //current frame to be displayed
     currentFrame:number;
 
     //last frame of current image (strip image/animation)
     lastFrame:number;
 
-    //image to be rendered
+    //image to be rendered & properties
     image: HTMLImageElement;
+    srcX:number;
+    srcY:number;
+    srcW:number;
+    srcH:number;
+    // dstX:number;
+    // dstY:number;
+    dstW:number;
+    dstH:number;
+
 
     /**
      * if you call 1 args consstructor, means you have 1 image sprite
@@ -33,25 +42,21 @@ export class Sprite extends BaseShape
      * @param frameWidth 
      * @param frameHeight 
      */
-    constructor( image: HTMLImageElement, frameWidth?:number, frameHeight?:number )
+    constructor( image: HTMLImageElement, imgMeasures?:ImageMeasures)//frameWidth?:number, frameHeight?:number )
     {
         super();
         this.animationEnd = false;
         this.lastFrame = 0;
-        
+        this.currentFrame = 0;
+
         this.animationLoop = AnimationLoop.FORWARD;
         this.animationStep = 0;
         this.animationStepLimit = 10;
 
-        this.currentFrame = 0;
         //when the image is loaded then we set measures
         this.image = image;
-    //    await this.image.onload = () => 
-    //     {
-            this.setNewAnimation( image, frameWidth, frameHeight );
-    //     }
-        
-        // this.image.
+        this.setNewAnimation( image, imgMeasures );//frameWidth, frameHeight );
+    
     }//
 
 
@@ -61,21 +66,33 @@ export class Sprite extends BaseShape
      * @param frameWidth 
      * @param frameHeight 
      */
-    setNewAnimation(image: HTMLImageElement, frameWidth?:number, frameHeight?:number )
+    setNewAnimation(image: HTMLImageElement, imgMeasures?:ImageMeasures)//frameWidth?:number, frameHeight?:number )
     {
         this.image = image;
-        if( frameWidth !== undefined && frameHeight !== undefined )
+            console.log(imgMeasures)
+        if(imgMeasures)
         {
-            this.w = frameWidth;
-            this.h = frameHeight;
-            this.lastFrame = Math.floor( image.width / frameWidth );
+            this.lastFrame = imgMeasures.frames-1;
+            this.srcX = imgMeasures.srcX;
+            this.srcY = imgMeasures.srcY;
+            this.w=imgMeasures.w;
+            this.h=imgMeasures.h;
+            this.dstW = imgMeasures.w;
+            this.dstH = imgMeasures.h;
         }
-        else
-        {
-            this.w = image.width;
-            this.h = image.height;
-            this.lastFrame = 1;
-        }
+
+        // if( frameWidth !== undefined && frameHeight !== undefined )
+        // {
+        //     this.w = frameWidth;
+        //     this.h = frameHeight;
+        //     this.lastFrame = Math.floor( image.width / frameWidth );
+        // }
+        // else
+        // {
+        //     this.w = image.width;
+        //     this.h = image.height;
+        //     this.lastFrame = 1;
+        // }
     }//
 
 
@@ -105,15 +122,23 @@ export class Sprite extends BaseShape
             }
 
             /// @TODO here check some effect updates 
-
             ctx.drawImage
             (
                 this.image,
-                this.currentFrame * this.w, 0,
+                this.currentFrame * this.srcX, this.srcY,
                 this.w, this.h,
                 Math.floor( this.points[0].x ), Math.floor( this.points[0].y ),
-                this.w, this.h
+                this.dstW, this.dstH
             );
+
+            // ctx.drawImage
+            // (
+            //     this.image,
+            //     this.currentFrame * this.w, 0,
+            //     this.w, this.h,
+            //     Math.floor( this.points[0].x ), Math.floor( this.points[0].y ),
+            //     this.w, this.h
+            // );
 
             ctx.restore();
 

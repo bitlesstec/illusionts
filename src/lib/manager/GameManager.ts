@@ -104,7 +104,8 @@ import {Config} from "../cfg/Config.js";
     }
 
     /**
-     * this will resize context of canvas
+     * this will resize context of canvas and will
+     * set new width and height of scaled size
      * @param xNewScale 
      * @param yNewScale 
      */
@@ -112,6 +113,8 @@ import {Config} from "../cfg/Config.js";
     {
         this.xScale= xNewScale;
         this.yScale = yNewScale;
+        this.canvas.width = Math.floor(this.canvas.width * this.xScale);
+        this.canvas.height = Math.floor(this.canvas.height * this.yScale);
         this.context.scale(this.xScale, this.yScale);
     }
 

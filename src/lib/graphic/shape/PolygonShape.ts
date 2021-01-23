@@ -68,8 +68,6 @@ export class PolygonShape extends BaseShape
         ctx.moveTo( this.points[0].x, this.points[0].y );
         for(let idx = 1; idx < this.points.length; idx++)
         {
-            console.log("fill Polygon")
-           console.log(`${idx} - ${this.points[idx].x},${this.points[idx].y}`);
            ctx.lineTo( this.points[idx].x, this.points[idx].y );
         }
         ctx.closePath();

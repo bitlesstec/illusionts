@@ -10,6 +10,7 @@ import { Initiable } from '../lib/ntfc/Initiable.js';
 import { Point } from '../lib/graphic/Point.js';
 import { LineShape } from '../lib/graphic/shape/LineShape.js';
 import { PolygonShape } from '../lib/graphic/shape/PolygonShape.js';
+import { ImageMeasures } from '../lib/graphic/ImageMeasures.js';
 //import axios from 'axios';
 
 
@@ -25,6 +26,9 @@ export class SampleLevel extends BaseLevel
     circleShape:CircleShape;
     lineShape:LineShape;
     triangle:PolygonShape;
+
+
+    knightSprite:Sprite;
 
     angleCounter:number=0;
 
@@ -60,6 +64,17 @@ export class SampleLevel extends BaseLevel
         this.triangle.displayOutline=true;
 
 
+        // knightMeasures:ImageMeasures = 
+        // {srcX:0, srcY:0, w:16, h:16, frames:3}
+
+
+
+        this.knightSprite = new Sprite(this.imageMap.get( "tileImage" ),{srcX:0, srcY:0, w:16, h:16, frames:3});
+        this.knightSprite.setPosition( 20, 200 );
+
+
+
+
         this.gameState=GameState.PLAYING;
         console.log(GameState.PLAYING);
     }
@@ -89,6 +104,9 @@ export class SampleLevel extends BaseLevel
             this.circleShape.endAngle= cnt;
             if(this.angleCounter >= 360) this.angleCounter = 0;
             console.log( `endAngle: ${this.circleShape.endAngle} - angleCont: ${this.angleCounter}`);
+
+            this.knightSprite.updateAnimation();
+
             break;
         }
     }
@@ -127,6 +145,9 @@ export class SampleLevel extends BaseLevel
                 this.lineShape.render(ctx);
 
                 this.triangle.render(ctx);
+
+
+                this.knightSprite.render(ctx);
             break;
         }
 
@@ -144,6 +165,10 @@ export class SampleLevel extends BaseLevel
 
         let circleImage = await ImageUtil.getImage("/assets/circle.png").then(img=>img);
         this.imageMap.set( "circleImage", circleImage );
+
+        
+        let tileImage = await ImageUtil.getImage("/assets/mazegametiles.png").then(img=>img);
+        this.imageMap.set( "tileImage", tileImage );
     }
 
     loadSounds(): void {

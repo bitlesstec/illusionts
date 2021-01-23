@@ -74,7 +74,13 @@ import {Config} from "../cfg/Config.js";
         this.context.scale(this.xScale, this.yScale);
     }
 
-
+    /**
+     * creates and return the instance of the GameManager which
+     * set and starts the game
+     * @param canvasId 
+     * @param width 
+     * @param height 
+     */
     static getInstance(canvasId:string = "canvas", width?:number, height?:number):GameManager
     {
         if( this.instance ==  null || undefined)

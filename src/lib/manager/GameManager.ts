@@ -42,12 +42,15 @@ import {Config} from "../cfg/Config.js";
     enableTouchControl:boolean=false;
     enableMouseControl:boolean=false;
 
+    xScale:number;
+    yScale:number;
+
     /**
      * create a GameManager Instance, this manager starts the 
      * game loop, it gets 
      * @param canvasId id of teh canvas to show the game if not specified id will be 'canvas' 
      */
-    private constructor( canvasId:string = "canvas" )
+    private constructor( canvasId:string = "canvas", width?:number, height?:number )
     {
         this.delta = 0;
         this.lastUpdate = 0;
@@ -59,18 +62,23 @@ import {Config} from "../cfg/Config.js";
 
         this.localStorage = <Storage>window.localStorage;
         this.canvas = <HTMLCanvasElement>document.getElementById( canvasId );
+        if(width)this.canvas.width=width;
+        if(height)this.canvas.height=height;
         this.canvas.focus();//get canvas focus?
         this.context = <CanvasRenderingContext2D>this.canvas.getContext("2d");
         this.context.textBaseline = "top";
         this.context.font = "10px press-start";
         
+        this.xScale=1;
+        this.yScale=1;
+        this.context.scale(this.xScale, this.yScale);
     }
 
 
-    static getInstance():GameManager
+    static getInstance(canvasId:string = "canvas", width?:number, height?:number):GameManager
     {
-        if( this.instance ==  null )
-            this.instance = new GameManager(); 
+        if( this.instance ==  null || undefined)
+            this.instance = new GameManager(canvasId, width, height); 
         return this.instance;
     }
 
@@ -87,6 +95,18 @@ import {Config} from "../cfg/Config.js";
             this.currentLevel.render( this.context );
         }
         requestAnimationFrame( this.run.bind(this) );
+    }
+
+    /**
+     * this will resize context of canvas
+     * @param xNewScale 
+     * @param yNewScale 
+     */
+    scaleCanvas( xNewScale:number, yNewScale:number)
+    {
+        this.xScale= xNewScale;
+        this.yScale = yNewScale;
+        this.context.scale(this.xScale, this.yScale);
     }
 
     // run()

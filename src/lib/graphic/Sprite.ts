@@ -1,10 +1,12 @@
 
+import { Animationable } from "../ntfc/Animationable.js";
 import { AnimationLoop } from "./AnimationLoop.js";
 import { ImageMeasures } from "./ImageMeasures.js";
 import { BaseShape } from "./shape/BaseShape.js";
 
 
 export class Sprite extends BaseShape
+                    implements Animationable
 {
     //width & height
     w:number;
@@ -15,6 +17,9 @@ export class Sprite extends BaseShape
     animationStep: number;
     animationStepLimit: number;
     animationEnd:boolean;
+
+    //first frame where animation starts
+    initialFrame:number;
 
     //current frame to be displayed
     currentFrame:number;
@@ -59,6 +64,21 @@ export class Sprite extends BaseShape
     
     }//
 
+     /**
+     * this will indicate starting and final frames of the animation,
+     * then updateAnimation will iterate through initial frame until
+     * final frame over and over, the order can be changed at any time
+     * setting different animations of sprite sheet
+     * @param initialFrame 
+     * @param finalFrame 
+     */
+    setAnimationFrames(initialFrame: number, finalFrame: number ): void {
+        this.animationLoop = AnimationLoop.CUSTOM;
+        this.initialFrame = initialFrame-1;
+        this.currentFrame = finalFrame-1;
+        this.lastFrame = finalFrame-1;
+    }
+
 
     /**
      * this method is used if we want to change sprite animation for other set of images
@@ -80,38 +100,22 @@ export class Sprite extends BaseShape
         if(imgMeasures)
         {
             this.lastFrame = imgMeasures.frames-1;
+            this.initialFrame = 0;
             this.srcX = imgMeasures.srcX;
             this.srcY = imgMeasures.srcY;
             this.w=imgMeasures.w;
             this.h=imgMeasures.h;
             this.dstW = imgMeasures.w;
             this.dstH = imgMeasures.h;
-
-
-            console.log(`measureX: ${imgMeasures.srcX}`);
-            console.log(`measureY: ${imgMeasures.srcY}`);
-            console.log(`currentFrame: ${this.currentFrame}`);
-            console.log(`SRCX: ${this.srcX}`);
-            console.log(`SRCY: ${this.srcY}`);
-
-
         }
 
-        // if( frameWidth !== undefined && frameHeight !== undefined )
-        // {
-        //     this.w = frameWidth;
-        //     this.h = frameHeight;
-        //     this.lastFrame = Math.floor( image.width / frameWidth );
-        // }
-        // else
-        // {
-        //     this.w = image.width;
-        //     this.h = image.height;
-        //     this.lastFrame = 1;
-        // }
     }//
 
-
+    /**
+     * use this in level.render() method, to render the sprite 
+     * in canvas
+     * @param ctx 
+     */
     render(ctx: CanvasRenderingContext2D): void 
     {
     
@@ -194,6 +198,15 @@ export class Sprite extends BaseShape
                     { 
                         this.currentFrame = this.lastFrame;
                         this.animationEnd = true;
+                    }
+                break;
+                case AnimationLoop.CUSTOM:
+                    this.srcX = this.currentFrame * this.w;
+
+                    this.currentFrame++;
+                    if( this.currentFrame > this.lastFrame)
+                    {
+                        this.currentFrame = this.initialFrame;
                     }
                 break;
 

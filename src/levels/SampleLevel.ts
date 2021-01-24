@@ -11,8 +11,6 @@ import { Point } from '../lib/graphic/Point.js';
 import { LineShape } from '../lib/graphic/shape/LineShape.js';
 import { PolygonShape } from '../lib/graphic/shape/PolygonShape.js';
 import { ImageMeasures } from '../lib/graphic/ImageMeasures.js';
-import { AnimatedSprite } from '../lib/graphic/AnimatedSprite.js';
-//import axios from 'axios';
 
 
 /**
@@ -28,10 +26,9 @@ export class SampleLevel extends BaseLevel
     lineShape:LineShape;
     triangle:PolygonShape;
 
-
     knightSprite:Sprite;
 
-    animKnight:AnimatedSprite;
+    animKnight:Sprite;
 
     angleCounter:number=0;
 
@@ -74,7 +71,7 @@ export class SampleLevel extends BaseLevel
         this.knightSprite = new Sprite(this.imageMap.get( "tileImage" ),{srcX:0, srcY:0, w:16, h:16, frames:3});
         this.knightSprite.setPosition( 20, 200 );
 
-        this.animKnight = new AnimatedSprite(this.imageMap.get( "tileImage" ),{srcX:0, srcY:0, w:16, h:16, frames:3});
+        this.animKnight = new Sprite(this.imageMap.get( "tileImage" ),{srcX:0, srcY:0, w:16, h:16, frames:3});
         this.animKnight.setPosition(20, 150);
         this.animKnight.setAnimationFrames(4,6);
 
@@ -106,8 +103,7 @@ export class SampleLevel extends BaseLevel
             let cnt = this.angleCounter++;
             this.circleShape.endAngle= cnt;
             if(this.angleCounter >= 360) this.angleCounter = 0;
-            // console.log( `endAngle: ${this.circleShape.endAngle} - angleCont: ${this.angleCounter}`);
-
+            
             this.knightSprite.updateAnimation();
 
             this.animKnight.updateAnimation();
@@ -171,7 +167,6 @@ export class SampleLevel extends BaseLevel
         let circleImage = await ImageUtil.getImage("/assets/circle.png").then(img=>img);
         this.imageMap.set( "circleImage", circleImage );
 
-        
         let tileImage = await ImageUtil.getImage("/assets/mazegametiles.png").then(img=>img);
         this.imageMap.set( "tileImage", tileImage );
     }

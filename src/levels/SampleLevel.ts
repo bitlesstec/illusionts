@@ -11,6 +11,7 @@ import { Point } from '../lib/graphic/Point.js';
 import { LineShape } from '../lib/graphic/shape/LineShape.js';
 import { PolygonShape } from '../lib/graphic/shape/PolygonShape.js';
 import { ImageMeasures } from '../lib/graphic/ImageMeasures.js';
+import { AnimatedSprite } from '../lib/graphic/AnimatedSprite.js';
 //import axios from 'axios';
 
 
@@ -30,6 +31,8 @@ export class SampleLevel extends BaseLevel
 
     knightSprite:Sprite;
 
+    animKnight:AnimatedSprite;
+
     angleCounter:number=0;
 
     constructor()
@@ -42,7 +45,6 @@ export class SampleLevel extends BaseLevel
 
     async init()
     {
-        console.log(this.gameState);
         await this.loadImages();
         this.loadSounds();
        
@@ -72,11 +74,12 @@ export class SampleLevel extends BaseLevel
         this.knightSprite = new Sprite(this.imageMap.get( "tileImage" ),{srcX:0, srcY:0, w:16, h:16, frames:3});
         this.knightSprite.setPosition( 20, 200 );
 
-
+        this.animKnight = new AnimatedSprite(this.imageMap.get( "tileImage" ),{srcX:0, srcY:0, w:16, h:16, frames:3});
+        this.animKnight.setPosition(20, 150);
+        this.animKnight.setAnimationFrames(4,6);
 
 
         this.gameState=GameState.PLAYING;
-        console.log(GameState.PLAYING);
     }
   
 
@@ -99,14 +102,15 @@ export class SampleLevel extends BaseLevel
             break;
             case GameState.PLAYING:
                 // let cnt = Math.floor( ++this.angleCounter*delta);
-                console.log( "game is in PLAYING state: " );
+                // console.log( "game is in PLAYING state: " );
             let cnt = this.angleCounter++;
             this.circleShape.endAngle= cnt;
             if(this.angleCounter >= 360) this.angleCounter = 0;
-            console.log( `endAngle: ${this.circleShape.endAngle} - angleCont: ${this.angleCounter}`);
+            // console.log( `endAngle: ${this.circleShape.endAngle} - angleCont: ${this.angleCounter}`);
 
             this.knightSprite.updateAnimation();
 
+            this.animKnight.updateAnimation();
             break;
         }
     }
@@ -146,8 +150,9 @@ export class SampleLevel extends BaseLevel
 
                 this.triangle.render(ctx);
 
-
                 this.knightSprite.render(ctx);
+
+                this.animKnight.render(ctx);
             break;
         }
 

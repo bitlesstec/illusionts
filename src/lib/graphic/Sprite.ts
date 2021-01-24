@@ -51,10 +51,10 @@ export class Sprite extends BaseShape
 
         this.animationLoop = AnimationLoop.FORWARD;
         this.animationStep = 0;
-        this.animationStepLimit = 10;
+        this.animationStepLimit = 30;
 
         //when the image is loaded then we set measures
-        this.image = image;
+        // this.image = image;
         this.setNewAnimation( image, imgMeasures );//frameWidth, frameHeight );
     
     }//
@@ -68,8 +68,15 @@ export class Sprite extends BaseShape
      */
     setNewAnimation(image: HTMLImageElement, imgMeasures?:ImageMeasures)//frameWidth?:number, frameHeight?:number )
     {
+        console.log(imgMeasures)
         this.image = image;
-            console.log(imgMeasures)
+        this.srcX = 0;
+        this.srcY = 0;
+        this.w = image.width;
+        this.h = image.height;
+        this.dstW = this.w;
+        this.dstH = this.h;
+
         if(imgMeasures)
         {
             this.lastFrame = imgMeasures.frames-1;
@@ -79,6 +86,15 @@ export class Sprite extends BaseShape
             this.h=imgMeasures.h;
             this.dstW = imgMeasures.w;
             this.dstH = imgMeasures.h;
+
+
+            console.log(`measureX: ${imgMeasures.srcX}`);
+            console.log(`measureY: ${imgMeasures.srcY}`);
+            console.log(`currentFrame: ${this.currentFrame}`);
+            console.log(`SRCX: ${this.srcX}`);
+            console.log(`SRCY: ${this.srcY}`);
+
+
         }
 
         // if( frameWidth !== undefined && frameHeight !== undefined )
@@ -94,8 +110,6 @@ export class Sprite extends BaseShape
         //     this.lastFrame = 1;
         // }
     }//
-
-
 
 
     render(ctx: CanvasRenderingContext2D): void 
@@ -125,21 +139,11 @@ export class Sprite extends BaseShape
             ctx.drawImage
             (
                 this.image,
-                this.currentFrame * this.srcX, this.srcY,
+                this.srcX, this.srcY,
                 this.w, this.h,
                 Math.floor( this.points[0].x ), Math.floor( this.points[0].y ),
                 this.dstW, this.dstH
             );
-
-            // ctx.drawImage
-            // (
-            //     this.image,
-            //     this.currentFrame * this.w, 0,
-            //     this.w, this.h,
-            //     Math.floor( this.points[0].x ), Math.floor( this.points[0].y ),
-            //     this.w, this.h
-            // );
-
             ctx.restore();
 
         }///
@@ -149,10 +153,10 @@ export class Sprite extends BaseShape
     /**
      * this will update the frames depending on AnimationLoop
      */
-    updateAnimation()
+    updateAnimation():void
     {
 
-        //if animation is 1 image there is no point to update frames
+        //if animation is 1 frame there is no point to update frames
         if( this.lastFrame <= 1 ) return;
 
         this.animationStep ++;
@@ -164,7 +168,9 @@ export class Sprite extends BaseShape
             switch( this.animationLoop )
             {
                 case AnimationLoop.FORWARD:
-                    if( ++this.currentFrame > this.lastFrame )
+                    this.srcX = this.currentFrame * this.w;
+                    this.currentFrame++;
+                    if( this.currentFrame > this.lastFrame )
                     {
                         this.currentFrame = 0;
                         this.animationEnd = true;
@@ -172,7 +178,9 @@ export class Sprite extends BaseShape
                 break;
                 
                 case AnimationLoop.BACKWARD:
-                    if( --this.currentFrame < 0 )
+                    this.currentFrame--;
+                    this.srcX = this.currentFrame * this.w;
+                    if( this.currentFrame < 0 )
                     {
                         this.currentFrame = this.lastFrame;
                         this.animationEnd = true;
@@ -180,7 +188,9 @@ export class Sprite extends BaseShape
                 break;
                 
                 case AnimationLoop.STOPATEND:
-                    if( ++this.currentFrame >= this.lastFrame )
+                    this.srcX = this.currentFrame * this.w;
+                    this.currentFrame++;
+                    if( this.currentFrame >= this.lastFrame )
                     { 
                         this.currentFrame = this.lastFrame;
                         this.animationEnd = true;
@@ -188,8 +198,6 @@ export class Sprite extends BaseShape
                 break;
 
             }////
-
-
 
         }///
     }

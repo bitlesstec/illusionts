@@ -16,5 +16,5 @@ let game = GameManager.getInstance("canvas", 640, 360);
 game.loadLevel( new SampleLevel() );
 
 //use this to set new canvas scale
-game.scaleCanvas(2,2);
+// game.scaleCanvas(2,2);
 window.onload =function(){game.run();} 

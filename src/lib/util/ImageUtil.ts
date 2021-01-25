@@ -1,3 +1,4 @@
+import { GameManager } from "../manager/GameManager.js";
 
 
 export class ImageUtil
@@ -22,6 +23,7 @@ export class ImageUtil
     /**
      * this will return an array of images (subimages) from an image that
      * should be stripped
+     * NOT IMPLEMENTED FOR NOW
      */
     static getImages( filePath:string, imgFrames:number, frameWidth:number, frameHeight?:number):HTMLImageElement[]
     {
@@ -34,7 +36,11 @@ export class ImageUtil
      * user location
      */
     static takeScreenshot():void
-    {}
+    {
+        let imgUrl = GameManager.getInstance().canvas
+            .toDataURL("image/png").replace("image/png", "image/octet-stream");
+        window.location.href = imgUrl;
+    }
 
 
 

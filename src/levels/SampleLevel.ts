@@ -12,6 +12,9 @@ import { LineShape } from '../lib/graphic/shape/LineShape.js';
 import { PolygonShape } from '../lib/graphic/shape/PolygonShape.js';
 import { ImageMeasures } from '../lib/graphic/ImageMeasures.js';
 import { CollisionUtil } from '../lib/util/CollisionUtil.js';
+import { TileUtil } from '../lib/util/TileUtil.js';
+import { TileMap } from './TileMap.js';
+import { Tile } from '../lib/graphic/Tile.js';
 
 
 /**
@@ -35,6 +38,8 @@ export class SampleLevel extends BaseLevel
     angleCounter:number=0;
 
     collisionUtil:CollisionUtil;
+
+    tiles:Tile[];
 
     constructor()
     {
@@ -84,6 +89,10 @@ export class SampleLevel extends BaseLevel
 
 
         this.collisionUtil = CollisionUtil.getInstance();
+
+
+        this.tiles = TileUtil.parse( TileMap.getSampleLevelMap(), 40,22, 16,16,16 );
+
 
         this.gameState=GameState.PLAYING;
     }
@@ -161,6 +170,8 @@ export class SampleLevel extends BaseLevel
                 ctx.fillStyle = "#000";
                 ctx.fillRect( 0, 0, this.levelWidth, this.levelHeight );
 
+                TileUtil.renderTiles( ctx, this.imageMap.get( "tileImage" ), this.tiles );
+
                 //set white color and print hello word in screen at 20, 20
                 ctx.fillStyle = "#FFF";
                 ctx.fillText( "Hello World" ,20,20);
@@ -172,7 +183,6 @@ export class SampleLevel extends BaseLevel
 
                 this.lineShape.render(ctx);
                 this.lineShape2.render(ctx);
-
 
                 this.triangle.render(ctx);
 
@@ -246,6 +256,7 @@ export class SampleLevel extends BaseLevel
             // case 65: //A
             case 32: //SPACE
             this.audioManager.playSfx( "sfxsound" );
+            ImageUtil.takeScreenshot();
             break;
         }//
     }

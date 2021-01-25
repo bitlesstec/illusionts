@@ -11,6 +11,7 @@ import { Point } from '../lib/graphic/Point.js';
 import { LineShape } from '../lib/graphic/shape/LineShape.js';
 import { PolygonShape } from '../lib/graphic/shape/PolygonShape.js';
 import { ImageMeasures } from '../lib/graphic/ImageMeasures.js';
+import { CollisionUtil } from '../lib/util/CollisionUtil.js';
 
 
 /**
@@ -24,6 +25,7 @@ export class SampleLevel extends BaseLevel
     circle:Sprite;
     circleShape:CircleShape;
     lineShape:LineShape;
+    lineShape2:LineShape;
     triangle:PolygonShape;
 
     knightSprite:Sprite;
@@ -31,6 +33,8 @@ export class SampleLevel extends BaseLevel
     animKnight:Sprite;
 
     angleCounter:number=0;
+
+    collisionUtil:CollisionUtil;
 
     constructor()
     {
@@ -56,6 +60,9 @@ export class SampleLevel extends BaseLevel
 
         this.lineShape = new LineShape(new Point(30,30), new Point(100,70) );
 
+        this.lineShape2 = new LineShape(new Point(30,100), new Point(100,100) );
+
+
         this.triangle = new PolygonShape([new Point(200,200), new Point(400,200), new Point(100,160)]);
         this.triangle.fillColor="red";
         this.triangle.strokeColor="green";
@@ -75,6 +82,8 @@ export class SampleLevel extends BaseLevel
         this.animKnight.setPosition(20, 150);
         this.animKnight.setAnimationFrames(4,6);
 
+
+        this.collisionUtil = CollisionUtil.getInstance();
 
         this.gameState=GameState.PLAYING;
     }
@@ -107,6 +116,25 @@ export class SampleLevel extends BaseLevel
             this.knightSprite.updateAnimation();
 
             this.animKnight.updateAnimation();
+
+
+
+            //checking line collision here
+            if( this.lineShape2.points[0].y > 20 )
+            {
+                
+                this.lineShape2.points[0].y--;
+                this.lineShape2.points[1].y--;
+
+                //if there is a collision this will print text in console
+                if(this.collisionUtil.lineCollision(this.lineShape, this.lineShape2))
+                {
+                    console.log("::: collision true at: "+this.lineShape2.points[0].y)
+                }
+
+            }
+
+
             break;
         }
     }
@@ -143,6 +171,8 @@ export class SampleLevel extends BaseLevel
                 this.circleShape.render(ctx);
 
                 this.lineShape.render(ctx);
+                this.lineShape2.render(ctx);
+
 
                 this.triangle.render(ctx);
 

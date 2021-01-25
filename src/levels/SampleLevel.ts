@@ -228,7 +228,6 @@ export class SampleLevel extends BaseLevel
     }
 
     loadData(): void {
-        throw new Error('Method not implemented.');
     }
 
     isLoadComplete(): boolean {
@@ -256,10 +255,9 @@ export class SampleLevel extends BaseLevel
             // case 65: //A
             case 32: //SPACE
             this.audioManager.playSfx( "sfxsound" );
-            ImageUtil.takeScreenshot();
+            GameManager.getInstance().takeScreenshot();
             break;
         }//
     }
-
 
 }//

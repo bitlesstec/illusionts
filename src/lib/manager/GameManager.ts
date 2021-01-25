@@ -207,4 +207,21 @@ import {Config} from "../cfg/Config.js";
         this.context.font = `${size}px ${ this.fontName }`;
     }
 
+    /**
+     * this will take an screenshot of the game and will save this in
+     * user location
+     */
+    takeScreenshot():void
+    {
+        let imgUrl = GameManager.getInstance().canvas
+            .toDataURL("image/png").replace("image/png", "image/octet-stream");
+        window.location.href = imgUrl;
+    }
+
+    getTextWidth(txt:string)
+    {
+        this.context.measureText(txt).width;
+    }
+
+
 }//

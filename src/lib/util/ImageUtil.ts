@@ -30,18 +30,4 @@ export class ImageUtil
         return null;
     }
 
-
-    /**
-     * this will take an screenshot of the game and will save this in
-     * user location
-     */
-    static takeScreenshot():void
-    {
-        let imgUrl = GameManager.getInstance().canvas
-            .toDataURL("image/png").replace("image/png", "image/octet-stream");
-        window.location.href = imgUrl;
-    }
-
-
-
 }

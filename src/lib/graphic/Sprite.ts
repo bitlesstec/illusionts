@@ -88,12 +88,12 @@ export class Sprite extends BaseShape
      */
     setNewAnimation(image: HTMLImageElement, imgMeasures?:ImageMeasures)//frameWidth?:number, frameHeight?:number )
     {
-        console.log(imgMeasures)
+        // console.log(imgMeasures)
         this.image = image;
         this.srcX = 0;
         this.srcY = 0;
-        this.w = image.width;
-        this.h = image.height;
+        this.w = image? image.width:10;
+        this.h = image? image.height:10;
         this.dstW = this.w;
         this.dstH = this.h;
 
@@ -122,7 +122,6 @@ export class Sprite extends BaseShape
         //display sprite if is visible
         if( this.visible )
         {
-
             //@todoupdateAnimation Here or in update Method?
             this.updateAnimation();
 

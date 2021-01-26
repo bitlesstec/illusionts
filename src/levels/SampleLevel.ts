@@ -15,6 +15,7 @@ import { CollisionUtil } from '../lib/util/CollisionUtil.js';
 import { TileUtil } from '../lib/util/TileUtil.js';
 import { TileMap } from './TileMap.js';
 import { Tile } from '../lib/graphic/Tile.js';
+import { HUDSprite } from '../lib/graphic/HUDSprite.js';
 
 
 /**
@@ -40,6 +41,8 @@ export class SampleLevel extends BaseLevel
     collisionUtil:CollisionUtil;
 
     tiles:Tile[];
+
+    score:HUDSprite;
 
     constructor()
     {
@@ -87,12 +90,12 @@ export class SampleLevel extends BaseLevel
         this.animKnight.setPosition(20, 150);
         this.animKnight.setAnimationFrames(4,6);
 
-
         this.collisionUtil = CollisionUtil.getInstance();
-
 
         this.tiles = TileUtil.parse( TileMap.getSampleLevelMap(), 40,22, 16,16,16 );
 
+        this.score = new HUDSprite("Lives x", 3);
+        this.score.setPosition(this.levelWidth - 100, 20);
 
         this.gameState=GameState.PLAYING;
     }
@@ -189,6 +192,8 @@ export class SampleLevel extends BaseLevel
                 this.knightSprite.render(ctx);
 
                 this.animKnight.render(ctx);
+
+                this.score.render(ctx);
             break;
         }
 

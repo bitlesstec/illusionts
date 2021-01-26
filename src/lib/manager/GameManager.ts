@@ -223,5 +223,9 @@ import {Config} from "../cfg/Config.js";
         this.context.measureText(txt).width;
     }
 
+    // getTextHeight(txt:string)
+    // {
+    //     this.context.measureText(txt).;
+    // }
 
 }//

@@ -1,12 +1,16 @@
 
-import { BaseSprite } from "./BaseSprite.js";
+import { Animationable } from "../ntfc/Animationable.js";
 import { AnimationLoop } from "./AnimationLoop.js";
-import { Renderable } from "../ntfc/Renderable.js";
+import { ImageMeasures } from "./ImageMeasures.js";
+import { BaseShape } from "./shape/BaseShape.js";
 
 
-export class Sprite extends BaseSprite
-       implements Renderable
+export class Sprite extends BaseShape
+                    implements Animationable
 {
+    //width & height
+    w:number;
+    h:number;
 
     //sprite animation variables 
     animationLoop: AnimationLoop;
@@ -14,6 +18,8 @@ export class Sprite extends BaseSprite
     animationStepLimit: number;
     animationEnd:boolean;
 
+    //first frame where animation starts
+    initialFrame:number;
 
     //current frame to be displayed
     currentFrame:number;
@@ -21,8 +27,17 @@ export class Sprite extends BaseSprite
     //last frame of current image (strip image/animation)
     lastFrame:number;
 
-    //image to be rendered
+    //image to be rendered & properties
     image: HTMLImageElement;
+    srcX:number;
+    srcY:number;
+    srcW:number;
+    srcH:number;
+    // dstX:number;
+    // dstY:number;
+    dstW:number;
+    dstH:number;
+
 
     /**
      * if you call 1 args consstructor, means you have 1 image sprite
@@ -32,26 +47,37 @@ export class Sprite extends BaseSprite
      * @param frameWidth 
      * @param frameHeight 
      */
-    constructor( image: HTMLImageElement, frameWidth?:number, frameHeight?:number )
+    constructor( image: HTMLImageElement, imgMeasures?:ImageMeasures)//frameWidth?:number, frameHeight?:number )
     {
         super();
-        
         this.animationEnd = false;
         this.lastFrame = 0;
-        
+        this.currentFrame = 0;
+
         this.animationLoop = AnimationLoop.FORWARD;
         this.animationStep = 0;
-        this.animationStepLimit = 10;
+        this.animationStepLimit = 30;
 
-        this.currentFrame = 0;
         //when the image is loaded then we set measures
-        this.image = image;
-        this.image.onload = () => 
-        {
-            this.setNewAnimation( image, frameWidth, frameHeight );
-        }
-        
+        // this.image = image;
+        this.setNewAnimation( image, imgMeasures );//frameWidth, frameHeight );
+    
     }//
+
+     /**
+     * this will indicate starting and final frames of the animation,
+     * then updateAnimation will iterate through initial frame until
+     * final frame over and over, the order can be changed at any time
+     * setting different animations of sprite sheet
+     * @param initialFrame 
+     * @param finalFrame 
+     */
+    setAnimationFrames(initialFrame: number, finalFrame: number ): void {
+        this.animationLoop = AnimationLoop.CUSTOM;
+        this.initialFrame = initialFrame-1;
+        this.currentFrame = finalFrame-1;
+        this.lastFrame = finalFrame-1;
+    }
 
 
     /**
@@ -60,26 +86,36 @@ export class Sprite extends BaseSprite
      * @param frameWidth 
      * @param frameHeight 
      */
-    setNewAnimation(image: HTMLImageElement, frameWidth?:number, frameHeight?:number )
+    setNewAnimation(image: HTMLImageElement, imgMeasures?:ImageMeasures)//frameWidth?:number, frameHeight?:number )
     {
+        console.log(imgMeasures)
         this.image = image;
-        if( frameWidth !== undefined && frameHeight !== undefined )
+        this.srcX = 0;
+        this.srcY = 0;
+        this.w = image.width;
+        this.h = image.height;
+        this.dstW = this.w;
+        this.dstH = this.h;
+
+        if(imgMeasures)
         {
-            this.w = frameWidth;
-            this.h = frameHeight;
-            this.lastFrame = Math.floor( image.width / frameWidth );
+            this.lastFrame = imgMeasures.frames-1;
+            this.initialFrame = 0;
+            this.srcX = imgMeasures.srcX;
+            this.srcY = imgMeasures.srcY;
+            this.w=imgMeasures.w;
+            this.h=imgMeasures.h;
+            this.dstW = imgMeasures.w;
+            this.dstH = imgMeasures.h;
         }
-        else
-        {
-            this.w = image.width;
-            this.h = image.height;
-            this.lastFrame = 1;
-        }
+
     }//
 
-
-
-
+    /**
+     * use this in level.render() method, to render the sprite 
+     * in canvas
+     * @param ctx 
+     */
     render(ctx: CanvasRenderingContext2D): void 
     {
     
@@ -97,23 +133,21 @@ export class Sprite extends BaseSprite
 
             if( this.angle != 0 || this.xScale != 1 || this.yScale != 1 )
             {
-                ctx.translate( this.x + this.w/2, this.y + this.h/2 );
+                ctx.translate( this.points[0].x + this.w/2, this.points[0].y + this.h/2 );
                 ctx.rotate( this.angle );
                 ctx.scale( this.xScale, this.yScale );
-                ctx.translate( -( this.x + this.w/2 ), -( this.y + this.h/2 ) );
+                ctx.translate( -( this.points[0].x + this.w/2 ), -( this.points[0].y + this.h/2 ) );
             }
 
             /// @TODO here check some effect updates 
-
             ctx.drawImage
             (
                 this.image,
-                this.currentFrame * this.w, 0,
+                this.srcX, this.srcY,
                 this.w, this.h,
-                Math.floor( this.x ), Math.floor( this.y ),
-                this.w, this.h
+                Math.floor( this.points[0].x ), Math.floor( this.points[0].y ),
+                this.dstW, this.dstH
             );
-
             ctx.restore();
 
         }///
@@ -123,10 +157,10 @@ export class Sprite extends BaseSprite
     /**
      * this will update the frames depending on AnimationLoop
      */
-    updateAnimation()
+    updateAnimation():void
     {
 
-        //if animation is 1 image there is no point to update frames
+        //if animation is 1 frame there is no point to update frames
         if( this.lastFrame <= 1 ) return;
 
         this.animationStep ++;
@@ -138,7 +172,9 @@ export class Sprite extends BaseSprite
             switch( this.animationLoop )
             {
                 case AnimationLoop.FORWARD:
-                    if( ++this.currentFrame > this.lastFrame )
+                    this.srcX = this.currentFrame * this.w;
+                    this.currentFrame++;
+                    if( this.currentFrame > this.lastFrame )
                     {
                         this.currentFrame = 0;
                         this.animationEnd = true;
@@ -146,7 +182,9 @@ export class Sprite extends BaseSprite
                 break;
                 
                 case AnimationLoop.BACKWARD:
-                    if( --this.currentFrame < 0 )
+                    this.currentFrame--;
+                    this.srcX = this.currentFrame * this.w;
+                    if( this.currentFrame < 0 )
                     {
                         this.currentFrame = this.lastFrame;
                         this.animationEnd = true;
@@ -154,16 +192,25 @@ export class Sprite extends BaseSprite
                 break;
                 
                 case AnimationLoop.STOPATEND:
-                    if( ++this.currentFrame >= this.lastFrame )
+                    this.srcX = this.currentFrame * this.w;
+                    this.currentFrame++;
+                    if( this.currentFrame >= this.lastFrame )
                     { 
                         this.currentFrame = this.lastFrame;
                         this.animationEnd = true;
                     }
                 break;
+                case AnimationLoop.CUSTOM:
+                    this.srcX = this.currentFrame * this.w;
+
+                    this.currentFrame++;
+                    if( this.currentFrame > this.lastFrame)
+                    {
+                        this.currentFrame = this.initialFrame;
+                    }
+                break;
 
             }////
-
-
 
         }///
     }

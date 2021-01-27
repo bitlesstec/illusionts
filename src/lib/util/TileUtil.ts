@@ -15,20 +15,19 @@ export class TileUtil
  * @param tileWidth 
  * @param tileHeight 
  */
-static parse( tileMap:number[], cols:number, rows:number, tileWidth:number, tileHeight:number):Tile[]
+static parse( tileMap:number[], cols:number, rows:number, tileWidth:number, tileHeight:number, srcY?:number):Tile[]
 {
-let tileList:Tile[] = [];
+    let tileList:Tile[] = [];
 
-let tileIndex:number = 0;
+    let tileIndex:number = 0;
         
         for( let i = 0; i < rows; i++ )
             {
                 let tiley = i * tileHeight;
             
                     //for de columnas
-                    for( let j = 0 ; j < cols ; j++ )
+                    for( let j = 0; j < cols; j++ )
                     {
-                        
                         let tilex = j * tileWidth;
                       
                         //value of tileMap, can be image or solid tile
@@ -36,12 +35,14 @@ let tileIndex:number = 0;
                        
                         tileIndex++;
                          
-                               //all tiles with 0 values are ignored so they can be used to sort
-                               //other tiles used as sprite positions, etc.
-                               if( tileFrame == 0 ) continue;
+                        //all tiles with 0 values are ignored so they can be used to sort
+                        //other tiles used as sprite positions, etc.
+                        if( tileFrame == 0 ) continue;
                                 
-                               let t = new Tile( tilex, tiley, tileWidth, tileHeight, tileFrame );
-                               tileList.push( t );//tile added
+                        let t = new Tile( tilex, tiley, tileWidth, tileHeight, 
+                                tileFrame*tileWidth , srcY , tileFrame );
+
+                        tileList.push( t );//tile added
                     }//j
             } //i       
 
@@ -71,17 +72,24 @@ static renderTiles( ctx: CanvasRenderingContext2D, img:HTMLImageElement, tiles:T
     //     );
 
     // }); 
-console.log("REND" )
-    for( let x = 0; x < tiles.length ;x++)
+    
+    for( let x = 0; x < tiles.length; x++)
     {
         ctx.drawImage
-        (
-            img,
-            tiles[x].imageIndex * tiles[x].w  , 0,
-            tiles[x].w, tiles[x].h,
-            Math.ceil( tiles[x].x ), Math.ceil( tiles[x].y ),
-            tiles[x].w, tiles[x].h
+        ( 
+            img,tiles[x].srcX,tiles[x].srcY,
+            tiles[x].w,tiles[x].h,
+            tiles[x].x,tiles[x].y,
+            tiles[x].w,tiles[x].h
         );
+        // ctx.drawImage
+        // (
+        //     img,
+        //     tiles[x].imageIndex * tiles[x].w, 0,
+        //     tiles[x].w, tiles[x].h,
+        //     Math.ceil( tiles[x].x ), Math.ceil( tiles[x].y ),
+        //     tiles[x].w, tiles[x].h
+        // );
     }
 
 }//

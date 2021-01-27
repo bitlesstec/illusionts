@@ -9,7 +9,12 @@
 import {GameManager} from './lib/manager/GameManager.js';
 import { SampleLevel } from './levels/SampleLevel.js';
 
-let game = GameManager.getInstance();
+
+//you can set canvas id as well as width and height
+let game = GameManager.getInstance("canvas", 640, 360);
 
 game.loadLevel( new SampleLevel() );
+
+//use this to set new canvas scale
+// game.scaleCanvas(2,2);
 window.onload =function(){game.run();} 

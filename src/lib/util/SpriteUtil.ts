@@ -22,8 +22,8 @@ export class SpriteUtil
     {
         if( spd <= 0 )return;
 
-        let vx:number = toX - spr.x + spr.w/2;
-        let vy:number = toY - spr.y +spr.h/2;
+        let vx:number = toX - spr.points[0].x + spr.w/2;
+        let vy:number = toY - spr.points[0].y + spr.h/2;
 
         let mag:number = Math.sqrt( ( vx * vx ) + ( vy * vy ) );
 
@@ -52,8 +52,8 @@ export class SpriteUtil
      */
     static getangle( spr:Sprite, x:number, y:number ):number
     {
-        let vx:number = x-( spr.x + spr.w / 2 );
-        let vy:number = y-( spr.y + spr.h / 2 );
+        let vx:number = x-( spr.points[0].x + spr.w / 2 );
+        let vy:number = y-( spr.points[0].y + spr.h / 2 );
 
         let angle = Math.atan2( vy, vx );// * ( 180 / Math.PI );
 
@@ -73,14 +73,15 @@ export class SpriteUtil
         // let vx:number = CollisionUtil.getInstance().getDistance( spr.x, spr.w, x, 0 );
         // let vy:number = CollisionUtil.getInstance().getDistance( spr.y, spr.h, y, 0 );
 
-        return CollisionUtil.getInstance().getMagnitude( spr.x, spr.w, spr.y, spr.h, x, 0, y, 0 );
+        return CollisionUtil.getInstance()
+            .getMagnitude( spr.points[0].x, spr.w, spr.points[0].y, spr.h, x, 0, y, 0 );
 
     }//
 
 
     static spritesDistance( spr:Sprite, spr2:Sprite) :number
     {
-        return this.pointDistance( spr, spr2.x+spr2.w/2, spr2.y+spr2.h/2 );
+        return this.pointDistance( spr, spr2.points[0].x+spr2.w/2, spr2.points[0].y+spr2.h/2 );
     }
 
     /**
@@ -100,8 +101,8 @@ export class SpriteUtil
 
             let s:Sprite = sprList[ x ];
 
-            let vx:number = (s.x+s.w / 2 ) - (spr.x + spr.w / 2 );
-            let vy:number = (s.y+s.w / 2 ) - (spr.y + spr.h / 2 );
+            let vx:number = (s.points[0].x+s.w / 2 ) - (spr.points[0].x + spr.w / 2 );
+            let vy:number = (s.points[0].y+s.w / 2 ) - (spr.points[0].y + spr.h / 2 );
             
             let mag:number = Math.sqrt( (vx * vx) + (vy * vy) );
 

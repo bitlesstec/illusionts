@@ -5,8 +5,8 @@ import { Mousable } from "../ntfc/input/Mousable.js";
 import { Keyable } from "../ntfc/input/Keyable.js";
 import { GameState } from "../manager/GameState.js";
 import { Camera } from "../camera/Camera.js";
-import { BaseSprite } from "../graphic/BaseSprite.js";
 import {AudioManager} from "../audio/AudioManager.js";
+import { BaseShape } from "../graphic/shape/BaseShape.js";
 
 /**
  * this class will represent a level in the game, will
@@ -26,7 +26,7 @@ imageMap: Map<string, HTMLImageElement>;
 
 //used to maintain all the sprites in a single place, 
 //so we can iterate this map and use render method of each sprite for example
-spriteList: BaseSprite[];// | Sprite[];
+spriteList: BaseShape[];// | Sprite[];
 
 camera: Camera;
 
@@ -37,8 +37,7 @@ levelWidth:number;
 levelHeight:number;
 
 constructor( levelWidht:number, levelHeight:number, viewWidth?:number, viewHeight?:number )
-{
-    
+{ 
 this.gameState = GameState.LOADING;
 this.audioManager = new AudioManager();
 this.imageMap = new Map<string, HTMLImageElement>();
@@ -51,8 +50,6 @@ if( viewWidth !== undefined && viewHeight !== undefined )
     this.camera = new Camera( levelWidht, levelHeight, viewWidth, viewHeight );
 else
     this.camera = new Camera( levelWidht, levelHeight );
-
-    
 }//
 
 
@@ -77,4 +74,3 @@ keyDown( event: Event ){}
 keyUp( event: Event ){}
 
 }//
-

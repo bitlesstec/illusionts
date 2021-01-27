@@ -1,9 +1,5 @@
 
-
-import {Point} from "./Point.js";
-import {Positionable} from "../ntfc/Positionable.js";
-import { Renderable } from "../ntfc/Renderable.js";
-import { Colorizable } from "../ntfc/Colorizable.js";
+import { BaseShape } from "./shape/BaseShape.js";
 
 
 /**
@@ -15,16 +11,12 @@ import { Colorizable } from "../ntfc/Colorizable.js";
  * and there is a method call renderCOlor which will 
  * display current color instead background image. 
  */
-export class Background extends Point
-             implements Positionable, Renderable, Colorizable
+export class Background extends BaseShape
 {
 
     w:number;
     h:number;
-    color:string;
     image: HTMLImageElement;
-    visible: boolean;
-
 
     constructor( image: HTMLImageElement )
     {
@@ -41,14 +33,8 @@ export class Background extends Point
         this.visible = true;
         }
         
-        this.color = "#000000"; //black by default
+        this.fillColor = "#000000"; //black by default
     }   
-
-    setPosition( x:number, y:number ):void
-    {
-        this.x = x;
-        this.y = y;
-    }
 
     /**
      * this method will render the image at X & Y point, basically
@@ -58,7 +44,7 @@ export class Background extends Point
     render( ctx: CanvasRenderingContext2D ):void
     {
         if( this.visible )
-        ctx.drawImage( this.image, this.x, this.y, this.w, this.h );
+            ctx.drawImage( this.image, this.points[0].x, this.points[0].y, this.w, this.h );
     }
 
     /**
@@ -70,10 +56,9 @@ export class Background extends Point
     {
         if( this.visible )
         {
-            ctx.fillStyle = this.color;
-            ctx.fillRect( this.x, this.y, this.w, this.h );
+            ctx.fillStyle = this.fillColor;
+            ctx.fillRect( this.points[0].x, this.points[0].y, this.w, this.h );
         }
-      
     }
 
 

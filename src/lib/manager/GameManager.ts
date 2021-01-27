@@ -35,13 +35,22 @@ import {Config} from "../cfg/Config.js";
 
     //map to save persistent data along levels
     gameData:Map<string, string>;
-    
+
+    //below vars are for enable needed controls
+    //by default keyboard is enabled
+    enableKeyboardControl:boolean=true;
+    enableTouchControl:boolean=false;
+    enableMouseControl:boolean=false;
+
+    xScale:number;
+    yScale:number;
+
     /**
      * create a GameManager Instance, this manager starts the 
      * game loop, it gets 
      * @param canvasId id of teh canvas to show the game if not specified id will be 'canvas' 
      */
-    private constructor( canvasId:string = "canvas" )
+    private constructor( canvasId:string = "canvas", width?:number, height?:number )
     {
         this.delta = 0;
         this.lastUpdate = 0;
@@ -53,18 +62,29 @@ import {Config} from "../cfg/Config.js";
 
         this.localStorage = <Storage>window.localStorage;
         this.canvas = <HTMLCanvasElement>document.getElementById( canvasId );
+        if(width)this.canvas.width=width;
+        if(height)this.canvas.height=height;
         this.canvas.focus();//get canvas focus?
         this.context = <CanvasRenderingContext2D>this.canvas.getContext("2d");
         this.context.textBaseline = "top";
         this.context.font = "10px press-start";
         
+        this.xScale=1;
+        this.yScale=1;
+        this.context.scale(this.xScale, this.yScale);
     }
 
-
-    static getInstance():GameManager
+    /**
+     * creates and return the instance of the GameManager which
+     * set and starts the game
+     * @param canvasId 
+     * @param width 
+     * @param height 
+     */
+    static getInstance(canvasId:string = "canvas", width?:number, height?:number):GameManager
     {
-        if( this.instance ==  null )
-            this.instance = new GameManager(); 
+        if( this.instance ==  null || undefined)
+            this.instance = new GameManager(canvasId, width, height); 
         return this.instance;
     }
 
@@ -81,6 +101,21 @@ import {Config} from "../cfg/Config.js";
             this.currentLevel.render( this.context );
         }
         requestAnimationFrame( this.run.bind(this) );
+    }
+
+    /**
+     * this will resize context of canvas and will
+     * set new width and height of scaled size
+     * @param xNewScale 
+     * @param yNewScale 
+     */
+    scaleCanvas( xNewScale:number, yNewScale:number)
+    {
+        this.xScale= xNewScale;
+        this.yScale = yNewScale;
+        this.canvas.width = Math.floor(this.canvas.width * this.xScale);
+        this.canvas.height = Math.floor(this.canvas.height * this.yScale);
+        this.context.scale(this.xScale, this.yScale);
     }
 
     // run()
@@ -105,29 +140,37 @@ import {Config} from "../cfg/Config.js";
      * become the current level ( even if there was another level oreviously)
      *  after that events of keyboard, mouse, touch events will be set in the canvas
      * @param level new level to load must be an implementation of BaseLevel
-     *      
      * */
     loadLevel( level:BaseLevel )
     {
         this.currentLevel = level;
 
-        // canvas/keyboard/touchmouse events
-        this.canvas.addEventListener("mousedown", (event) => this.currentLevel.mouseDown(event));
-        this.canvas.addEventListener("mousemove", (event) => this.currentLevel.mouseMove(event));
-        this.canvas.addEventListener("mouseup", (event) => this.currentLevel.mouseUp(event));
-        this.canvas.addEventListener("mouseout", (event) => this.currentLevel.mouseOut(event));
-        this.canvas.addEventListener("mouseover",(event) =>  this.currentLevel.mouseOver(event));
-
+        // mouse events
+        if(this.enableMouseControl)
+        {
+            this.canvas.addEventListener("mousedown", (event) => this.currentLevel.mouseDown(event));
+            this.canvas.addEventListener("mousemove", (event) => this.currentLevel.mouseMove(event));
+            this.canvas.addEventListener("mouseup", (event) => this.currentLevel.mouseUp(event));
+            this.canvas.addEventListener("mouseout", (event) => this.currentLevel.mouseOut(event));
+            this.canvas.addEventListener("mouseover",(event) =>  this.currentLevel.mouseOver(event));
+        }
+        
         // touch events
-        this.canvas.addEventListener("touchstart",(event) =>  this.currentLevel.touchStart(event));
-        this.canvas.addEventListener("touchmove", (event) => this.currentLevel.touchMove(event));
-        this.canvas.addEventListener("touchend",(event) =>  this.currentLevel.touchEnd(event));
-        this.canvas.addEventListener("touchcancel",(event) =>  this.currentLevel.touchCancel(event));
-        this.canvas.addEventListener("touchleave",(event) =>  this.currentLevel.touchLeave(event));
+        if(this.enableTouchControl)
+        {
+            this.canvas.addEventListener("touchstart",(event) =>  this.currentLevel.touchStart(event));
+            this.canvas.addEventListener("touchmove", (event) => this.currentLevel.touchMove(event));
+            this.canvas.addEventListener("touchend",(event) =>  this.currentLevel.touchEnd(event));
+            this.canvas.addEventListener("touchcancel",(event) =>  this.currentLevel.touchCancel(event));
+            this.canvas.addEventListener("touchleave",(event) =>  this.currentLevel.touchLeave(event));    
+        }
 
         // keyboard events
-        this.canvas.addEventListener("keydown", (event) => this.currentLevel.keyDown(event) );
-        this.canvas.addEventListener("keyup", (event) => this.currentLevel.keyUp(event));
+        if(this.enableKeyboardControl)
+        {
+            this.canvas.addEventListener("keydown", (event) => this.currentLevel.keyDown(event) );
+            this.canvas.addEventListener("keyup", (event) => this.currentLevel.keyUp(event));    
+        }
         
     }
 
@@ -163,5 +206,22 @@ import {Config} from "../cfg/Config.js";
     {
         this.context.font = `${size}px ${ this.fontName }`;
     }
+
+    /**
+     * this will take an screenshot of the game and will save this in
+     * user location
+     */
+    takeScreenshot():void
+    {
+        let imgUrl = GameManager.getInstance().canvas
+            .toDataURL("image/png").replace("image/png", "image/octet-stream");
+        window.location.href = imgUrl;
+    }
+
+    getTextWidth(txt:string)
+    {
+        this.context.measureText(txt).width;
+    }
+
 
 }//

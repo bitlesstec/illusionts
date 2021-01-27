@@ -1,3 +1,6 @@
+import { Point } from "../graphic/Point.js";
+import { LineShape } from "../graphic/shape/LineShape.js";
+import { PolygonShape } from "../graphic/shape/PolygonShape.js";
 import { Sprite } from "../graphic/Sprite.js";
 
 
@@ -105,7 +108,7 @@ pointCollision( x:number, y:number,
                 x2:number,y2:number,w2:number,h2:number ):boolean
 {
     return (x >= x2  && x <= x2 + w2 &&
-            y >= y2 && y <= y2 + h2 );
+                y >= y2 && y <= y2 + h2 );
 }
 
 /**
@@ -117,8 +120,9 @@ pointCollision( x:number, y:number,
  */
 spritePointCollision( x:number, y:number, spr:Sprite):boolean
 {
-    return this.pointCollision( x, y, spr.x, spr.y, spr.w, spr.h );
+    return this.pointCollision( x, y, spr.points[0].x, spr.points[0].y, spr.w, spr.h );
 }//
+
 
 /**
  * returns true if there is a collision between 2 circles
@@ -143,8 +147,8 @@ circleCollision( cenx:number, ceny:number, rad:number,
 
 spriteCircleColision( spr:Sprite, cenx:number, ceny:number, rad:number, fixOverlap:boolean = true ):boolean
 {
-let vx:number = (spr.x + spr.w/2) - cenx;
-let vy:number = (spr.y + spr.h/2) - ceny;
+let vx:number = (spr.points[0].x + spr.w/2) - cenx;
+let vy:number = (spr.points[0].y + spr.h/2) - ceny;
 
  //calculate distance between circles
 let magnitude:number = Math.sqrt( (vx * vx) + (vy * vy) );
@@ -161,8 +165,8 @@ let magnitude:number = Math.sqrt( (vx * vx) + (vy * vy) );
     let dx:number = vx / magnitude;
     let dy:number = vy / magnitude;
 
-    spr.x += overlap * dx;
-    spr.y += overlap * dy;
+    spr.points[0].x += overlap * dx;
+    spr.points[0].y += overlap * dy;
     }
 
 return res;
@@ -177,7 +181,7 @@ return res;
 spritesCircleCollision( spr1:Sprite, spr2:Sprite, fixOverlap:boolean = true):boolean
 {
 return this.spriteCircleColision( spr1, 
-    spr2.x + spr2.w/2, spr2.y + spr2.h/2, spr2.w/2, fixOverlap);
+    spr2.points[0].x + spr2.w/2, spr2.points[0].y + spr2.h/2, spr2.w/2, fixOverlap);
 }
 
 /**
@@ -209,8 +213,8 @@ return ( Math.abs( this.getDistance( x, w, x2, w2 ) ) < combinedHalfWidth &&
  */
 spriteRectangleCollision( spr1:Sprite, spr2:Sprite ):boolean
 {
-return this.rectangleCollision( spr1.x, spr1.y, spr1.w, spr1.h, 
-                                spr2.x, spr2.y, spr2.w, spr2.h );
+return this.rectangleCollision( spr1.points[0].x, spr1.points[0].y, spr1.w, spr1.h, 
+                                spr2.points[0].x, spr2.points[0].y, spr2.w, spr2.h );
 }
 
 /**
@@ -227,8 +231,8 @@ sideAndPushCollision( spr1:Sprite, spr2:Sprite, push:boolean = false ):string
     
 let collisionSide:string = "none";
 
-let vx:number = this.getDistance( spr2.x, spr2.w, spr1.x, spr1.w );
-let vy:number = this.getDistance( spr2.y, spr2.h, spr1.y, spr1.h );
+let vx:number = this.getDistance( spr2.points[0].x, spr2.w, spr1.points[0].x, spr1.w );
+let vy:number = this.getDistance( spr2.points[0].y, spr2.h, spr1.points[0].y, spr1.h );
 
 let combinedHalfWidth = this.getCombinedHalf( spr1.w, spr2.w );
 let combinedHalfHeight= this.getCombinedHalf( spr1.h, spr2.h );
@@ -247,14 +251,14 @@ let vyabs = Math.abs( vy );
                     if( vy > 0 )
                     {
                         collisionSide = "top";
-                        if( push )spr2.y-=1; 
-                        spr1.y+= overlapY;//   setY(s1.getY() + overlapY);
+                        if( push )spr2.points[0].y-=1; 
+                        spr1.points[0].y+= overlapY;//   setY(s1.getY() + overlapY);
                     }
                     else
                     {
                         collisionSide = "bottom";
-                        if( push )spr2.y+=1;//   .setY(spr2.getY()+1);
-                        spr1.y-= overlapY;//   setY(spr1.getY() - overlapY);
+                        if( push )spr2.points[0].y+=1;//   .setY(spr2.getY()+1);
+                        spr1.points[0].y-= overlapY;//   setY(spr1.getY() - overlapY);
                     }
 
             }
@@ -264,14 +268,14 @@ let vyabs = Math.abs( vy );
                         if( vx > 0 )
                         {
                             collisionSide = "left";
-                            if( push )spr2.x-=1;//   setX(spr2.getX()-1);
-                            spr1.x+=overlapX;         //  setX( spr1.getX() + overlapX );
+                            if( push )spr2.points[0].x-=1;//   setX(spr2.getX()-1);
+                            spr1.points[0].x+=overlapX;         //  setX( spr1.getX() + overlapX );
                         }
                         else
                         {
                             collisionSide = "right";
-                           if( push )spr2.x+=1;  //setX(spr2.getX()+1);
-                           spr1.x-=overlapX;    //setX(spr1.getX()-overlapX);
+                           if( push )spr2.points[0].x+=1;  //setX(spr2.getX()+1);
+                           spr1.points[0].x-=overlapX;    //setX(spr1.getX()-overlapX);
                         }
 
                 }//
@@ -279,6 +283,170 @@ let vyabs = Math.abs( vy );
         }
         return collisionSide;
 }//
+
+/**
+ * this checks if there is a collision or intersection
+ * between 2 lines
+ * @param line1 
+ * @param line2 
+ */
+lineCollision( line1:LineShape, line2:LineShape):boolean
+{
+    let vx1 = line1.points[1].x - line1.points[0].x;
+    let vy1 = line1.points[1].y - line1.points[0].y;
+
+    let vx2 = line2.points[1].x - line2.points[0].x;
+    let vy2 = line2.points[1].y - line2.points[0].y;
+
+    let cross = 0;
+
+    if( (cross = vx1 * vy2 - vy1 * vx2 ) === 0 ) return false;
+    
+    let v3 = { x: line1.points[0].x - line2.points[0].x, y: line1.points[0].y - line2.points[0].y }
+    let u2 = ( vx1 * v3.y - vy2 * v3.x ) / cross;
+
+    if( u2 >= 0 && u2 <= 1)
+    {
+        let u1 = ( vx2 ^ v3.y - vy2 * v3.x ) / cross;
+        return (u1 >= 0 && u1 <= 1);
+    }
+
+    return false;
+}
+
+/**
+ * returns true if there is a collision between a line and a circle
+ * @param line 
+ * @param x 
+ * @param y 
+ * @param radius 
+ */
+lineAndCircleCollision(line:LineShape, x:number, y:number, radius:number):boolean
+{
+    let dx = x - line.points[0].x;
+    let dy = y - line.points[0].y;
+
+    let dxx = line.points[1].x - line.points[0].x;
+    let dyy = line.points[1].y - line.points[0].y;
+
+    let t = (dx*dxx+dy*dyy)/(dxx*dxx+dyy*dyy);
+
+    var xx = line.points[0].x + dxx*t;
+    var yy = line.points[0].y + dyy*t;
+
+    if(t<0){x = line.points[0].x; y= line.points[0].y;}
+    if(t>1){x = line.points[1].x; y= line.points[1].y;}
+
+    return( (x-xx)*(x-xx)+(y-yy)*(y-yy) < radius*radius );
+}
+
+/**
+ * check if there is intersection between a line and a collision
+ * @param line 
+ * @param x 
+ * @param y 
+ * @param w 
+ * @param h 
+ * @TODO needs more testing
+ */
+lineAndRectangleCollision( line:LineShape, x:number, y:number, w:number, h:number ):boolean
+{
+    let p1:Point = line.points[0];
+    let p2:Point = line.points[1];
+
+    let q:Point =  new Point(x,y);
+    let q2:Point = new Point(x,y);
+
+    //top rect line
+    if( this.lineCollision( new LineShape( p1,p2 ), new LineShape( q, q2 ) ) )return true;
+    
+    q=q2;
+    q2 = new Point( x+w, y+h );
+
+    //right rect line
+    if( this.lineCollision( new LineShape( p1,p2 ), new LineShape( q, q2 ) ) )return true;
+
+    q=q2;
+    q2 = new Point( x, y+h );
+
+    //bottom rect line
+    if( this.lineCollision( new LineShape( p1,p2 ), new LineShape( q, q2 ) ) )return true;
+
+    q=q2;
+    q2 = new Point( x, y );
+
+    //left rect line
+    if( this.lineCollision( new LineShape( p1,p2 ), new LineShape( q, q2 ) ) )return true;
+
+    return false;
+}
+
+regularPolygonCollision( polygon1:PolygonShape, polygon2:PolygonShape ):boolean
+{
+
+    let polygons:PolygonShape[] = [ polygon1, polygon2 ];
+    let minA, maxA, minB, maxB, i, j, i1;
+
+
+    for( let i:number = 0; i < polygons.length; i++ )
+    {
+
+        let polygon = polygons[i];
+        for( i1 = 0; i1 < polygon.points.length; i1++ )
+        {
+            let i2 =(i1+1) % polygon.points.length;
+            let p1 = polygon.points[i1];
+            let p2 = polygon.points[i2];
+
+            let normal = new Point( p2.y - p1.y, p1.x - p2.x );
+
+            minA = maxA = undefined;
+
+            for( j = 0; j < polygon1.points.length; j++ )
+            {
+                let projected = normal.x * polygon1.points[j].x + normal.y * polygon1.points[j].y;
+                if( minA === undefined || projected < minA )
+                    minA = projected;
+                if( maxA === undefined || projected > maxA)
+                    maxA = projected;
+            }
+
+            minB = maxB = undefined;
+
+            for( j = 0; j < polygon2.points.length; j++ )
+            {
+                let projected = normal.x * polygon2.points[j].x + normal.y * polygon2.points[j].y;
+                if( minB === undefined || projected < minB )
+                    minB = projected;
+                if( maxB === undefined || projected > maxB)
+                    maxB = projected;
+            }
+
+            if( maxA < minB || maxB < minA)return false;
+        }
+
+    }
+    return true;
+}
+
+iregularPolygonCollision():boolean
+{
+    return false;
+}
+
+/**
+ * this will check if the point is intersecting the circle
+ * @param point 
+ * @param x 
+ * @param y 
+ * @param radius 
+ */
+pointAndCircleCollision( point:Point, x:number, y:number, radius:number )
+{
+    let dx = point.x-x;
+    let dy = point.y-y;
+    return( dx*dx + dy*dy < radius*radius );
+}
 
 
 }//

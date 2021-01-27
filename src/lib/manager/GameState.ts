@@ -1,7 +1,7 @@
 
 /**
  * those states are basic for most games, however
- * you can add more if you want
+ * you can add more if you want extending this
  */
 export enum GameState
 { 
@@ -10,10 +10,10 @@ PLAYING,
 GAMEOVER,
 COMPLETED,
 PAUSED,
-STOPPED,
-DIALOGUING,
-TRANSITIONING,
-TRANSITIONED,
-SAVING,
+STOPPED,//game is not paused but is stoped, like for some game events
+DIALOGUING,//use this if a player is dialoguin with NPC
+TRANSITIONING,//transtion between one level to another
+TRANSITIONED,//used when transition animation is done to load a new level
+SAVING,//show animation while game is beign saved
 SAVED
 }

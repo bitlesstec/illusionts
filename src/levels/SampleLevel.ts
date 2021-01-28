@@ -15,6 +15,7 @@ import { CollisionUtil } from '../lib/util/CollisionUtil.js';
 import { TileUtil } from '../lib/util/TileUtil.js';
 import { TileMap } from './TileMap.js';
 import { Tile } from '../lib/graphic/Tile.js';
+import { HUDSprite } from '../lib/graphic/HUDSprite.js';
 
 
 /**
@@ -40,6 +41,10 @@ export class SampleLevel extends BaseLevel
     collisionUtil:CollisionUtil;
 
     tiles:Tile[];
+
+    score:HUDSprite;
+    damageTxt:HUDSprite;
+
 
     constructor()
     {
@@ -87,12 +92,16 @@ export class SampleLevel extends BaseLevel
         this.animKnight.setPosition(20, 150);
         this.animKnight.setAnimationFrames(4,6);
 
-
         this.collisionUtil = CollisionUtil.getInstance();
-
 
         this.tiles = TileUtil.parse( TileMap.getSampleLevelMap(), 40,22, 16,16,16 );
 
+        this.score = new HUDSprite("Lives x", 3);
+        this.score.setPosition(this.levelWidth - 100, 20);
+
+        this.damageTxt = new HUDSprite("",0);
+        this.damageTxt.setPosition(this.levelWidth/2, this.levelHeight/2);
+        this.damageTxt.setExpiration(100);
 
         this.gameState=GameState.PLAYING;
     }
@@ -126,12 +135,9 @@ export class SampleLevel extends BaseLevel
 
             this.animKnight.updateAnimation();
 
-
-
             //checking line collision here
             if( this.lineShape2.points[0].y > 20 )
             {
-                
                 this.lineShape2.points[0].y--;
                 this.lineShape2.points[1].y--;
 
@@ -140,9 +146,10 @@ export class SampleLevel extends BaseLevel
                 {
                     console.log("::: collision true at: "+this.lineShape2.points[0].y)
                 }
-
             }
 
+            //pushing damageText Up then it dissapears
+            this.damageTxt.expire(()=>{ this.damageTxt.moveY(-1); });
 
             break;
         }
@@ -189,6 +196,10 @@ export class SampleLevel extends BaseLevel
                 this.knightSprite.render(ctx);
 
                 this.animKnight.render(ctx);
+
+                this.score.render(ctx);
+
+                this.damageTxt.render(ctx);
             break;
         }
 

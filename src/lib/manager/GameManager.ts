@@ -41,6 +41,7 @@ import {Config} from "../cfg/Config.js";
     enableKeyboardControl:boolean=true;
     enableTouchControl:boolean=false;
     enableMouseControl:boolean=false;
+    enableGamePadControl:boolean=false;
 
     xScale:number;
     yScale:number;
@@ -170,6 +171,14 @@ import {Config} from "../cfg/Config.js";
         {
             this.canvas.addEventListener("keydown", (event) => this.currentLevel.keyDown(event) );
             this.canvas.addEventListener("keyup", (event) => this.currentLevel.keyUp(event));    
+        }
+
+        //NOTE AT THIS POINT THIS NEEDS MORE TESTING
+        if( this.enableGamePadControl)
+        {
+            this.canvas.addEventListener("gamepadconnected", (event) => this.currentLevel.keyDown(event) );
+            this.canvas.addEventListener("gamepaddisconnected", (event) => this.currentLevel.keyDown(event) );
+
         }
         
     }

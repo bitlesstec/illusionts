@@ -3,10 +3,11 @@ import { Sprite } from "../../graphic/Sprite.js";
 
 /**
  * this interface provides methods to make a class
- * to be able to set player controller
+ * to be able to set player controller for keyboard,
+ * mouse, touch, gamepads, etc
  */
 export interface Controllable
 {
-    attach( player:BaseShape | Sprite ):void;
+    attachPlayer( player:BaseShape | Sprite ):void;
     processController( inputEvent: KeyboardEvent | TouchEvent | MouseEvent | GamepadEvent ):void;
 }

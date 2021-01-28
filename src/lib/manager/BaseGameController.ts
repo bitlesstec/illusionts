@@ -1,4 +1,4 @@
-import { BaseShape } from "../graphic/shape/BaseShape";
+import { BaseShape } from "../graphic/shape/BaseShape.js";
 import { Sprite } from "../graphic/Sprite.js";
 import { Controllable } from "../ntfc/input/Controllable.js";
 
@@ -23,7 +23,7 @@ export abstract class BaseGameController implements Controllable
      * this will attach the controller to specified player
      * @param player 
      */
-    attach(player: BaseShape | Sprite): void {
+    attachPlayer(player: BaseShape | Sprite): void {
         this.player = player;
     }
 

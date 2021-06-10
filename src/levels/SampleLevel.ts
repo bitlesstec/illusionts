@@ -45,6 +45,7 @@ export class SampleLevel extends BaseLevel
     score:HUDSprite;
     damageTxt:HUDSprite;
 
+    userName:string;
 
     constructor()
     {
@@ -56,6 +57,7 @@ export class SampleLevel extends BaseLevel
 
     async init()
     {
+        this.userName = "";
         await this.loadImages();
         this.loadSounds();
        
@@ -150,6 +152,8 @@ export class SampleLevel extends BaseLevel
 
             //pushing damageText Up then it dissapears
             this.damageTxt.expire(()=>{ this.damageTxt.moveY(-1); });
+
+            console.log(`userName ${this.userName}`);
 
             break;
         }
@@ -263,7 +267,9 @@ export class SampleLevel extends BaseLevel
     {
         switch( event.keyCode )
         {
-            // case 65: //A
+            case 65: //A
+            this.userName = prompt("Enter User Email:");
+            break;
             case 32: //SPACE
             this.audioManager.playSfx( "sfxsound" );
             GameManager.getInstance().takeScreenshot();

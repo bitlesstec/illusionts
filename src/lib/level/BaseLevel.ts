@@ -73,4 +73,8 @@ mouseOver( event: Event ){}
 keyDown( event: Event ){}
 keyUp( event: Event ){}
 
+GamePadConnected( event: Event ){}
+GamePadDisconnected( event: Event ){}
+GamePadButtonPressed( event: Event ){}
+GamePadAxisMovement( event: Event ){}
 }//

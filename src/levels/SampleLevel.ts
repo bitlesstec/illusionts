@@ -74,18 +74,11 @@ export class SampleLevel extends BaseLevel
 
         this.lineShape2 = new LineShape(new Point(30,100), new Point(100,100) );
 
-
         this.triangle = new PolygonShape([new Point(200,200), new Point(400,200), new Point(100,160)]);
         this.triangle.fillColor="red";
         this.triangle.strokeColor="green";
         this.triangle.strokeLineWidth=3;
         this.triangle.displayOutline=true;
-
-
-        // knightMeasures:ImageMeasures = 
-        // {srcX:0, srcY:0, w:16, h:16, frames:3}
-
-
 
         this.knightSprite = new Sprite(this.imageMap.get( "tileImage" ),{srcX:0, srcY:0, w:16, h:16, frames:3});
         this.knightSprite.setPosition( 20, 200 );

@@ -94,4 +94,24 @@ export abstract class BaseShape
 
     render(ctx: CanvasRenderingContext2D): void {}
 
+
+    getX():number
+    {
+        return this.points[0].x;
+    }
+    
+    getY():number
+    {
+        return this.points[0].y;
+    }
+
+    setX(x:number)
+    {
+        return this.points[0].x = x;
+    }
+    
+    setY(y:number)
+    {
+        return this.points[0].y= y;
+    }
 }

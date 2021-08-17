@@ -40,7 +40,7 @@ static parse( tileMap:number[], cols:number, rows:number, tileWidth:number, tile
                         if( tileFrame == 0 ) continue;
                                 
                         let t = new Tile( tilex, tiley, tileWidth, tileHeight, 
-                                tileFrame*tileWidth , srcY , tileFrame );
+                                        tileFrame*tileWidth , srcY , tileFrame );
 
                         tileList.push( t );//tile added
                     }//j

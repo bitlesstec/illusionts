@@ -4,7 +4,6 @@ export class Camera
     implements Moveable
 {
 
-
 x:number;
 y:number;
 
@@ -22,9 +21,10 @@ viewHeight:number;
 /**
  * this is the X coordinate related to the view, even if we are moving the camera in x axis, then viewX
  * will be the same value always, often to put HUD on top of the view.
+ * 
+ * viewX and viewY are used to put hud at a fixed position even if the view moves
  */
 viewX: number; //
-                //
 viewY: number;
 
 /**
@@ -72,18 +72,14 @@ constructor( levelWidth:number, levelHeight:number, viewWidth:number = 0, viewHe
     {
         this.viewWidth = this.levelWidth;
         this.viewHeight = this.levelHeight;
-
         this.xMax = 0;
         this.yMax = 0;
-
     }
 
-
-
-this.marginLeft=0;
-this.marginRight=0;
-this.marginTop=0;
-this.marginBottom=0;
+    this.marginLeft=0;
+    this.marginRight=0;
+    this.marginTop=0;
+    this.marginBottom=0;
 
 }//
 
@@ -94,8 +90,8 @@ this.marginBottom=0;
  */
 move( xspd: number, yspd: number ) 
 {
-this.moveX( xspd );
-this.moveY( yspd );
+    this.moveX( xspd );
+    this.moveY( yspd );
 }//
 
 moveX(xspd: number) 
@@ -107,7 +103,7 @@ moveX(xspd: number)
     this.x -= xspd;
     this.viewX += xspd;
 
-    console.log( `X: ${this.x} - VX: ${this.viewX}` );
+    // console.log( `X: ${this.x} - VX: ${this.viewX}` );
         /**
          * minimum value of camx should be 0, is the starting point
          * camx is not mayor than 0

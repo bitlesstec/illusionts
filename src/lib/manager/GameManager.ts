@@ -48,7 +48,8 @@ import {Config} from "../cfg/Config.js";
 
     /**
      * create a GameManager Instance, this manager starts the 
-     * game loop, it gets 
+     * game loop, if width and height are not defined, it will get that
+     * value from level when loaded or the view if that level has a camera
      * @param canvasId id of teh canvas to show the game if not specified id will be 'canvas' 
      */
     private constructor( canvasId:string = "canvas", width?:number, height?:number )
@@ -112,10 +113,34 @@ import {Config} from "../cfg/Config.js";
      */
     scaleCanvas( xNewScale:number, yNewScale:number)
     {
+
         this.xScale= xNewScale;
         this.yScale = yNewScale;
-        this.canvas.width = Math.floor(this.canvas.width * this.xScale);
-        this.canvas.height = Math.floor(this.canvas.height * this.yScale);
+
+        let newWidth:number = 1;
+        let newHeight:number = 1;
+        
+        if( this.currentLevel.camera )
+        {
+            //if there is a camera there should be a view
+            newWidth = this.currentLevel.camera.viewWidth;
+            newHeight = this.currentLevel.camera.viewHeight;
+        }
+        else if(this.currentLevel)
+        {
+            // if there is no camera we take level width and height
+            newWidth = this.currentLevel.levelWidth;
+            newHeight = this.currentLevel.levelHeight;
+        }
+        else
+        {
+            // there is no level loaded pageYOffset, then we take canvas width and height
+            newWidth = Math.floor( this.canvas.width * this.xScale );
+            newHeight = Math.floor( this.canvas.height * this.yScale );
+        }
+
+        this.canvas.width = Math.floor(newWidth * this.xScale);
+        this.canvas.height = Math.floor(newHeight * this.yScale);
         this.context.scale(this.xScale, this.yScale);
     }
 
@@ -145,6 +170,13 @@ import {Config} from "../cfg/Config.js";
     loadLevel( level:BaseLevel )
     {
         this.currentLevel = level;
+
+
+        //resize canvas size
+        // this.canvas.width = level.levelWidth;
+        // this.canvas.height = level.levelHeight;
+        // this.setFont(Config.DEFAULT_FONT_NAME, Config.DFLT_FNT_NAME_PATH);
+
 
         // mouse events
         if(this.enableMouseControl)

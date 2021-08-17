@@ -1,9 +1,13 @@
+import { AnimationLoop } from "../lib/graphic/AnimationLoop.js";
+import { Collider } from "../lib/graphic/shape/Collider.js";
 import { Sprite } from "../lib/graphic/Sprite.js";
 import { Tile } from "../lib/graphic/Tile.js";
 import { BaseLevel } from "../lib/level/BaseLevel.js";
 import { GameState } from "../lib/manager/GameState.js";
 import { AssetLoadable } from "../lib/ntfc/AssetLoadable.js";
 import { Initiable } from "../lib/ntfc/Initiable.js";
+import { ColliderUtil } from "../lib/util/ColliderUtil.js";
+import { CollisionUtil } from "../lib/util/CollisionUtil.js";
 import { ImageUtil } from '../lib/util/ImageUtil.js';
 import { TileUtil } from "../lib/util/TileUtil.js";
 
@@ -17,6 +21,8 @@ export class AndroidLevel extends BaseLevel
 {
 
     readonly ANDOID_SPD:number=20;
+
+    readonly colissionUtil:CollisionUtil= CollisionUtil.getInstance();
 
     tilesRows:number = 15;
     tilesCols:number = 60;
@@ -32,8 +38,12 @@ export class AndroidLevel extends BaseLevel
     androidPunch:boolean=false;
     
 
-    androidSpriteStand1:Sprite;
-    androidSpriteStand2:Sprite;
+    //tanks to be destroyed
+    tankList:Sprite[];
+    tanksDestroyed:number=0;
+    
+    // androidSpriteStand1:Sprite;
+    // androidSpriteStand2:Sprite;
 
 
     //those will be invisible margins that will move the view when the player passes those
@@ -41,7 +51,22 @@ export class AndroidLevel extends BaseLevel
     marginRight:number;
 
 
-    //0 are empty frames, those are ignored when parsed but they should be tehre to organize other tiles,
+    //android jump related variables
+    jump:boolean=true;
+    onGround:boolean=true;
+    grav:number=2.5;
+
+
+    colliderList:Collider[];
+    colliderRows:number=15;
+    colliderCols:number=60;
+
+    colType:string="";
+
+    punchCollider:Collider;
+
+
+    //0 are empty frames, those are ignored when parsed but they should be there to organize other tiles,
     //like the ones at the bottom
     tileMap:any  =
         [
@@ -51,23 +76,39 @@ export class AndroidLevel extends BaseLevel
          0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
          0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
        
-         0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 21, 0, 0, 0, 0, 0, 0, 0,  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,  0, 0, 0, 0, 0, 0, 22, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-         0, 0, 0, 0, 0, 0, 0, 22, 0, 0, 0, 0, 24, 25, 0, 0, 0,26, 0, 0,  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 19, 0, 0, 0, 0, 0,  0, 0, 0, 0, 0, 0, 25, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-         0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,  0, 0, 0, 0, 0, 0, 0, 0, 19, 0, 0, 0, 0, 0,19, 0, 0, 0, 0, 0,  0, 0, 0, 0, 0, 0, 29, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+         0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 21, 0, 0, 0, 0, 0, 0,0,  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,24, 0, 0, 0, 0, 0, 0, 0,
+         0, 0, 0, 0, 0, 0, 0, 22, 0, 0, 0, 0,24,25, 0, 0, 0,26, 0,    0, 0, 0, 0, 0, 0, 0, 0,19, 0, 0, 0, 0, 0,19, 19, 0,0, 0, 0,  0, 0, 0, 0, 0,22,29,25, 0, 0, 0,21, 0,24, 0, 0, 0, 0, 0, 0, 0,
          0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-         0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+         0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,10,10,10, 0, 0, 0, 0, 0,  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+         0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,10, 0, 0, 0, 0,10, 0, 0, 0,  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
       
-         0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-         0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-         0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-         0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+         0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,  0, 0, 0, 0, 0, 0, 0, 0, 0,10, 0, 0, 0, 0, 0, 0, 0,10, 0, 0,  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+         0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,10, 0,  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+         0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,10,10, 0, 0, 0, 0, 0, 0, 0,  0, 0, 0, 0, 0, 0, 0,10, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 10, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+         0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,10,10, 0, 0, 0, 0, 0, 0, 0,  0, 0,10,10, 0, 0, 0,10, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
          9,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10, 10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10, 10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10
        
         ];
 
         colisionMap:any =
         [
-
+         0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+         0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+         0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+         0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+         0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+       
+         0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+         0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+         0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+         0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0,  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+         0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0,  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+       
+         0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,  0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0,  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+         0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0,  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+         0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0,  0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,  1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+         0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0,  0, 0, 1, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+         1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 ,1 ,1 ,1, 1, 1, 1,  1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 ,1 ,1 ,1 , 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 ,1 ,1 ,1 , 1, 1, 1
         ];
 
 
@@ -88,6 +129,7 @@ export class AndroidLevel extends BaseLevel
         break;
 
         case GameState.PLAYING:
+
             // this.camera.moveX(1);
 
             if(this.androidMoveLeft)
@@ -109,38 +151,150 @@ export class AndroidLevel extends BaseLevel
                     // console.log("removing android punch")
                     this.androidSprite.animationEnd=false;
                     this.androidPunch = false;
+                    this.punchCollider.setPosition(-16, 0);
                     this.androidSprite.setNewAnimation( this.imageMap.get( "androidStand" ) );
                 }
-               
+                else if( this.androidSprite.currentFrame==1)
+                {
+                    switch(this.androidSprite.xScale)
+                    {
+                        case -1:
+                            this.punchCollider.setPosition(this.androidSprite.getX()-10, this.androidSprite.getY()+8);
+                            break;
+                        case 1:
+                            this.punchCollider.setPosition(this.androidSprite.getX()+21, this.androidSprite.getY()+8);
+                            break;
+                    }
+                }
+                //check here if current frame !=1
+
+                //check here collision between tanks and punch
+                let cont=0;
+                for( let tank of this.tankList)
+                {console.log("cont: ",++cont)
+                    if( this.colissionUtil.spriteRectangleCollision( this.punchCollider, tank ) )
+                    {
+                        if(tank.image === this.imageMap.get("tank") )
+                        {
+                            this.punchCollider.setPosition(-16, 0);
+                            tank.setNewAnimation(this.imageMap.get("tankShattered"),{srcX:0, srcY:0, w:16, h:24, frames:9});
+                            this.tanksDestroyed+=1; console.log("break in cont: ", cont)
+                        }
+                        
+                        break;
+                    }
+                }
+
             }
 
+            for( let tank of this.tankList)
+            {
+                if( tank.image === this.imageMap.get("tankShattered") && tank.animationEnd )
+                {
+                    tank.setPosition(-16,-24);
+                }
+            }
+
+
+            
             this.checkPlayerMargings(delta);
+
+            //if jumping set new values for grav
+            if(this.jump || !this.onGround)
+            {
+                this.grav+=0.2;
+                if(this.grav >= 4)this.grav=4;
+            }
+            
+            //this updates Y position related to gravity/jump
+            this.androidSprite.moveY(this.grav);
+            
+           
+            //CHECK FOR TILE/COLLIDER COLLISIONS
+            for( let col of this.colliderList )
+            {
+
+                this.colType = this.colissionUtil.sideAndPushCollision( this.androidSprite, col, false);
+                // console.log(`colType: ${colName}`)
+                if( (this.colType === "bottom" ) && this.grav >= 0 )
+                {
+                    this.jump=false;//also means is inGround
+                    this.onGround=true;
+                    this.grav=0;
+                    if(this.androidMoveLeft || this.androidMoveRight)
+                        this.androidSprite.setNewAnimation( this.imageMap.get("androidWalking"),{srcX:0, srcY:0, w:16, h:30, frames:6});
+                    else
+                        this.androidSprite.setNewAnimation( this.imageMap.get( "androidStand" ) );
+                    break;
+                }
+                else if((this.colType === "top" ) && this.grav < 0 )
+                {
+                    this.grav = 0;
+                    break;
+                }
+                else
+                {
+                   if(!this.jump)
+                   {
+                    console.log("ONGROUND")
+                    this.onGround=false;
+                    let leftPointX:number= this.androidSprite.getX();
+                    let rightPointX:number= this.androidSprite.getX()+this.androidSprite.w;
+                    let pointY:number= this.androidSprite.getY()+this.androidSprite.h+1;
+                        if( this.colissionUtil.pointCollision(leftPointX, pointY, col.getX(), col.getY(), col.w, col.h ) ||
+                            this.colissionUtil.pointCollision(rightPointX, pointY, col.getX(), col.getY(), col.w, col.h ) )
+                        {
+                            this.onGround=true;
+                             break;
+                        }
+                   }
+                    
+                }
+              
+            }//for
+
+
 
         break;
         }
-    }
+    }//
 
 
     async init(){
         
-        await this.loadImages();
+        await this.loadImages();console.log("passing images")
 
         this.tiles = TileUtil.parse( this.tileMap, this.tilesCols, this.tilesRows, 16,16 );
-
+        this.colliderList = ColliderUtil.parse( this.colisionMap, this.colliderCols, this.colliderRows,16,16 );
 
         this.androidSprite = new Sprite(this.imageMap.get("androidStand"));
         this.androidSprite.setPosition(20, this.levelHeight - this.androidSprite.h - 16 );
         this.androidSprite.pivotX=this.androidSprite.w/2;//uset to set xScale at this point for all animations
         this.androidSprite.animationStepLimit=6;
 
-        this.androidSpriteStand1 = new Sprite( this.imageMap.get("androidStand") );
-        this.androidSpriteStand1.setPosition( 20, 30 );
-
-        this.androidSpriteStand2 = new Sprite( this.imageMap.get("androidStand") );
-        this.androidSpriteStand2.setPosition( 20, 65 );
-        this.androidSpriteStand2.xScale=-1;
-
         this.setMargings();
+
+
+        this.tankList = [];
+        for( let i=0; i < 8; i++ )
+        {
+            this.tankList[i] = new Sprite( this.imageMap.get("tank") );
+            this.tankList[i].animationLoop = AnimationLoop.STOPATEND;
+        }
+
+        this.tankList[0].setPosition( 240 ,this.levelHeight - this.tankList[0].h - 16)
+        this.tankList[1].setPosition( 320 ,this.levelHeight - this.tankList[0].h - 16)
+        this.tankList[2].setPosition( 64  ,this.levelHeight - this.tankList[0].h - 16)
+        this.tankList[3].setPosition( 544 ,144 - this.tankList[0].h - 16)
+        this.tankList[4].setPosition( 672  ,this.levelHeight - this.tankList[0].h - 16)
+        this.tankList[5].setPosition( 704  ,this.levelHeight - this.tankList[0].h - 16)
+        this.tankList[6].setPosition( 736  ,this.levelHeight - this.tankList[0].h - 16)
+        this.tankList[7].setPosition( 800  ,this.levelHeight - this.tankList[0].h - 16)
+
+
+        this.punchCollider= new Collider(-16,0,4,8);//outside the view
+
+
         // console.log(`tiles lenght ${this.tiles.length}`);
         // afther everything is loaded change state to playing
         this.gameState = GameState.PLAYING;
@@ -160,11 +314,17 @@ export class AndroidLevel extends BaseLevel
         let androidWeakPunchImg = await ImageUtil.getImage("/assets/platform/androidpunch.png").then(img=>img);
         this.imageMap.set("androidpunch", androidWeakPunchImg);
 
+        let androidJumpImg = await ImageUtil.getImage("/assets/platform/androidjump.png").then(img=>img);
+        this.imageMap.set("androidJump", androidJumpImg);
+
         let androidStandImg = await ImageUtil.getImage("/assets/platform/androidstand.png").then(img=>img);
         this.imageMap.set("androidStand", androidStandImg);
 
-        let androidStandImg2 = await ImageUtil.getImage("/assets/platform/androidstand.png").then(img=>img);
-        this.imageMap.set("androidStand2", androidStandImg2);
+        let tankImg = await ImageUtil.getImage("/assets/platform/tank.png").then(img=>img);
+        this.imageMap.set( "tank", tankImg );
+
+        let tankShatteredImg = await ImageUtil.getImage("/assets/platform/tank-sheet.png").then(img=>img);
+        this.imageMap.set( "tankShattered", tankShatteredImg );
 
     }
 
@@ -192,7 +352,9 @@ export class AndroidLevel extends BaseLevel
             ctx.fillStyle="#000";
             ctx.fillRect(0, this.levelHeight/2 - 8, this.levelWidth, this.levelHeight/2);
 
-            ctx.fillText( `left: ${this.androidMoveLeft} - rigth: ${this.androidMoveRight} - punch: ${this.androidPunch}`, 20,20);
+            // ctx.fillText( `left: ${this.androidMoveLeft} - rigth: ${this.androidMoveRight} - punch: ${this.androidPunch}`, 20,20);
+            // ctx.fillText( `Y+H: ${this.androidSprite.getY()+this.androidSprite.h} x: ${this.androidSprite.getX()}`, 20,20);
+            // ctx.fillText( `colType ${this.colType}`,20, 40);
 
             ctx.save();
             
@@ -201,35 +363,55 @@ export class AndroidLevel extends BaseLevel
             TileUtil.renderTiles( ctx, this.imageMap.get( "tileBackground" ), this.tiles );
 
 
+            //rendering tanks
+            for( let i=0; i < 8; i++ )
+            {
+                this.tankList[i].render(ctx)
+            }
             
-
-
             this.androidSprite.render( ctx );
 
+            
             // this.androidSpriteStand1.render(ctx);
             // this.androidSpriteStand2.render(ctx);
 
+
+
+
+            //uncomment below to draw bounding boxes of tiles and camera margings
             ctx.strokeStyle="white";
             // ctx.lineWidth=2;
 
-            //uncomment to hide camera margins
-            ctx.beginPath();
-            ctx.moveTo( this.camera.viewX+this.marginLeft-1, this.camera.viewY );
-            ctx.lineTo( this.camera.viewX+this.marginLeft-1, this.camera.viewHeight );
-            ctx.closePath();
-            ctx.stroke();
+            //uncomment to show camera margins
+            // ctx.beginPath();
+            // ctx.moveTo( this.camera.viewX+this.marginLeft-1, this.camera.viewY );
+            // ctx.lineTo( this.camera.viewX+this.marginLeft-1, this.camera.viewHeight );
+            // ctx.closePath();
+            // ctx.stroke();
 
-            ctx.beginPath();
-            ctx.moveTo( this.camera.viewX+this.marginRight, this.camera.viewY );
-            ctx.lineTo( this.camera.viewX+this.marginRight, this.camera.viewHeight );
-            ctx.closePath();
-            ctx.stroke();
+            // ctx.beginPath();
+            // ctx.moveTo( this.camera.viewX+this.marginRight, this.camera.viewY );
+            // ctx.lineTo( this.camera.viewX+this.marginRight, this.camera.viewHeight );
+            // ctx.closePath();
+            // ctx.stroke();
 
             // ctx.strokeRect(this.androidSpriteStand1.getX(), this.androidSpriteStand1.getY(), this.androidSpriteStand1.w,this.androidSpriteStand1.h);
             // ctx.strokeRect(this.androidSpriteStand2.getX(), this.androidSpriteStand2.getY(), this.androidSpriteStand2.w,this.androidSpriteStand2.h);
             //must be after we put the tiles, otherwise it wont show
             // ctx.fillStyle ="#000";
             // ctx.fillText("use A or D to move the view", this.camera.viewX+20, this.camera.viewY+20)
+
+            //uncomment to show tiles colliders
+            // this.colliderList.forEach( collider =>{
+            //     ctx.strokeRect( collider.getX(), collider.getY(), collider.w, collider.h );
+            // });
+
+
+            ctx.fillStyle ="#FFF";
+            ctx.fillText(`Tanks destroyed ${this.tanksDestroyed}/${this.tankList.length}`, this.camera.viewX+20, this.camera.viewY+20)
+
+            //uncomment to show punchCollider
+            // ctx.fillRect( this.punchCollider.getX(), this.punchCollider.getY(), this.punchCollider.w, this.punchCollider.h);
 
             ctx.restore();
             
@@ -243,6 +425,15 @@ export class AndroidLevel extends BaseLevel
     {
         switch( event.keyCode )
         {
+            case 87://W
+                if(!this.jump)
+                {
+                    this.androidSprite.setNewAnimation( this.imageMap.get("androidJump") )
+                    this.jump=true;
+                    this.grav=-4;
+                    this.onGround=false;
+                }
+                break;
             case 65: //A
                 // if( this.androidSprite.image !== this.imageMap.get("androidWalking") )
                 if(!this.androidMoveLeft && !this.androidPunch)
@@ -307,8 +498,8 @@ export class AndroidLevel extends BaseLevel
 
     checkPlayerMargings(delta:number)
     {
-        if( this.androidSprite.getX()+8 < this.camera.viewX+this.marginLeft ) this.camera.moveX( -this.ANDOID_SPD*delta);
-        if( this.androidSprite.getX()+8 > this.camera.viewX+this.marginRight ) this.camera.moveX( this.ANDOID_SPD*delta);
+        if( this.androidSprite.getX()+8 < this.camera.viewX+this.marginLeft ) this.camera.moveX( -this.ANDOID_SPD*delta );
+        if( this.androidSprite.getX()+8 > this.camera.viewX+this.marginRight ) this.camera.moveX( this.ANDOID_SPD*delta );
     }
 
 

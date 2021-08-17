@@ -1,6 +1,6 @@
-import { Point } from "../Point";
-import { Sprite } from "../Sprite";
-import { BaseShape } from "./BaseShape";
+import { Point } from "../Point.js";
+import { Sprite } from "../Sprite.js";
+import { BaseShape } from "./BaseShape.js";
 
 
 /**

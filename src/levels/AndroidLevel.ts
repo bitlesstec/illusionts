@@ -51,10 +51,11 @@ export class AndroidLevel extends BaseLevel
     marginRight:number;
 
 
-    //android jump related variables
-    jump:boolean=true;
+    //jump related variables
+    jump:boolean=false;
     onGround:boolean=true;
     grav:number=2.5;
+    ySpd:number=0;
 
 
     colliderList:Collider[];
@@ -143,7 +144,8 @@ export class AndroidLevel extends BaseLevel
             }
             
 
-            else if( this.androidPunch )
+            //else 
+            if( this.androidPunch )
             {
                 // console.log("androidPunch::",this.androidSprite.animationLoop)
                 if( this.androidSprite.animationEnd )
@@ -195,65 +197,52 @@ export class AndroidLevel extends BaseLevel
                 }
             }
 
-
-            
             this.checkPlayerMargings(delta);
 
-            //if jumping set new values for grav
-            if(this.jump || !this.onGround)
+            if( this.jump || !this.onGround )
             {
-                this.grav+=0.2;
-                if(this.grav >= 4)this.grav=4;
+                this.grav += 0.3;
+                if( this.grav >= 4)this.grav = 4;
             }
-            
-            //this updates Y position related to gravity/jump
+
+            // this.ySpd += this.grav;
+            // if( this.ySpd >= 4)this.ySpd = 4;
+
             this.androidSprite.moveY(this.grav);
-            
-           
-            //CHECK FOR TILE/COLLIDER COLLISIONS
+
+            let colside:string="";
             for( let col of this.colliderList )
             {
-
-                this.colType = this.colissionUtil.sideAndPushCollision( this.androidSprite, col, false);
-                // console.log(`colType: ${colName}`)
-                if( (this.colType === "bottom" ) && this.grav >= 0 )
+                colside = this.colissionUtil.sideAndPushCollision( this.androidSprite, col, false);
+                if( colside === "bottom" && this.ySpd >=0 )
                 {
-                    this.jump=false;//also means is inGround
-                    this.onGround=true;
-                    this.grav=0;
-                    if(this.androidMoveLeft || this.androidMoveRight)
+
+                    if( (this.androidMoveLeft || this.androidMoveRight) && this.androidSprite.image !== this.imageMap.get("androidWalking") )
+                    {
                         this.androidSprite.setNewAnimation( this.imageMap.get("androidWalking"),{srcX:0, srcY:0, w:16, h:30, frames:6});
-                    else
-                        this.androidSprite.setNewAnimation( this.imageMap.get( "androidStand" ) );
-                    break;
-                }
-                else if((this.colType === "top" ) && this.grav < 0 )
-                {
-                    this.grav = 0;
-                    break;
-                }
-                else
-                {
-                   if(!this.jump)
-                   {
-                    console.log("ONGROUND")
-                    this.onGround=false;
-                    let leftPointX:number= this.androidSprite.getX();
-                    let rightPointX:number= this.androidSprite.getX()+this.androidSprite.w;
-                    let pointY:number= this.androidSprite.getY()+this.androidSprite.h+1;
-                        if( this.colissionUtil.pointCollision(leftPointX, pointY, col.getX(), col.getY(), col.w, col.h ) ||
-                            this.colissionUtil.pointCollision(rightPointX, pointY, col.getX(), col.getY(), col.w, col.h ) )
-                        {
-                            this.onGround=true;
-                             break;
-                        }
-                   }
-                    
-                }
-              
-            }//for
+                    }
+                    else if( this.androidSprite.image === this.imageMap.get("androidJump") )
+                    {
+                        this.androidSprite.setNewAnimation( this.imageMap.get("androidStand"))
+                    }
 
+                    this.onGround=true;
+                    this.jump=false;
+                    this.grav-=this.grav;
+                     break;
+                }
+                else if( colside === "top" && this.ySpd <= 0)
+                {
+                    this.grav = 0;break;
+                }
+                
+            }
 
+            if( colside !== "bottom" /*&& this.ySpd > 0 */ )
+            {
+                // this.jump=true;
+                this.onGround = false;
+            }
 
         break;
         }
@@ -368,15 +357,11 @@ export class AndroidLevel extends BaseLevel
             {
                 this.tankList[i].render(ctx)
             }
-            
-            this.androidSprite.render( ctx );
 
+            this.androidSprite.render( ctx );
             
             // this.androidSpriteStand1.render(ctx);
             // this.androidSpriteStand2.render(ctx);
-
-
-
 
             //uncomment below to draw bounding boxes of tiles and camera margings
             ctx.strokeStyle="white";
@@ -430,7 +415,7 @@ export class AndroidLevel extends BaseLevel
                 {
                     this.androidSprite.setNewAnimation( this.imageMap.get("androidJump") )
                     this.jump=true;
-                    this.grav=-4;
+                    this.grav=-5;
                     this.onGround=false;
                 }
                 break;
@@ -442,7 +427,6 @@ export class AndroidLevel extends BaseLevel
                     this.androidSprite.setNewAnimation( this.imageMap.get("androidWalking"),{srcX:0, srcY:0, w:16, h:30, frames:6});
                     this.androidSprite.xScale = -1;
                 }
-                // this.androidSprite.moveX(-3);
             break;
 
             case 68: //D
@@ -453,7 +437,6 @@ export class AndroidLevel extends BaseLevel
                     this.androidSprite.setNewAnimation( this.imageMap.get("androidWalking"),{srcX:0, srcY:0, w:16, h:30, frames:6});
                     this.androidSprite.xScale = 1;
                 }
-                // this.androidSprite.moveX(3);
             break;
 
             case 32: //enter

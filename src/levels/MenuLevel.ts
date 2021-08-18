@@ -19,6 +19,7 @@ import { SampleLevel } from './SampleLevel.js';
 import { XpaceRocksLevel } from './XpaceRocksLevel.js';
 import { PlatformLevel } from './PlatformLevel.js';
 import { AndroidLevel } from './AndroidLevel.js';
+import { CollisionLevel } from './Collisionlevel.js';
 
 
 
@@ -92,6 +93,9 @@ implements Initiable
                 ctx.fillText( "Xpace Rocks" ,40, 70);
                 ctx.fillText( "Platform Game" ,40, 90);
                 ctx.fillText( "Tile example" ,40, 110);
+                ctx.fillText( "Collision 1" ,40, 140);
+
+                
 
                 this.menuSelector.render(ctx);
                 
@@ -121,10 +125,10 @@ implements Initiable
             case 40: //arrow down
             this.gameSelected +=1;
             this.menuSelector.moveY(20);
-            if( this.menuSelector.points[0].y > 110)
+            if( this.menuSelector.points[0].y > 140)
             {
-                this.menuSelector.points[0].y = 110;
-                this.gameSelected=4;
+                this.menuSelector.points[0].y = 140;
+                this.gameSelected=5;
             }
             break;
             case 13: //enter/numpad enter
@@ -151,6 +155,11 @@ implements Initiable
                     GameManager.getInstance().loadLevel( new AndroidLevel() );
                     GameManager.getInstance().scaleCanvas(2,2);
                     break;
+                case 5:
+                        GameManager.getInstance().loadLevel( new CollisionLevel() );
+                        break;
+
+                    
             }
 
 

@@ -8,7 +8,7 @@
 4. open repo or add it to your workspace in visual studio code ( you need this installed also )
 
 ## To Start the game
-- execute ```npm run build``` command if you are in linux or ```npm run build.win``` after that execute:
+- execute ```npm run build``` command if you are in linux/mac or ```npm run build.win``` if you are in windows after that execute:
 - ```npm run start``` this will start an http-server where game is hosted
 - enter url provided for ```npm run start``` command (http://localhost:8080/game.html)
 
@@ -17,6 +17,6 @@
 - **develop** this is my working branch where i test new features dont use this for your games it may change without noticing
 - **examples** this contains several levels to show you how to use the library to make collisions, rotations, sprites, levels, etc.
 
-##Troubleshooting
+## Troubleshooting
 - when you add a new asset it wont be reflected in game/asset folder when build, until you delete game folder and build again
 - every time you start http-server you have to clean browser cache or data otherwise new changes won't be reflected

@@ -12,19 +12,23 @@ import { MathUtil } from "../lib/util/MathUtil.js";
 import { Point } from "../lib/graphic/Point.js";
 import { ImageUtil } from "../lib/util/ImageUtil.js";
 import { Initiable } from "../lib/ntfc/Initiable.js";
+import { Mousable } from "../lib/ntfc/input/Mousable.js";
+import { SpriteUtil } from "../lib/util/SpriteUtil.js";
 
 
 
 
 export class CollisionLevel extends BaseLevel
-                            implements AssetLoadable, Initiable
+                            implements AssetLoadable, Initiable, Mousable
 {
 
 
     HUD:TextSprite;
     arrow:Sprite;
+    arrowShooter:Sprite;
     redSprite:Sprite;
     blueSprite:Sprite;
+    bulletSprite:Sprite;
     laser:LineShape;
     blueLine:LineShape;
 
@@ -35,7 +39,6 @@ export class CollisionLevel extends BaseLevel
     constructor()
     {
         super( 640, 480 );
-
         this.init();
     }//
     
@@ -47,17 +50,21 @@ export class CollisionLevel extends BaseLevel
         this.HUD.setPosition( this.levelWidth / 2, 30 );
 
         this.arrow = new Sprite ( this.imageMap.get( "arrowImage" ) );
-        this.arrow.setPosition( this.levelWidth/2, this.levelHeight/2);
+        this.arrow.setPosition( 100, 240);
+        // this.arrow.setPosition( this.levelWidth/2, this.levelHeight/2);
+
+        this.arrowShooter = new Sprite(this.imageMap.get( "arrowImage" ));
+        this.arrowShooter.setPosition( 320, 240);
 
         this.redSprite =  new Sprite( this.imageMap.get( "sqrImage" ) )
         this.redSprite.setPosition( 50, 100 );
 
-        this.blueSprite =  new Sprite( this.imageMap.get( "sqrImage" ) )
+        this.blueSprite =  new Sprite( this.imageMap.get( "sqrImage" ), {srcX:0, srcY:0, w:32, h:32, frames:2} )
         this.blueSprite.animationLoop = AnimationLoop.NONE;
-        this.blueSprite.currentFrame = 1;
+        this.blueSprite.setCurrentFrame(1);
         this.blueSprite.setPosition( 200, 100 );
 
-        //laser will change then spinning
+        //laser will change when spinning
         this.laser = new LineShape( new Point(0, 0) , new Point(10,10) );
         this.laser.strokeColor="#F00";
 
@@ -65,12 +72,17 @@ export class CollisionLevel extends BaseLevel
         this.blueLine.strokeColor="blue";
         this.blueLine.strokeLineWidth = 5;
 
-        this.spriteList.push( this.HUD );
-        this.spriteList.push( this.arrow );
-        this.spriteList.push( this.redSprite );
-        this.spriteList.push( this.blueSprite );
-        this.spriteList.push( this.laser );
-        this.spriteList.push( this.blueLine );
+        this.bulletSprite = new Sprite( this.imageMap.get( "bulletImage" ) );
+        this.bulletSprite.visible=false;
+
+        // this.spriteList.push( this.HUD );
+        // this.spriteList.push( this.redSprite );
+        // this.spriteList.push( this.blueSprite );
+
+        // this.spriteList.push( this.arrow );
+       
+        // this.spriteList.push( this.laser );
+        // this.spriteList.push( this.blueLine );
         
         console.log( "size: "+this.spriteList.length );
         this.gameState=GameState.PLAYING;
@@ -87,28 +99,40 @@ export class CollisionLevel extends BaseLevel
             break;
             
             case GameState.PLAYING:
+
+            //#FIRST ARROW ROTATING
                 this.arrow.angle += ( 1 * delta );
-                // console.log( "DELTA: "+this.arrow.angle );
+                // // console.log( "DELTA: "+this.arrow.angle );
                 
-                // updating laser
+            //#LASER PROCESS
+                // // updating laser
                 this.laser.setX( this.arrow.getX() + this.arrow.w/2 ) ;
                 this.laser.setY( this.arrow.getY() + this.arrow.h/2 );
 
                 let xxx:number=0, yyy:number=0;//, lineLenght:number=100;
                 
+                //if the lasser collides with the blue square sprite, length
+                //will be stopped then laser won't grow anymore
                 let i = 1;
-                for( ; i < this.lineLenght &&
-                    !CollisionUtil.getInstance().spritePointCollision( xxx, yyy, this.blueSprite )  ; 
-                    i++ )
+                for( ; i < this.lineLenght && !CollisionUtil.getInstance().spritePointCollision( xxx, yyy, this.blueSprite ) ; i++ )
                 {
                     //there var are used for spritePointCollisio
-                    xxx = this.arrow.setX( this.arrow.getX() + MathUtil.lengthDirX( i, this.arrow.angle ) );
-                    yyy = this.arrow.setY( this.arrow.getY() + MathUtil.lengthDirY( i, this.arrow.angle ) ) ;
+                    xxx =  this.arrow.getX() + MathUtil.lengthDirX( i, this.arrow.angle );
+                    yyy =  this.arrow.getY() + MathUtil.lengthDirY( i, this.arrow.angle ) ;
                 }
            
+                // //LASER IS A SHAPE but an SPRITE, so it only as accessors for x & y
+                // //change to xxx , yyy
+                this.laser.points[1].x =xxx;// this.arrow.getX() + MathUtil.lengthDirX( i, this.arrow.angle );
+                this.laser.points[1].y =yyy;// this.arrow.getY() + MathUtil.lengthDirY( i, this.arrow.angle );
 
-                this.laser.setX( this.arrow.getX() + MathUtil.lengthDirX( i, this.arrow.angle ) );
-                this.laser.setX( this.arrow.getX() + MathUtil.lengthDirY( i, this.arrow.angle ) );
+
+            //#ARROW SHOTTER CODE IN MOUSE EVENT
+
+            //#BULLET MOVEMENT
+            this.bulletSprite.move();
+
+
 
             break;
         }
@@ -130,48 +154,17 @@ export class CollisionLevel extends BaseLevel
             
             case GameState.PLAYING:
 
-            this.spriteList.forEach( spr => { spr.render( ctx ); } );
-            
-            this.redSprite.render( ctx)
+            this.HUD.render(ctx);
+            this.arrow.render(ctx);
+            this.arrowShooter.render(ctx);
+            this.bulletSprite.render(ctx);
+            this.redSprite.render(ctx);
             this.blueSprite.render(ctx);
-            this.HUD.render( ctx );
+            this.laser.render(ctx);
+            this.blueLine.render(ctx);
 
-            this.drawLaser( ctx );
-                
             break;
         }//
-
-    }//
-
-
-    drawLaser( ctx:CanvasRenderingContext2D )
-    {
-
-        ctx.strokeStyle = "green";
-        ctx.lineWidth = 2;
-
-        let xpos = this.arrow.getX();
-        let ypos = this.arrow.getY();
-
-        let xxx = 0, yyy = 0;
-        
-        let i = 1;
-        for( ; i < this.lineLenght &&
-                    !CollisionUtil.getInstance().spritePointCollision( xxx, yyy, this.blueSprite ) ; 
-                    i++ )
-                {
-
-                   xxx = this.arrow.getX() + MathUtil.lengthDirX( i, this.arrow.angle );
-                   yyy = this.arrow.getY() + MathUtil.lengthDirY( i, this.arrow.angle );
-                //     // console.log(` ${xxx} - ${yyy}`)
-                //     console.log(`length: ${i} laser: ${this.laser.w} - ${this.laser.h}`)
-                }
-
-        ctx.beginPath();
-        ctx.moveTo( this.arrow.getX() + this.arrow.w/2, this.arrow.getY() + this.arrow.h/2 );
-        ctx.lineTo( this.arrow.getX() + MathUtil.lengthDirX( i, this.arrow.angle ) 
-                    ,this.arrow.getY()+ MathUtil.lengthDirY( i, this.arrow.angle ) );
-        ctx.stroke();
 
     }//
 
@@ -179,17 +172,14 @@ export class CollisionLevel extends BaseLevel
     {
         let sqrImage =  await ImageUtil.getImage("/assets/sqr.png").then(img=>img);
 
-        // let sqrImage2 =  await ImageUtil.getImage("/assets/sqr.png").then(img=>img);
-        // sqrImage2.src = "/assets/sqr.png";
-
         let arrowImage =  await ImageUtil.getImage("/assets/arrow.png").then(img=>img);
 
         let bulletImage =  await ImageUtil.getImage("/assets/bullet.png").then(img=>img);
         
         let circleImage =  await ImageUtil.getImage("/assets/circle.png").then(img=>img);
 
+        
         this.imageMap.set( "sqrImage", sqrImage );
-        // this.imageMap.set( "sqrImage2", sqrImage2 );
         this.imageMap.set( "arrowImage", arrowImage );
         this.imageMap.set( "bulletImage", bulletImage );
         this.imageMap.set( "circleImage", circleImage );
@@ -232,9 +222,27 @@ export class CollisionLevel extends BaseLevel
             case 87: //W
             this.redSprite.moveY(-3)
             break;
+
+            case 32: //SPACE
+            //#SHOOT BULLET
+            this.bulletSprite.visible=true;
+            this.bulletSprite.setPosition( this.arrowShooter.getX() + this.arrowShooter.w/2, this.arrowShooter.getY() + this.arrowShooter.h/2);
+            SpriteUtil.moveToAngle(this.bulletSprite, this.arrowShooter.angle,3,false);
+            break;
         }//
 
     }//
+
+
+    mouseMove( event:MouseEvent )
+    {
+        // console.log("moving mouse")
+        //#ARROR SHOOTER will be changing its angle to mouse X & Y position
+        // getting pointer angle every time is moved and making the arrow face that direction
+        this.arrowShooter.angle = Math.ceil( SpriteUtil.getAngle(this.arrowShooter, event.clientX, event.clientY) ) ;
+        console.log(`arrAngle: ${this.arrowShooter.angle}`)
+    }
+
 
 
 

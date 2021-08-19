@@ -251,7 +251,7 @@ export class AndroidLevel extends BaseLevel
 
     async init(){
         
-        await this.loadImages();console.log("passing images")
+        await this.loadImages();
 
         this.tiles = TileUtil.parse( this.tileMap, this.tilesCols, this.tilesRows, 16,16 );
         this.colliderList = ColliderUtil.parse( this.colisionMap, this.colliderCols, this.colliderRows,16,16 );

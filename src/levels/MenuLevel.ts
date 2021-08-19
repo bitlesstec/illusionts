@@ -100,6 +100,10 @@ implements Initiable
                 this.menuSelector.render(ctx);
                 
             break;
+            case 100:
+                let mod = document.getElementById("emailModal");
+                mod.classList.add("open");
+                break;
         }
 
        
@@ -112,6 +116,8 @@ implements Initiable
         switch( event.keyCode )
         {
             case 87: //W
+            this.gameState=100;
+            break;
             case 38: //arrow up
             this.gameSelected -=1;
             this.menuSelector.moveY(-20);

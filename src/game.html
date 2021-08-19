@@ -13,9 +13,104 @@
     margin-right: auto;
     margin-top: 100px;
 }
+
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    display: none;
+    overflow: auto;
+    background-color: #000000;
+    background-color: rgba(0, 0, 0, 0.7);
+    z-index: 9999;
+}
+
+.modal-window {
+    position: relative;
+    background-color: #FFFFFF;
+    min-width: 30%;
+    max-width: 100%;
+    margin: 10% auto;
+    padding: 20px;
+}
+
+.modal-window.small {
+    width: 30%;
+}
+
+.modal-window.large {
+    width: 75%;
+}
+
+.close {
+    position: absolute;
+    top: 0;
+    right: 0;
+    color: rgba(0,0,0,0.3);
+    height: 30px;
+    width: 30px;
+    font-size: 30px;
+    line-height: 30px;
+    text-align: center;
+}
+
+.close:hover,
+.close:focus {
+    color: #000000;
+    cursor: pointer;
+}
+
+.open {
+    display: block;
+}
+
 </style>
+<script>
+    document.addEventListener('click', function (e) {
+    e = e || window.event;
+    var target = e.target || e.srcElement;
+
+    if (target.hasAttribute('data-toggle') && target.getAttribute('data-toggle') == 'modal') {
+        if (target.hasAttribute('data-target')) {
+            var m_ID = target.getAttribute('data-target');
+            document.getElementById(m_ID).classList.add('open');
+            e.preventDefault();
+        }
+    }
+
+    // Close modal window with 'data-dismiss' attribute or when the backdrop is clicked
+    if ((target.hasAttribute('data-dismiss') && target.getAttribute('data-dismiss') == 'modal') || target.classList.contains('modal')) {
+        var modal = document.querySelector('[class="modal open"]');
+        modal.classList.remove('open');
+        e.preventDefault();
+    }
+}, false);
+
+/**
+ * this function will send user email to game services 
+ */
+function submitEmail(e){
+    e.preventDefault();
+        console.log("email form submited");
+    return false;
+}
+
+</script>
     </head>
     <body>
+        <div id="emailModal" class="modal">
+            <div class="modal-window">
+                <h3>A Basic Modal</h3>
+                    <form onsubmit="return submitEmail(event)" >
+                        <label for="email">Email:</label>
+                        <input type="email" id="email" name="email"><br><br>
+                        <input type="submit" value="Submit" />
+                    </form>
+                <button data-dismiss="modal">Dismiss</button>
+            </div>
+        </div>
         <!-- you don't need to update this file unless you want to change 
         screen dimensions  -->
         <canvas id="canvas" width="640" height="480" tabindex="1" > </canvas>

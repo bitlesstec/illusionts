@@ -53,7 +53,7 @@ export class CollisionLevel extends BaseLevel
         this.arrow.setPosition( 100, 240);
         // this.arrow.setPosition( this.levelWidth/2, this.levelHeight/2);
 
-        this.arrowShooter = new Sprite(this.imageMap.get( "arrowImage" ));
+        this.arrowShooter = new Sprite(this.imageMap.get( "orangeArrow" ));
         this.arrowShooter.setPosition( 320, 240);
 
         this.redSprite =  new Sprite( this.imageMap.get( "sqrImage" ) )
@@ -178,11 +178,13 @@ export class CollisionLevel extends BaseLevel
         
         let circleImage =  await ImageUtil.getImage("/assets/circle.png").then(img=>img);
 
+        let orangeArrowImage =  await ImageUtil.getImage("/assets/orangeArrow.png").then(img=>img);
         
         this.imageMap.set( "sqrImage", sqrImage );
         this.imageMap.set( "arrowImage", arrowImage );
         this.imageMap.set( "bulletImage", bulletImage );
         this.imageMap.set( "circleImage", circleImage );
+        this.imageMap.set( "orangeArrow", orangeArrowImage );
 
     }
 
@@ -239,7 +241,7 @@ export class CollisionLevel extends BaseLevel
         // console.log("moving mouse")
         //#ARROR SHOOTER will be changing its angle to mouse X & Y position
         // getting pointer angle every time is moved and making the arrow face that direction
-        this.arrowShooter.angle = Math.ceil( SpriteUtil.getAngle(this.arrowShooter, event.clientX, event.clientY) ) ;
+        this.arrowShooter.angle = SpriteUtil.getAngle(this.arrowShooter, event.clientX, event.clientY);
         console.log(`arrAngle: ${this.arrowShooter.angle}`)
     }
 

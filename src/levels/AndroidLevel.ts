@@ -1,8 +1,10 @@
+import { Config } from "../lib/cfg/Config.js";
 import { AnimationLoop } from "../lib/graphic/AnimationLoop.js";
 import { Collider } from "../lib/graphic/shape/Collider.js";
 import { Sprite } from "../lib/graphic/Sprite.js";
 import { Tile } from "../lib/graphic/Tile.js";
 import { BaseLevel } from "../lib/level/BaseLevel.js";
+import { GameManager } from "../lib/manager/GameManager.js";
 import { GameState } from "../lib/manager/GameState.js";
 import { AssetLoadable } from "../lib/ntfc/AssetLoadable.js";
 import { Initiable } from "../lib/ntfc/Initiable.js";
@@ -51,10 +53,11 @@ export class AndroidLevel extends BaseLevel
     marginRight:number;
 
 
-    //android jump related variables
-    jump:boolean=true;
+    //jump related variables
+    jump:boolean=false;
     onGround:boolean=true;
     grav:number=2.5;
+    ySpd:number=0;
 
 
     colliderList:Collider[];
@@ -143,7 +146,8 @@ export class AndroidLevel extends BaseLevel
             }
             
 
-            else if( this.androidPunch )
+            //else 
+            if( this.androidPunch )
             {
                 // console.log("androidPunch::",this.androidSprite.animationLoop)
                 if( this.androidSprite.animationEnd )
@@ -169,16 +173,16 @@ export class AndroidLevel extends BaseLevel
                 //check here if current frame !=1
 
                 //check here collision between tanks and punch
-                let cont=0;
+                
                 for( let tank of this.tankList)
-                {console.log("cont: ",++cont)
+                {
                     if( this.colissionUtil.spriteRectangleCollision( this.punchCollider, tank ) )
                     {
                         if(tank.image === this.imageMap.get("tank") )
                         {
                             this.punchCollider.setPosition(-16, 0);
                             tank.setNewAnimation(this.imageMap.get("tankShattered"),{srcX:0, srcY:0, w:16, h:24, frames:9});
-                            this.tanksDestroyed+=1; console.log("break in cont: ", cont)
+                            this.tanksDestroyed+=1;
                         }
                         
                         break;
@@ -195,65 +199,52 @@ export class AndroidLevel extends BaseLevel
                 }
             }
 
-
-            
             this.checkPlayerMargings(delta);
 
-            //if jumping set new values for grav
-            if(this.jump || !this.onGround)
+            if( this.jump || !this.onGround )
             {
-                this.grav+=0.2;
-                if(this.grav >= 4)this.grav=4;
+                this.grav += 0.3;
+                if( this.grav >= 4)this.grav = 4;
             }
-            
-            //this updates Y position related to gravity/jump
+
+            // this.ySpd += this.grav;
+            // if( this.ySpd >= 4)this.ySpd = 4;
+
             this.androidSprite.moveY(this.grav);
-            
-           
-            //CHECK FOR TILE/COLLIDER COLLISIONS
+
+            let colside:string="";
             for( let col of this.colliderList )
             {
-
-                this.colType = this.colissionUtil.sideAndPushCollision( this.androidSprite, col, false);
-                // console.log(`colType: ${colName}`)
-                if( (this.colType === "bottom" ) && this.grav >= 0 )
+                colside = this.colissionUtil.sideAndPushCollision( this.androidSprite, col, false);
+                if( colside === "bottom" && this.ySpd >=0 )
                 {
-                    this.jump=false;//also means is inGround
-                    this.onGround=true;
-                    this.grav=0;
-                    if(this.androidMoveLeft || this.androidMoveRight)
+
+                    if( (this.androidMoveLeft || this.androidMoveRight) && this.androidSprite.image !== this.imageMap.get("androidWalking") )
+                    {
                         this.androidSprite.setNewAnimation( this.imageMap.get("androidWalking"),{srcX:0, srcY:0, w:16, h:30, frames:6});
-                    else
-                        this.androidSprite.setNewAnimation( this.imageMap.get( "androidStand" ) );
-                    break;
-                }
-                else if((this.colType === "top" ) && this.grav < 0 )
-                {
-                    this.grav = 0;
-                    break;
-                }
-                else
-                {
-                   if(!this.jump)
-                   {
-                    console.log("ONGROUND")
-                    this.onGround=false;
-                    let leftPointX:number= this.androidSprite.getX();
-                    let rightPointX:number= this.androidSprite.getX()+this.androidSprite.w;
-                    let pointY:number= this.androidSprite.getY()+this.androidSprite.h+1;
-                        if( this.colissionUtil.pointCollision(leftPointX, pointY, col.getX(), col.getY(), col.w, col.h ) ||
-                            this.colissionUtil.pointCollision(rightPointX, pointY, col.getX(), col.getY(), col.w, col.h ) )
-                        {
-                            this.onGround=true;
-                             break;
-                        }
-                   }
-                    
-                }
-              
-            }//for
+                    }
+                    else if( this.androidSprite.image === this.imageMap.get("androidJump") )
+                    {
+                        this.androidSprite.setNewAnimation( this.imageMap.get("androidStand"))
+                    }
 
+                    this.onGround=true;
+                    this.jump=false;
+                    this.grav-=this.grav;
+                     break;
+                }
+                else if( colside === "top" && this.ySpd <= 0)
+                {
+                    this.grav = 0;break;
+                }
+                
+            }
 
+            if( colside !== "bottom" /*&& this.ySpd > 0 */ )
+            {
+                // this.jump=true;
+                this.onGround = false;
+            }
 
         break;
         }
@@ -262,7 +253,11 @@ export class AndroidLevel extends BaseLevel
 
     async init(){
         
-        await this.loadImages();console.log("passing images")
+        // GameManager.getInstance().setFont( Config.DEFAULT_FONT_NAME, Config.DFLT_FNT_NAME_PATH );
+
+        
+
+        await this.loadImages();
 
         this.tiles = TileUtil.parse( this.tileMap, this.tilesCols, this.tilesRows, 16,16 );
         this.colliderList = ColliderUtil.parse( this.colisionMap, this.colliderCols, this.colliderRows,16,16 );
@@ -294,6 +289,9 @@ export class AndroidLevel extends BaseLevel
 
         this.punchCollider= new Collider(-16,0,4,8);//outside the view
 
+
+        //SETTING AGAIN FONT BECAUSE resize RESETS canvas STATE
+        GameManager.getInstance().setFont(5,"press-start");//  = "10px press-start";
 
         // console.log(`tiles lenght ${this.tiles.length}`);
         // afther everything is loaded change state to playing
@@ -368,15 +366,11 @@ export class AndroidLevel extends BaseLevel
             {
                 this.tankList[i].render(ctx)
             }
-            
-            this.androidSprite.render( ctx );
 
+            this.androidSprite.render( ctx );
             
             // this.androidSpriteStand1.render(ctx);
             // this.androidSpriteStand2.render(ctx);
-
-
-
 
             //uncomment below to draw bounding boxes of tiles and camera margings
             ctx.strokeStyle="white";
@@ -430,7 +424,7 @@ export class AndroidLevel extends BaseLevel
                 {
                     this.androidSprite.setNewAnimation( this.imageMap.get("androidJump") )
                     this.jump=true;
-                    this.grav=-4;
+                    this.grav=-5;
                     this.onGround=false;
                 }
                 break;
@@ -442,7 +436,6 @@ export class AndroidLevel extends BaseLevel
                     this.androidSprite.setNewAnimation( this.imageMap.get("androidWalking"),{srcX:0, srcY:0, w:16, h:30, frames:6});
                     this.androidSprite.xScale = -1;
                 }
-                // this.androidSprite.moveX(-3);
             break;
 
             case 68: //D
@@ -453,7 +446,6 @@ export class AndroidLevel extends BaseLevel
                     this.androidSprite.setNewAnimation( this.imageMap.get("androidWalking"),{srcX:0, srcY:0, w:16, h:30, frames:6});
                     this.androidSprite.xScale = 1;
                 }
-                // this.androidSprite.moveX(3);
             break;
 
             case 32: //enter

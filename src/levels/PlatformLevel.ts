@@ -1,5 +1,7 @@
+import { Config } from "../lib/cfg/Config.js";
 import { Tile } from "../lib/graphic/Tile.js";
 import { BaseLevel } from "../lib/level/BaseLevel.js";
+import { GameManager } from "../lib/manager/GameManager.js";
 import { GameState } from "../lib/manager/GameState.js";
 import { AssetLoadable } from "../lib/ntfc/AssetLoadable.js";
 import { Initiable } from "../lib/ntfc/Initiable.js";
@@ -8,8 +10,13 @@ import { TileUtil } from "../lib/util/TileUtil.js";
 
 
 /**
- * this levels shows you how to create a tile background and the use of
- * camera views
+ * this levels shows you how to:
+ * - use and create tiles background and the use of
+ * - use camera views
+ * - make a platform game with attack and jump mechanics
+ * - create HUD messages
+ * - create destructible objects
+ * - load assets to be used to crate different objects in the game
  */
 export class PlatformLevel extends BaseLevel
                            implements AssetLoadable, Initiable
@@ -69,12 +76,10 @@ export class PlatformLevel extends BaseLevel
 
 
     async init(){
-        
         await this.loadImages();
 
         this.tiles = TileUtil.parse( this.tileMap,  this.tilesCols, this.tilesRows, 32,32 );
 
-        console.log(`tiles lenght ${this.tiles.length}`);
         // afther everything is loaded change state to playing
         this.gameState = GameState.PLAYING;
     }

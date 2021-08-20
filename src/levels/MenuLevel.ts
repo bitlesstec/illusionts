@@ -1,41 +1,28 @@
-import { Sprite } from '../lib/graphic/Sprite.js';
 import { BaseLevel } from '../lib/level/BaseLevel.js';
 import { GameManager } from '../lib/manager/GameManager.js';
 import { GameState } from '../lib/manager/GameState.js';
-import { AssetLoadable } from '../lib/ntfc/AssetLoadable.js';
 import { CircleShape } from '../lib/graphic/shape/CircleShape.js';
-import { ImageUtil } from '../lib/util/ImageUtil.js';
 import { Initiable } from '../lib/ntfc/Initiable.js';
 import { Point } from '../lib/graphic/Point.js';
-import { LineShape } from '../lib/graphic/shape/LineShape.js';
-import { PolygonShape } from '../lib/graphic/shape/PolygonShape.js';
-import { ImageMeasures } from '../lib/graphic/ImageMeasures.js';
-import { CollisionUtil } from '../lib/util/CollisionUtil.js';
-import { TileUtil } from '../lib/util/TileUtil.js';
-import { TileMap } from './TileMap.js';
-import { Tile } from '../lib/graphic/Tile.js';
-import { HUDSprite } from '../lib/graphic/HUDSprite.js';
 import { SampleLevel } from './SampleLevel.js';
 import { XpaceRocksLevel } from './XpaceRocksLevel.js';
 import { PlatformLevel } from './PlatformLevel.js';
 import { AndroidLevel } from './AndroidLevel.js';
+import { CollisionLevel } from './Collisionlevel.js';
 
-
-
-
-
-
+/**
+ * this is a level that creates a menu to load other levels
+ * which are examples of how to use this each level shows a
+ * different way to use this library for different kind of games
+ */
 export class MenuLevel extends BaseLevel
-implements Initiable
+                       implements Initiable
 {
-
-
     menuSelector :CircleShape;
     gameSelected:number = 1;
     
     constructor()
     {
-       
         //setting level width and height
         super( 640, 480 );
         this.init(); //init can be also here instead GAMESTATE.LOADING
@@ -92,10 +79,15 @@ implements Initiable
                 ctx.fillText( "Xpace Rocks" ,40, 70);
                 ctx.fillText( "Platform Game" ,40, 90);
                 ctx.fillText( "Tile example" ,40, 110);
+                ctx.fillText( "Collision 1" ,40, 130);
 
                 this.menuSelector.render(ctx);
                 
             break;
+            case 100:
+                let mod = document.getElementById("emailModal");
+                mod.classList.add("open");
+                break;
         }
 
        
@@ -108,6 +100,8 @@ implements Initiable
         switch( event.keyCode )
         {
             case 87: //W
+            // this.gameState=100; //@TEST MORE
+            // break;
             case 38: //arrow up
             this.gameSelected -=1;
             this.menuSelector.moveY(-20);
@@ -121,10 +115,10 @@ implements Initiable
             case 40: //arrow down
             this.gameSelected +=1;
             this.menuSelector.moveY(20);
-            if( this.menuSelector.points[0].y > 110)
+            if( this.menuSelector.points[0].y > 140)
             {
-                this.menuSelector.points[0].y = 110;
-                this.gameSelected=4;
+                this.menuSelector.points[0].y = 140;
+                this.gameSelected=5;
             }
             break;
             case 13: //enter/numpad enter
@@ -151,14 +145,13 @@ implements Initiable
                     GameManager.getInstance().loadLevel( new AndroidLevel() );
                     GameManager.getInstance().scaleCanvas(2,2);
                     break;
+                case 5:
+                        GameManager.getInstance().loadLevel( new CollisionLevel() );
+                        break; 
             }
-
-
             // GameManager.getInstance().loadLevel( levelToLoad );
             // break;
         }//
     }
-
-
 
 }

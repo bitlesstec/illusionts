@@ -156,7 +156,7 @@ export class Sprite extends BaseShape
 
             if( this.angle != 0 || this.xScale != 1 || this.yScale != 1 )
             {
-                //if pivot set center will be pivot point, if not will
+                //if pivot is set, center will be pivot point, if not will
                 //be the center of the current sprite
                 let centerX:number= this.pivotX?this.pivotX:this.w/2;
                 let centerY:number= this.pivotY?this.pivotY:this.h/2;
@@ -241,6 +241,21 @@ export class Sprite extends BaseShape
             }////
 
         }///
+    }//
+
+    /**
+     * this will set current frame of animation,
+     * remember frames starts at position 0, so if you have an animation with 3
+     * frames, last frame will be 2 ( frame.length - 1 )
+     * @param index 
+     */
+    setCurrentFrame(index?:number)
+    {
+        this.srcX=0;
+        if(index >= this.lastFrame)
+           this.srcX = this.lastFrame * this.w;
+        else if(index)
+           this.srcX = this.currentFrame * this.w;
     }
 
 }//

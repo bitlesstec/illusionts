@@ -287,66 +287,6 @@ let vyabs = Math.abs( vy );
 }//
 
 
-bothAxisCollision( spr1:Sprite | Collider, spr2:Sprite | Collider ):string//, push:boolean = false ):string
-{
-    
-let collisionSide:string = "none";
-
-let vx:number = this.getDistance( spr2.getX(), spr2.w, spr1.getX(), spr1.w );
-let vy:number = this.getDistance( spr2.getY(), spr2.h, spr1.getY(), spr1.h );
-
-let combinedHalfWidth = this.getCombinedHalf( spr1.w, spr2.w );
-let combinedHalfHeight= this.getCombinedHalf( spr1.h, spr2.h );
-
-let vxabs = Math.abs( vx );
-let vyabs = Math.abs( vy );
-
-        if( (vxabs < combinedHalfWidth) && (vyabs < combinedHalfHeight) )
-        {
-
-        let overlapX = combinedHalfWidth - vxabs; 
-        let overlapY = combinedHalfHeight - vyabs;
-            
-            if( overlapX >= overlapY )
-            {
-                    if( vy > 0 )
-                    {
-                        collisionSide = "top";
-                        // if( push )spr2.points[0].y-=1; 
-                        spr1.points[0].y+= overlapY;//   setY(s1.getY() + overlapY);
-                    }
-                    else
-                    {
-                        collisionSide = "bottom";
-                        // if( push )spr2.points[0].y+=1;//   .setY(spr2.getY()+1);
-                        spr1.points[0].y-= overlapY;//   setY(spr1.getY() - overlapY);
-                    }
-
-            }
-            else
-            {
-
-                        if( vx > 0 )
-                        {
-                            collisionSide = "left";
-                            // if( push )spr2.points[0].x-=1;//   setX(spr2.getX()-1);
-                            spr1.points[0].x+=overlapX;         //  setX( spr1.getX() + overlapX );
-                        }
-                        else
-                        {
-                            collisionSide = "right";
-                        //    if( push )spr2.points[0].x+=1;  //setX(spr2.getX()+1);
-                           spr1.points[0].x-=overlapX;    //setX(spr1.getX()-overlapX);
-                        }
-
-            }//
-
-        }
-        return collisionSide;
-}//
-
-
-
 /**
  * this checks if there is a collision or intersection
  * between 2 lines

@@ -59,7 +59,7 @@ export class LineShape extends BaseShape
      */
     drawLine( ctx:CanvasRenderingContext2D )
     {
-        ctx.strokeStyle = this.fillColor;
+        ctx.strokeStyle = this.strokeColor;
         ctx.lineWidth = this.strokeLineWidth;
 
         ctx.beginPath();

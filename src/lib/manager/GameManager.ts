@@ -30,7 +30,7 @@ import {Config} from "../cfg/Config.js";
     step:number;
     
     canvas:HTMLCanvasElement;
-    context: CanvasRenderingContext2D;
+    context2D: CanvasRenderingContext2D;
     fontName:string;
 
     //map to save persistent data along levels
@@ -60,20 +60,22 @@ import {Config} from "../cfg/Config.js";
         this.step = 1/this.fps;
         this.gameData= new Map<string, string>();
 
-        this.setFont( Config.DEFAULT_FONT_NAME, Config.DFLT_FNT_NAME_PATH );
+        //this will set @font-face style element
+        this.configureFont( Config.DEFAULT_FONT_NAME, Config.DFLT_FNT_NAME_PATH );
 
         this.localStorage = <Storage>window.localStorage;
         this.canvas = <HTMLCanvasElement>document.getElementById( canvasId );
         if(width)this.canvas.width=width;
         if(height)this.canvas.height=height;
         this.canvas.focus();//get canvas focus?
-        this.context = <CanvasRenderingContext2D>this.canvas.getContext("2d");
-        this.context.textBaseline = "top";
-        this.context.font = "10px press-start";
+        this.context2D = <CanvasRenderingContext2D>this.canvas.getContext("2d");
+        this.context2D.textBaseline = "top";
+        this.setFont(10, Config.DEFAULT_FONT_NAME);
+        // this.context2D.font = "10px press-start";
         
         this.xScale=1;
         this.yScale=1;
-        this.context.scale(this.xScale, this.yScale);
+        this.context2D.scale(this.xScale, this.yScale);
     }
 
     /**
@@ -100,7 +102,7 @@ import {Config} from "../cfg/Config.js";
         if( this.currentLevel !== undefined )
         {
             this.currentLevel.update( this.delta );
-            this.currentLevel.render( this.context );
+            this.currentLevel.render( this.context2D );
         }
         requestAnimationFrame( this.run.bind(this) );
     }
@@ -108,12 +110,13 @@ import {Config} from "../cfg/Config.js";
     /**
      * this will resize context of canvas and will
      * set new width and height of scaled size
+     * !!!CAUTION USING THIS FUNCTION WILL RESET canvas.context2D state!!!
+     * !!!THIS IS NOT MY FAULT THAT HOW canvas WORKS =) !!!
      * @param xNewScale 
      * @param yNewScale 
      */
     scaleCanvas( xNewScale:number, yNewScale:number)
     {
-
         this.xScale= xNewScale;
         this.yScale = yNewScale;
 
@@ -141,7 +144,7 @@ import {Config} from "../cfg/Config.js";
 
         this.canvas.width = Math.floor(newWidth * this.xScale);
         this.canvas.height = Math.floor(newHeight * this.yScale);
-        this.context.scale(this.xScale, this.yScale);
+        this.context2D.scale(this.xScale, this.yScale);
     }
 
     // run()
@@ -163,20 +166,13 @@ import {Config} from "../cfg/Config.js";
 
     /**
      * this is the method that will load  level specified and will
-     * become the current level ( even if there was another level oreviously)
+     * become the current level ( even if there was another level previously)
      *  after that events of keyboard, mouse, touch events will be set in the canvas
      * @param level new level to load must be an implementation of BaseLevel
      * */
     loadLevel( level:BaseLevel )
     {
         this.currentLevel = level;
-
-
-        //resize canvas size
-        // this.canvas.width = level.levelWidth;
-        // this.canvas.height = level.levelHeight;
-        // this.setFont(Config.DEFAULT_FONT_NAME, Config.DFLT_FNT_NAME_PATH);
-
 
         // mouse events
         if(this.enableMouseControl)
@@ -210,33 +206,41 @@ import {Config} from "../cfg/Config.js";
         {
             this.canvas.addEventListener("gamepadconnected", (event) => this.currentLevel.keyDown(event) );
             this.canvas.addEventListener("gamepaddisconnected", (event) => this.currentLevel.keyDown(event) );
-
         }
         
     }
 
     /**
      * this function will create a new style element with the font face
-     * and url where the font file ( tttf ) reside, afther that the element
+     * and url where the font file ( .ttf ) reside, after that, the element
      * will be added to html in header tag
      * @param fontName 
      * @param fontPath 
      */
-    setFont( fontName:string, fontPath:string )
+    configureFont( fontName:string, fontPath:string )
     {
-        var fontName = fontName;
         let styleElement = document.createElement( 'style' );
-
         let fontFaceNode = 
         `@font-face
         {
-            font-family:'${fontName}';
-            src: url( ${fontPath} );
+            font-family:"${fontName}";
+            src: url(" ${fontPath} ");
         }`;
 
         styleElement.appendChild( document.createTextNode( fontFaceNode ) );
-
         document.head.appendChild( styleElement );
+    }
+
+    /**
+     * this will set context2D.font property with the new values set by
+     * fontSize & fontName
+     * @param fontSize in pixels
+     * @param fontName 
+     */
+    setFont( fontSize:number, fontName:string ){
+        console.log(`${fontSize}px ${ fontName }`)
+        this.fontName=fontName;
+        this.context2D.font = `${fontSize}px ${ fontName }`;
     }
 
     /**
@@ -245,7 +249,7 @@ import {Config} from "../cfg/Config.js";
      */
     setFontSize( size:number ):void
     {
-        this.context.font = `${size}px ${ this.fontName }`;
+        this.context2D.font = `${size}px ${ this.fontName }`;
     }
 
     /**
@@ -261,7 +265,7 @@ import {Config} from "../cfg/Config.js";
 
     getTextWidth(txt:string)
     {
-        this.context.measureText(txt).width;
+        this.context2D.measureText(txt).width;
     }
 
     // getTextHeight(txt:string)

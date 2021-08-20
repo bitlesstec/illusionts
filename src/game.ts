@@ -6,9 +6,8 @@
 // 3 run the game 
 
 
-import {GameManager} from './lib/manager/GameManager.js';
-// import { SampleLevel } from './levels/SampleLevel.js';
-import { MenuLevel } from './levels/MenuLevel.js';
+import { GameManager } from "./lib/manager/GameManager.js";
+import { FirstLevel } from "./mygame/FirstLevel.js";
 
 //you can set canvas id as well as width and height
 let game = GameManager.getInstance("canvas", 640, 480);//canvas width and height by default
@@ -16,7 +15,7 @@ let game = GameManager.getInstance("canvas", 640, 480);//canvas width and height
 //enabling mouse control because a level of the game uses mouse events
 game.enableMouseControl=true;
 //game.loadLevel( new SampleLevel() );
-game.loadLevel( new MenuLevel() );
+game.loadLevel( new FirstLevel() );
 
 
 //use this to set new canvas scale

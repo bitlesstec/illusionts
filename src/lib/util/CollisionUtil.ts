@@ -1,4 +1,6 @@
 import { Point } from "../graphic/Point.js";
+import { BaseShape } from "../graphic/shape/BaseShape.js";
+import { Collider } from "../graphic/shape/Collider.js";
 import { LineShape } from "../graphic/shape/LineShape.js";
 import { PolygonShape } from "../graphic/shape/PolygonShape.js";
 import { Sprite } from "../graphic/Sprite.js";
@@ -67,7 +69,7 @@ getCombinedHalf( half1:number, half2:number ):number
 
 
 /**
- * 
+ * return true if value1 (absolute) is less than value2
  * @param value1 
  * @param value2 
  */
@@ -113,14 +115,14 @@ pointCollision( x:number, y:number,
 
 /**
  * this will check if there is a collision with point defined by X & Y
- * and Sprite
+ * inside the Sprite
  * @param x 
  * @param y 
  * @param spr 
  */
-spritePointCollision( x:number, y:number, spr:Sprite):boolean
+spritePointCollision( x:number, y:number, spr:Sprite | Collider ):boolean
 {
-    return this.pointCollision( x, y, spr.points[0].x, spr.points[0].y, spr.w, spr.h );
+    return this.pointCollision( x, y, spr.getX(), spr.getY(), spr.w, spr.h );
 }//
 
 
@@ -145,10 +147,10 @@ circleCollision( cenx:number, ceny:number, rad:number,
 }
 
 
-spriteCircleColision( spr:Sprite, cenx:number, ceny:number, rad:number, fixOverlap:boolean = true ):boolean
+spriteCircleColision( spr:Sprite | Collider, cenx:number, ceny:number, rad:number, fixOverlap:boolean = true ):boolean
 {
-let vx:number = (spr.points[0].x + spr.w/2) - cenx;
-let vy:number = (spr.points[0].y + spr.h/2) - ceny;
+let vx:number = (spr.getX() + spr.w/2) - cenx;
+let vy:number = (spr.getY() + spr.h/2) - ceny;
 
  //calculate distance between circles
 let magnitude:number = Math.sqrt( (vx * vx) + (vy * vy) );
@@ -165,8 +167,8 @@ let magnitude:number = Math.sqrt( (vx * vx) + (vy * vy) );
     let dx:number = vx / magnitude;
     let dy:number = vy / magnitude;
 
-    spr.points[0].x += overlap * dx;
-    spr.points[0].y += overlap * dy;
+    spr.setX( spr.getX() + overlap * dx );  
+    spr.setY( spr.getY() + overlap * dy);
     }
 
 return res;
@@ -178,14 +180,14 @@ return res;
  * @param spr2 
  * @param fixOverlap 
  */
-spritesCircleCollision( spr1:Sprite, spr2:Sprite, fixOverlap:boolean = true):boolean
+spritesCircleCollision( spr1:Sprite| Collider, spr2:Sprite| Collider, fixOverlap:boolean = true):boolean
 {
 return this.spriteCircleColision( spr1, 
-    spr2.points[0].x + spr2.w/2, spr2.points[0].y + spr2.h/2, spr2.w/2, fixOverlap);
+    spr2.getX() + spr2.w/2, spr2.getY() + spr2.h/2, spr2.w/2, fixOverlap);
 }
 
 /**
- *  check if there is a collision between 2 rectangles
+ *  check if there is a collision between 2 rectangles (bounding boxes)
  * @param x 
  * @param y 
  * @param w 
@@ -211,10 +213,10 @@ return ( Math.abs( this.getDistance( x, w, x2, w2 ) ) < combinedHalfWidth &&
  * @param spr1 
  * @param spr2 
  */
-spriteRectangleCollision( spr1:Sprite, spr2:Sprite ):boolean
+spriteRectangleCollision( spr1:Sprite | Collider, spr2:Sprite | Collider ):boolean
 {
-return this.rectangleCollision( spr1.points[0].x, spr1.points[0].y, spr1.w, spr1.h, 
-                                spr2.points[0].x, spr2.points[0].y, spr2.w, spr2.h );
+return this.rectangleCollision( spr1.getX(), spr1.getY(), spr1.w, spr1.h, 
+                                spr2.getX(), spr2.getY(), spr2.w, spr2.h );
 }
 
 /**
@@ -226,13 +228,13 @@ return this.rectangleCollision( spr1.points[0].x, spr1.points[0].y, spr1.w, spr1
  * @param spr2 
  * @param push 
  */
-sideAndPushCollision( spr1:Sprite, spr2:Sprite, push:boolean = false ):string
+sideAndPushCollision( spr1:Sprite | Collider, spr2:Sprite | Collider, push:boolean = false ):string
 {
     
 let collisionSide:string = "none";
 
-let vx:number = this.getDistance( spr2.points[0].x, spr2.w, spr1.points[0].x, spr1.w );
-let vy:number = this.getDistance( spr2.points[0].y, spr2.h, spr1.points[0].y, spr1.h );
+let vx:number = this.getDistance( spr2.getX(), spr2.w, spr1.getX(), spr1.w );
+let vy:number = this.getDistance( spr2.getY(), spr2.h, spr1.getY(), spr1.h );
 
 let combinedHalfWidth = this.getCombinedHalf( spr1.w, spr2.w );
 let combinedHalfHeight= this.getCombinedHalf( spr1.h, spr2.h );
@@ -263,7 +265,7 @@ let vyabs = Math.abs( vy );
 
             }
             else
-                {
+            {
 
                         if( vx > 0 )
                         {
@@ -278,11 +280,12 @@ let vyabs = Math.abs( vy );
                            spr1.points[0].x-=overlapX;    //setX(spr1.getX()-overlapX);
                         }
 
-                }//
+            }//
 
         }
         return collisionSide;
 }//
+
 
 /**
  * this checks if there is a collision or intersection
@@ -429,6 +432,10 @@ regularPolygonCollision( polygon1:PolygonShape, polygon2:PolygonShape ):boolean
     return true;
 }
 
+/**
+ * @todo implement this!
+ * @returns 
+ */
 iregularPolygonCollision():boolean
 {
     return false;

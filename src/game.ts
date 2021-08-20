@@ -7,13 +7,17 @@
 
 
 import {GameManager} from './lib/manager/GameManager.js';
-import { SampleLevel } from './levels/SampleLevel.js';
-
+// import { SampleLevel } from './levels/SampleLevel.js';
+import { MenuLevel } from './levels/MenuLevel.js';
 
 //you can set canvas id as well as width and height
-let game = GameManager.getInstance("canvas", 640, 360);
+let game = GameManager.getInstance("canvas", 640, 480);//canvas width and height by default
 
-game.loadLevel( new SampleLevel() );
+//enabling mouse control because a level of the game uses mouse events
+game.enableMouseControl=true;
+//game.loadLevel( new SampleLevel() );
+game.loadLevel( new MenuLevel() );
+
 
 //use this to set new canvas scale
 // game.scaleCanvas(2,2);

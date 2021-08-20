@@ -15,5 +15,7 @@ DIALOGUING,//use this if a player is dialoguin with NPC
 TRANSITIONING,//transtion between one level to another
 TRANSITIONED,//used when transition animation is done to load a new level
 SAVING,//show animation while game is beign saved
-SAVED
+SAVED,
+GAMEPAD_CONNECTED,
+GAMEPAD_DISCONNECTED
 }

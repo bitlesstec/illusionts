@@ -45,6 +45,7 @@ export class SampleLevel extends BaseLevel
     score:HUDSprite;
     damageTxt:HUDSprite;
 
+    userName:string;
 
     constructor()
     {
@@ -56,6 +57,7 @@ export class SampleLevel extends BaseLevel
 
     async init()
     {
+        this.userName = "";
         await this.loadImages();
         this.loadSounds();
        
@@ -72,18 +74,11 @@ export class SampleLevel extends BaseLevel
 
         this.lineShape2 = new LineShape(new Point(30,100), new Point(100,100) );
 
-
         this.triangle = new PolygonShape([new Point(200,200), new Point(400,200), new Point(100,160)]);
         this.triangle.fillColor="red";
         this.triangle.strokeColor="green";
         this.triangle.strokeLineWidth=3;
         this.triangle.displayOutline=true;
-
-
-        // knightMeasures:ImageMeasures = 
-        // {srcX:0, srcY:0, w:16, h:16, frames:3}
-
-
 
         this.knightSprite = new Sprite(this.imageMap.get( "tileImage" ),{srcX:0, srcY:0, w:16, h:16, frames:3});
         this.knightSprite.setPosition( 20, 200 );
@@ -150,6 +145,8 @@ export class SampleLevel extends BaseLevel
 
             //pushing damageText Up then it dissapears
             this.damageTxt.expire(()=>{ this.damageTxt.moveY(-1); });
+
+            console.log(`userName ${this.userName}`);
 
             break;
         }
@@ -263,7 +260,9 @@ export class SampleLevel extends BaseLevel
     {
         switch( event.keyCode )
         {
-            // case 65: //A
+            case 65: //A
+            this.userName = prompt("Enter User Email:");
+            break;
             case 32: //SPACE
             this.audioManager.playSfx( "sfxsound" );
             GameManager.getInstance().takeScreenshot();

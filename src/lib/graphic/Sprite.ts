@@ -3,6 +3,7 @@ import { Animationable } from "../ntfc/Animationable.js";
 import { AnimationLoop } from "./AnimationLoop.js";
 import { ImageMeasures } from "./ImageMeasures.js";
 import { BaseShape } from "./shape/BaseShape.js";
+import { Collider } from "./shape/Collider.js";
 
 
 export class Sprite extends BaseShape
@@ -39,6 +40,20 @@ export class Sprite extends BaseShape
     dstH:number;
 
 
+    //pivots are used to draw frames when there is some change
+    //in scale or alpha
+    pivotX:number;
+    pivotY:number;
+
+    /**
+     * an sprite can have several colliders, which are basically
+     * shapes than an sprite can have, for instance, a huge blob can
+     * have a big circle collider, but if then its shape changes,
+     * that big circle collider can change its radius hence can be smaller
+     * also a big sprite can have several places where it can take damage.
+     */
+    colliders:Map<string, Collider>;
+
     /**
      * if you call 1 args consstructor, means you have 1 image sprite
      * but if you call 3 args constructor, you will pass an strip image where you
@@ -56,7 +71,7 @@ export class Sprite extends BaseShape
 
         this.animationLoop = AnimationLoop.FORWARD;
         this.animationStep = 0;
-        this.animationStepLimit = 30;
+        this.animationStepLimit = 10;
 
         //when the image is loaded then we set measures
         // this.image = image;
@@ -64,10 +79,12 @@ export class Sprite extends BaseShape
     
     }//
 
-     /**
+    /**
+     * you can indicate initial and final frame of an strip sprite, it
+     * means the image should contains all frames that will be the animation
      * this will indicate starting and final frames of the animation,
      * then updateAnimation will iterate through initial frame until
-     * final frame over and over, the order can be changed at any time
+     * final frame over and over, the order can be changed at any time.
      * setting different animations of sprite sheet
      * @param initialFrame 
      * @param finalFrame 
@@ -81,10 +98,12 @@ export class Sprite extends BaseShape
 
 
     /**
-     * this method is used if we want to change sprite animation for other set of images
+     * this method is used if we want to change sprite animation for a different image
+     * or a different strip, we also have to set image frames indexes using imgMeasures object
+     *  if is a new animation.
+     * if no imgMeasures is not provided then proerties will be set as normal image
      * @param image 
-     * @param frameWidth 
-     * @param frameHeight 
+     * @param imgMeasures this set all frames, width, height and sourcex / sourcey
      */
     setNewAnimation(image: HTMLImageElement, imgMeasures?:ImageMeasures)//frameWidth?:number, frameHeight?:number )
     {
@@ -92,10 +111,15 @@ export class Sprite extends BaseShape
         this.image = image;
         this.srcX = 0;
         this.srcY = 0;
-        this.w = image? image.width:10;
+        this.w = image? image.width:10; //if no image provided will take 10
         this.h = image? image.height:10;
         this.dstW = this.w;
         this.dstH = this.h;
+        this.lastFrame=0;
+        this.initialFrame=0;
+        this.currentFrame=0;
+        // this.pivotX=0;
+        // this.pivotY=0;
 
         if(imgMeasures)
         {
@@ -132,19 +156,24 @@ export class Sprite extends BaseShape
 
             if( this.angle != 0 || this.xScale != 1 || this.yScale != 1 )
             {
-                ctx.translate( this.points[0].x + this.w/2, this.points[0].y + this.h/2 );
+                //if pivot is set, center will be pivot point, if not will
+                //be the center of the current sprite
+                let centerX:number= this.pivotX?this.pivotX:this.w/2;
+                let centerY:number= this.pivotY?this.pivotY:this.h/2;
+
+                ctx.translate( this.getX() + centerX, this.getY() + centerY );
                 ctx.rotate( this.angle );
                 ctx.scale( this.xScale, this.yScale );
-                ctx.translate( -( this.points[0].x + this.w/2 ), -( this.points[0].y + this.h/2 ) );
+                ctx.translate( -( this.getX() + centerX ), -( this.getY() + centerY ) );
             }
 
             /// @TODO here check some effect updates 
             ctx.drawImage
             (
                 this.image,
-                this.srcX, this.srcY,
+                this.srcX, this.srcY, //srcX changes inside updateAnimation()
                 this.w, this.h,
-                Math.floor( this.points[0].x ), Math.floor( this.points[0].y ),
+                Math.floor( this.getX() ), Math.floor( this.getY() ),
                 this.dstW, this.dstH
             );
             ctx.restore();
@@ -212,6 +241,21 @@ export class Sprite extends BaseShape
             }////
 
         }///
+    }//
+
+    /**
+     * this will set current frame of animation,
+     * remember frames starts at position 0, so if you have an animation with 3
+     * frames, last frame will be 2 ( frame.length - 1 )
+     * @param index 
+     */
+    setCurrentFrame(index?:number)
+    {
+        this.srcX=0;
+        if(index >= this.lastFrame)
+           this.srcX = this.lastFrame * this.w;
+        else if(index)
+           this.srcX = this.currentFrame * this.w;
     }
 
 }//

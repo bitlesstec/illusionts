@@ -32,6 +32,13 @@ export class SpriteUtil
     }//
 
 
+    /**
+     * this will set sprite spdX & spdY to the angle defined, with defined speed
+     * @param spr 
+     * @param angle 
+     * @param spd 
+     * @param setAngle if this is set to true, spr:Sprite angle will be set
+     */
     static moveToAngle( spr:Sprite, angle:number, spd:number, setAngle:boolean )
     {
         if( setAngle )
@@ -50,13 +57,11 @@ export class SpriteUtil
      * @param x 
      * @param y 
      */
-    static getangle( spr:Sprite, x:number, y:number ):number
+    static getAngle( spr:Sprite, x:number, y:number ):number
     {
-        let vx:number = x-( spr.points[0].x + spr.w / 2 );
-        let vy:number = y-( spr.points[0].y + spr.h / 2 );
-
-        let angle = Math.atan2( vy, vx );// * ( 180 / Math.PI );
-
+        let vx:number = x -( spr.points[0].x + spr.w / 2 );
+        let vy:number = y -( spr.points[0].y + spr.h / 2 );
+        let angle = Math.atan2( vy, vx );// * (180 / Math.PI);
         return angle;
     }//
 
@@ -79,6 +84,12 @@ export class SpriteUtil
     }//
 
 
+    /**
+     * it returns the distance in pixels between spr and spr2
+     * @param spr 
+     * @param spr2 
+     * @returns 
+     */
     static spritesDistance( spr:Sprite, spr2:Sprite) :number
     {
         return this.pointDistance( spr, spr2.points[0].x+spr2.w/2, spr2.points[0].y+spr2.h/2 );
@@ -118,7 +129,7 @@ export class SpriteUtil
     }
 
     // @todo getSpriteById
-    // @todo getSpriteByLabel
+    // @todo getSpriteByLabel or getSpriteGroupByLabel
 
     /**
      * this method will return a list of sprites containing the label specified

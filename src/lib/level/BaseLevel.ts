@@ -36,20 +36,28 @@ gameState:GameState;
 levelWidth:number;
 levelHeight:number;
 
+/**
+ * this constructors set level width and height which is not the same as viewWidth and viewHeight.
+ * viewWidth/viewHeight are measures used by camera.
+ * @param levelWidht 
+ * @param levelHeight 
+ * @param viewWidth 
+ * @param viewHeight 
+ */
 constructor( levelWidht:number, levelHeight:number, viewWidth?:number, viewHeight?:number )
 { 
-this.gameState = GameState.LOADING;
-this.audioManager = new AudioManager();
-this.imageMap = new Map<string, HTMLImageElement>();
-this.spriteList = [];
+    this.gameState = GameState.LOADING;
+    this.audioManager = new AudioManager();
+    this.imageMap = new Map<string, HTMLImageElement>();
+    this.spriteList = [];
 
-this.levelWidth = levelWidht; 
-this.levelHeight = levelHeight;
+    this.levelWidth = levelWidht; 
+    this.levelHeight = levelHeight;
 
-if( viewWidth !== undefined && viewHeight !== undefined )
-    this.camera = new Camera( levelWidht, levelHeight, viewWidth, viewHeight );
-else
-    this.camera = new Camera( levelWidht, levelHeight );
+    if( viewWidth !== undefined && viewHeight !== undefined )
+        this.camera = new Camera( levelWidht, levelHeight, viewWidth, viewHeight );
+    else
+        this.camera = new Camera( levelWidht, levelHeight );
 }//
 
 
@@ -73,4 +81,8 @@ mouseOver( event: Event ){}
 keyDown( event: Event ){}
 keyUp( event: Event ){}
 
+GamePadConnected( event: Event ){}
+GamePadDisconnected( event: Event ){}
+GamePadButtonPressed( event: Event ){}
+GamePadAxisMovement( event: Event ){}
 }//

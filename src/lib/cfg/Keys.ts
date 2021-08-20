@@ -15,8 +15,8 @@ export class Keys
     static readonly ARROW_DOWN_KEY:number = 40;
     static readonly ARROW_LEFT_KEY:number = 37;
     static readonly ARROW_RIGHT_KEY:number = 39;
-    static readonly ENTER_KEY:number = 65;
-    static readonly SPACE_KEY:number = 13;
+    static readonly ENTER_KEY:number = 13;
+    static readonly SPACE_KEY:number = 32;
 
 
     //@todo add more keys here 

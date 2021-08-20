@@ -1,8 +1,10 @@
+import { Config } from "../lib/cfg/Config.js";
 import { AnimationLoop } from "../lib/graphic/AnimationLoop.js";
 import { Collider } from "../lib/graphic/shape/Collider.js";
 import { Sprite } from "../lib/graphic/Sprite.js";
 import { Tile } from "../lib/graphic/Tile.js";
 import { BaseLevel } from "../lib/level/BaseLevel.js";
+import { GameManager } from "../lib/manager/GameManager.js";
 import { GameState } from "../lib/manager/GameState.js";
 import { AssetLoadable } from "../lib/ntfc/AssetLoadable.js";
 import { Initiable } from "../lib/ntfc/Initiable.js";
@@ -171,16 +173,16 @@ export class AndroidLevel extends BaseLevel
                 //check here if current frame !=1
 
                 //check here collision between tanks and punch
-                let cont=0;
+                
                 for( let tank of this.tankList)
-                {console.log("cont: ",++cont)
+                {
                     if( this.colissionUtil.spriteRectangleCollision( this.punchCollider, tank ) )
                     {
                         if(tank.image === this.imageMap.get("tank") )
                         {
                             this.punchCollider.setPosition(-16, 0);
                             tank.setNewAnimation(this.imageMap.get("tankShattered"),{srcX:0, srcY:0, w:16, h:24, frames:9});
-                            this.tanksDestroyed+=1; console.log("break in cont: ", cont)
+                            this.tanksDestroyed+=1;
                         }
                         
                         break;
@@ -251,6 +253,10 @@ export class AndroidLevel extends BaseLevel
 
     async init(){
         
+        // GameManager.getInstance().setFont( Config.DEFAULT_FONT_NAME, Config.DFLT_FNT_NAME_PATH );
+
+        
+
         await this.loadImages();
 
         this.tiles = TileUtil.parse( this.tileMap, this.tilesCols, this.tilesRows, 16,16 );
@@ -283,6 +289,9 @@ export class AndroidLevel extends BaseLevel
 
         this.punchCollider= new Collider(-16,0,4,8);//outside the view
 
+
+        //SETTING AGAIN FONT BECAUSE resize RESETS canvas STATE
+        GameManager.getInstance().setFont(5,"press-start");//  = "10px press-start";
 
         // console.log(`tiles lenght ${this.tiles.length}`);
         // afther everything is loaded change state to playing

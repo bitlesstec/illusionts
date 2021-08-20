@@ -59,14 +59,10 @@ export class SpriteUtil
      */
     static getAngle( spr:Sprite, x:number, y:number ):number
     {
-        // console.log(`${spr.points[0].x} - ${spr.points[0].y}`)
         let vx:number = x -( spr.points[0].x + spr.w / 2 );
         let vy:number = y -( spr.points[0].y + spr.h / 2 );
-        
-        let angle = Math.atan2( vy, vx ) * (180 / Math.PI);
-
-        console.log(`${vy} - ${vx} : ${angle}`)
-        return angle;// * (  180 / Math.PI );
+        let angle = Math.atan2( vy, vx );// * (180 / Math.PI);
+        return angle;
     }//
 
 

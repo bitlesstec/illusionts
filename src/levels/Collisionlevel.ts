@@ -14,6 +14,7 @@ import { ImageUtil } from "../lib/util/ImageUtil.js";
 import { Initiable } from "../lib/ntfc/Initiable.js";
 import { Mousable } from "../lib/ntfc/input/Mousable.js";
 import { SpriteUtil } from "../lib/util/SpriteUtil.js";
+import { GameManager } from "../lib/manager/GameManager.js";
 
 
 
@@ -21,8 +22,6 @@ import { SpriteUtil } from "../lib/util/SpriteUtil.js";
 export class CollisionLevel extends BaseLevel
                             implements AssetLoadable, Initiable, Mousable
 {
-
-
     HUD:TextSprite;
     arrow:Sprite;
     arrowShooter:Sprite;
@@ -32,9 +31,7 @@ export class CollisionLevel extends BaseLevel
     laser:LineShape;
     blueLine:LineShape;
 
-
     lineLenght = 300;
-
 
     constructor()
     {
@@ -46,14 +43,13 @@ export class CollisionLevel extends BaseLevel
        
         await this.loadImages();
 
-        this.HUD =  new TextSprite( "Level HUD" );
-        this.HUD.setPosition( this.levelWidth / 2, 30 );
+        this.HUD =  new TextSprite( "move sprite with AWSD, Space to shoot bullet towards mouse pointer# lasser collides with blue square" );
+        this.HUD.setPosition( 0, 30 );
 
         this.arrow = new Sprite ( this.imageMap.get( "arrowImage" ) );
         this.arrow.setPosition( 100, 240);
-        // this.arrow.setPosition( this.levelWidth/2, this.levelHeight/2);
 
-        this.arrowShooter = new Sprite(this.imageMap.get( "orangeArrow" ));
+        this.arrowShooter = new Sprite(this.imageMap.get( "arrowImage" ));
         this.arrowShooter.setPosition( 320, 240);
 
         this.redSprite =  new Sprite( this.imageMap.get( "sqrImage" ) )
@@ -75,6 +71,8 @@ export class CollisionLevel extends BaseLevel
         this.bulletSprite = new Sprite( this.imageMap.get( "bulletImage" ) );
         this.bulletSprite.visible=false;
 
+        //#YOU CAN ALSO PUT ALL SPRITES INSIDE spriteList AND ITERATE IT TO RENDER ALL
+        // OR USE IT FOR COLLISION CHECKING...
         // this.spriteList.push( this.HUD );
         // this.spriteList.push( this.redSprite );
         // this.spriteList.push( this.blueSprite );
@@ -102,7 +100,6 @@ export class CollisionLevel extends BaseLevel
 
             //#FIRST ARROW ROTATING
                 this.arrow.angle += ( 1 * delta );
-                // // console.log( "DELTA: "+this.arrow.angle );
                 
             //#LASER PROCESS
                 // // updating laser
@@ -131,8 +128,6 @@ export class CollisionLevel extends BaseLevel
 
             //#BULLET MOVEMENT
             this.bulletSprite.move();
-
-
 
             break;
         }
@@ -178,13 +173,13 @@ export class CollisionLevel extends BaseLevel
         
         let circleImage =  await ImageUtil.getImage("/assets/circle.png").then(img=>img);
 
-        let orangeArrowImage =  await ImageUtil.getImage("/assets/orangeArrow.png").then(img=>img);
+        // let orangeArrowImage =  await ImageUtil.getImage("/assets/orangeArrow.png").then(img=>img);
         
         this.imageMap.set( "sqrImage", sqrImage );
         this.imageMap.set( "arrowImage", arrowImage );
         this.imageMap.set( "bulletImage", bulletImage );
         this.imageMap.set( "circleImage", circleImage );
-        this.imageMap.set( "orangeArrow", orangeArrowImage );
+        // this.imageMap.set( "orangeArrow", orangeArrowImage );
 
     }
 
@@ -238,11 +233,17 @@ export class CollisionLevel extends BaseLevel
 
     mouseMove( event:MouseEvent )
     {
+        let boundingRect = GameManager.getInstance().canvas.getBoundingClientRect();
+
+        let eX = event.clientX - boundingRect.left;
+        let eY = event.clientY - boundingRect.top;
+
         // console.log("moving mouse")
         //#ARROR SHOOTER will be changing its angle to mouse X & Y position
         // getting pointer angle every time is moved and making the arrow face that direction
-        this.arrowShooter.angle = SpriteUtil.getAngle(this.arrowShooter, event.clientX, event.clientY);
-        console.log(`arrAngle: ${this.arrowShooter.angle}`)
+        this.arrowShooter.angle = SpriteUtil.getAngle(this.arrowShooter, eX, eY);
+
+        console.log(` x:${eX} y:${eY} - arrAngle: ${this.arrowShooter.angle}`)
     }
 
 

@@ -33,6 +33,8 @@ export class Background extends BaseShape
         this.image = image;
         this.w = this.image.width;
         this.h = this.image.height;
+        this.dstW = this.image.width;
+        this.dstH = this.image.height;
         this.srcX = 0;
         this.srcY = 0;
         this.visible = true;

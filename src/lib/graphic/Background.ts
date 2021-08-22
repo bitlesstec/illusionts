@@ -17,21 +17,25 @@ export class Background extends BaseShape
     w:number;
     h:number;
     image: HTMLImageElement;
+    srcX:number;
+    srcY:number;
+    srcW:number;
+    srcH:number;
+    // dstX:number;
+    // dstY:number;
+    dstW:number;
+    dstH:number;
 
     constructor( image: HTMLImageElement )
     {
         super();
-        this.w=0;
-        this.h=0;
+        
         this.image = image;
-        this.visible = true;
-        this.image.onload = () =>
-        {
-        //console.log("image loaded");
         this.w = this.image.width;
         this.h = this.image.height;
+        this.srcX = 0;
+        this.srcY = 0;
         this.visible = true;
-        }
         
         this.fillColor = "#000000"; //black by default
     }   
@@ -44,7 +48,13 @@ export class Background extends BaseShape
     render( ctx: CanvasRenderingContext2D ):void
     {
         if( this.visible )
-            ctx.drawImage( this.image, this.points[0].x, this.points[0].y, this.w, this.h );
+            ctx.drawImage
+            (
+                this.image,
+                this.srcX, this.srcY, this.w, this.h, //source image
+                Math.floor( this.getX() ), Math.floor( this.getY() ), //destination
+                this.dstW, this.dstH
+            );
     }
 
     /**

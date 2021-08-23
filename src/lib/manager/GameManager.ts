@@ -122,14 +122,13 @@ import {Config} from "../cfg/Config.js";
 
         let newWidth:number = 1;
         let newHeight:number = 1;
-        
-        if( this.currentLevel.camera )
+        if( this.currentLevel.camera.viewWidth && this.currentLevel.camera.viewHeight )
         {
             //if there is a camera there should be a view
             newWidth = this.currentLevel.camera.viewWidth;
             newHeight = this.currentLevel.camera.viewHeight;
         }
-        else if(this.currentLevel)
+        else if( this.currentLevel )
         {
             // if there is no camera we take level width and height
             newWidth = this.currentLevel.levelWidth;
@@ -142,9 +141,11 @@ import {Config} from "../cfg/Config.js";
             newHeight = Math.floor( this.canvas.height * this.yScale );
         }
 
+        
         this.canvas.width = Math.floor(newWidth * this.xScale);
         this.canvas.height = Math.floor(newHeight * this.yScale);
         this.context2D.scale(this.xScale, this.yScale);
+        
     }
 
     // run()

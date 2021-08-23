@@ -17,24 +17,31 @@ export class Background extends BaseShape
     w:number;
     h:number;
     image: HTMLImageElement;
+    srcX:number;
+    srcY:number;
+    srcW:number;
+    srcH:number;
+    // dstX:number;
+    // dstY:number;
+    dstW:number;
+    dstH:number;
 
     constructor( image: HTMLImageElement )
     {
         super();
-        this.w=0;
-        this.h=0;
+        
         this.image = image;
-        this.visible = true;
-        this.image.onload = () =>
-        {
-        //console.log("image loaded");
         this.w = this.image.width;
         this.h = this.image.height;
+        this.dstW = this.image.width;
+        this.dstH = this.image.height;
+        this.srcX = 0;
+        this.srcY = 0;
         this.visible = true;
-        }
         
         this.fillColor = "#000000"; //black by default
     }   
+
 
     /**
      * this method will render the image at X & Y point, basically

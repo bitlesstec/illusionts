@@ -39,6 +39,7 @@ export class Background extends BaseShape
         this.fillColor = "#000000"; //black by default
     }   
 
+
     /**
      * this method will render the image at X & Y point, basically
      * is backgroundImage

@@ -4,12 +4,9 @@ import { BaseShape } from "./shape/BaseShape.js";
 
 /**
  * this class will display a background on related
- * x & y position, this class can be also used as a tile instead 
- * background...
- * by default X & Y position is 0,0,
- * there is also a color property with default value to black 
- * and there is a method call renderCOlor which will 
- * display current color instead background image. 
+ * x & y position, can be also used as a tile instead background...
+ * by default X & Y position is 0,0, there is also a color property with default value to black 
+ * and there is a method call renderCOlor which will  display current color instead background image. 
  */
 export class Background extends BaseShape
 {

@@ -9,6 +9,7 @@ import { XpaceRocksLevel } from './XpaceRocksLevel.js';
 import { PlatformLevel } from './PlatformLevel.js';
 import { AndroidLevel } from './AndroidLevel.js';
 import { CollisionLevel } from './Collisionlevel.js';
+import { TowerDefense } from './TowerDefense.js';
 
 /**
  * this is a level that creates a menu to load other levels
@@ -80,6 +81,7 @@ export class MenuLevel extends BaseLevel
                 ctx.fillText( "Platform Game" ,40, 90);
                 ctx.fillText( "Tile example" ,40, 110);
                 ctx.fillText( "Collision 1" ,40, 130);
+                ctx.fillText( "Tower Defense" ,40, 150);
 
                 this.menuSelector.render(ctx);
                 
@@ -111,16 +113,18 @@ export class MenuLevel extends BaseLevel
                 this.gameSelected=1;
             }
             break;
+
             case 83: //S
             case 40: //arrow down
             this.gameSelected +=1;
             this.menuSelector.moveY(20);
-            if( this.menuSelector.points[0].y > 140)
+            if( this.menuSelector.points[0].y > 150)
             {
-                this.menuSelector.points[0].y = 140;
-                this.gameSelected=5;
+                this.menuSelector.points[0].y = 150;
+                this.gameSelected=6;
             }
             break;
+
             case 13: //enter/numpad enter
             //enter game
 
@@ -146,8 +150,12 @@ export class MenuLevel extends BaseLevel
                     GameManager.getInstance().scaleCanvas(2,2);
                     break;
                 case 5:
-                        GameManager.getInstance().loadLevel( new CollisionLevel() );
-                        break; 
+                    GameManager.getInstance().loadLevel( new CollisionLevel() );
+                    break; 
+                case 6:
+                    GameManager.getInstance().loadLevel( new TowerDefense() );
+                    GameManager.getInstance().scaleCanvas(1,1);
+                    break; 
             }
             // GameManager.getInstance().loadLevel( levelToLoad );
             // break;

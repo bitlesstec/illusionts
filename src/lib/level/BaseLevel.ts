@@ -64,7 +64,7 @@ constructor( levelWidht:number, levelHeight:number, viewWidth?:number, viewHeigh
 render( ctx:CanvasRenderingContext2D ){}
 update( delta:number ){}
 
-//Input Events, all this are eventListeners attached to canvas
+//Input Events, all this are eventListeners attached to canvas but gamepad
 //@note:if below lines are commented they will cause an issue with GameManager.loadLevel function
 touchStart( event: Event ){}
 touchMove( event: Event ){}
@@ -81,8 +81,8 @@ mouseOver( event: Event ){}
 keyDown( event: Event ){}
 keyUp( event: Event ){}
 
-GamePadConnected( event: Event ){}
-GamePadDisconnected( event: Event ){}
-GamePadButtonPressed( event: Event ){}
-GamePadAxisMovement( event: Event ){}
+gamePadConnected( event: Event ){}
+gamePadDisconnected( event: Event ){}
+gamePadButtonPressed( event: Event ){}
+gamePadAxisMovement( event: Event ){}
 }//

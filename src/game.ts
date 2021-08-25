@@ -14,6 +14,7 @@ let game = GameManager.getInstance("canvas", 640, 480);//canvas width and height
 
 //enabling mouse control because a level of the game uses mouse events
 game.enableMouseControl=true;
+game.enableGamePadControl=true;
 //game.loadLevel( new SampleLevel() );
 game.loadLevel( new FirstLevel() );
 

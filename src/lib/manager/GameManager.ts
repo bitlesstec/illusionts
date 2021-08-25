@@ -203,10 +203,10 @@ import {Config} from "../cfg/Config.js";
         }
 
         //NOTE AT THIS POINT THIS NEEDS MORE TESTING
-        if( this.enableGamePadControl)
+        if(this.enableGamePadControl)
         {
-            this.canvas.addEventListener("gamepadconnected", (event) => this.currentLevel.keyDown(event) );
-            this.canvas.addEventListener("gamepaddisconnected", (event) => this.currentLevel.keyDown(event) );
+            window.addEventListener("gamepadconnected", (event) => this.currentLevel.gamePadConnected(event) );
+            window.addEventListener("gamepaddisconnected", (event) => this.currentLevel.gamePadDisconnected(event) );
         }
         
     }

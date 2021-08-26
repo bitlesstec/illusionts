@@ -10,7 +10,7 @@ import { LineShape } from "../lib/graphic/shape/LineShape.js";
 import { CollisionUtil } from "../lib/util/CollisionUtil.js";
 import { MathUtil } from "../lib/util/MathUtil.js";
 import { Point } from "../lib/graphic/Point.js";
-import { ImageUtil } from "../lib/util/ImageUtil.js";
+import { AssetUtil } from "../lib/util/AssetUtil.js";
 import { Initiable } from "../lib/ntfc/Initiable.js";
 import { Mousable } from "../lib/ntfc/input/Mousable.js";
 import { SpriteUtil } from "../lib/util/SpriteUtil.js";
@@ -165,13 +165,13 @@ export class CollisionLevel extends BaseLevel
 
     async loadImages(): Promise<void>
     {
-        let sqrImage =  await ImageUtil.getImage("/assets/sqr.png").then(img=>img);
+        let sqrImage =  await AssetUtil.getImage("/assets/sqr.png").then(img=>img);
 
-        let arrowImage =  await ImageUtil.getImage("/assets/arrow.png").then(img=>img);
+        let arrowImage =  await AssetUtil.getImage("/assets/arrow.png").then(img=>img);
 
-        let bulletImage =  await ImageUtil.getImage("/assets/bullet.png").then(img=>img);
+        let bulletImage =  await AssetUtil.getImage("/assets/bullet.png").then(img=>img);
         
-        let circleImage =  await ImageUtil.getImage("/assets/circle.png").then(img=>img);
+        let circleImage =  await AssetUtil.getImage("/assets/circle.png").then(img=>img);
 
         // let orangeArrowImage =  await ImageUtil.getImage("/assets/orangeArrow.png").then(img=>img);
         

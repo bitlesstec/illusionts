@@ -17,5 +17,6 @@ TRANSITIONED,//used when transition animation is done to load a new level
 SAVING,//show animation while game is beign saved
 SAVED,
 GAMEPAD_CONNECTED,
-GAMEPAD_DISCONNECTED
+GAMEPAD_DISCONNECTED,
+GAMEPAD_CONNECTING
 }

@@ -5,7 +5,7 @@ import { GameManager } from '../lib/manager/GameManager.js';
 import { GameState } from '../lib/manager/GameState.js';
 import { AssetLoadable } from '../lib/ntfc/AssetLoadable.js';
 import { CircleShape } from '../lib/graphic/shape/CircleShape.js';
-import { ImageUtil } from '../lib/util/ImageUtil.js';
+import { AssetUtil } from '../lib/util/AssetUtil.js';
 import { Initiable } from '../lib/ntfc/Initiable.js';
 import { Point } from '../lib/graphic/Point.js';
 import { LineShape } from '../lib/graphic/shape/LineShape.js';
@@ -212,10 +212,10 @@ export class SampleLevel extends BaseLevel
         // circleImage.src = "/assets/circle.png";
         // this.imageMap.set( "circleImage", circleImage );
 
-        let circleImage = await ImageUtil.getImage("/assets/circle.png").then(img=>img);
+        let circleImage = await AssetUtil.getImage("/assets/circle.png").then(img=>img);
         this.imageMap.set( "circleImage", circleImage );
 
-        let tileImage = await ImageUtil.getImage("/assets/mazegametiles.png").then(img=>img);
+        let tileImage = await AssetUtil.getImage("/assets/mazegametiles.png").then(img=>img);
         this.imageMap.set( "tileImage", tileImage );
     }
 

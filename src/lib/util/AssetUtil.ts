@@ -1,7 +1,7 @@
 import { GameManager } from "../manager/GameManager.js";
 
 
-export class ImageUtil
+export class AssetUtil
 {
 
     /**
@@ -30,4 +30,13 @@ export class ImageUtil
         return null;
     }
 
+    static async getAudio( filePath:string):Promise<HTMLAudioElement>
+    {
+        return new Promise( (resolve, reject) =>{
+            let audioToLoad = new Audio();
+            audioToLoad.onload = ()=> resolve(audioToLoad);
+            audioToLoad.onerror = reject;
+            audioToLoad.src = filePath;
+        } );
+    }
 }

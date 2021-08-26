@@ -6,7 +6,7 @@ import { AssetLoadable } from '../lib/ntfc/AssetLoadable.js';
 import { CollisionUtil } from '../lib/util/CollisionUtil.js';
 import { MathUtil } from '../lib/util/MathUtil.js';
 import { SpriteUtil } from '../lib/util/SpriteUtil.js';
-import { ImageUtil } from '../lib/util/ImageUtil.js';
+import { AssetUtil } from '../lib/util/AssetUtil.js';
 import { Initiable } from '../lib/ntfc/Initiable.js';
 import { Tile } from '../lib/graphic/Tile.js';
 
@@ -171,33 +171,33 @@ render( ctx:CanvasRenderingContext2D)
 async loadImages(): Promise<void> {
     console.log("loading images:::")
 
-    let shipImg = await ImageUtil.getImage("/assets/ship.png").then(img=>img);
+    let shipImg = await AssetUtil.getImage("/assets/ship.png").then(img=>img);
 
 
-    let bulletImg= await ImageUtil.getImage("/assets/bullet.png").then(img=>img);
-    let bulletImg2= await ImageUtil.getImage("/assets/bullet.png").then(img=>img);
-    let bulletImg3= await ImageUtil.getImage("/assets/bullet.png").then(img=>img);
-    let bulletImg4= await ImageUtil.getImage("/assets/bullet.png").then(img=>img);
-    let bulletImg5= await ImageUtil.getImage("/assets/bullet.png").then(img=>img);
+    let bulletImg= await AssetUtil.getImage("/assets/bullet.png").then(img=>img);
+    let bulletImg2= await AssetUtil.getImage("/assets/bullet.png").then(img=>img);
+    let bulletImg3= await AssetUtil.getImage("/assets/bullet.png").then(img=>img);
+    let bulletImg4= await AssetUtil.getImage("/assets/bullet.png").then(img=>img);
+    let bulletImg5= await AssetUtil.getImage("/assets/bullet.png").then(img=>img);
 
 
-    let smlRockImg = await ImageUtil.getImage("/assets/rock1.png").then(img=>img);
-    let smlRockImg2 = await ImageUtil.getImage("/assets/rock1.png").then(img=>img);
-    let smlRockImg3 = await ImageUtil.getImage("/assets/rock1.png").then(img=>img);
-    let smlRockImg4 = await ImageUtil.getImage("/assets/rock1.png").then(img=>img);
-    let smlRockImg5 = await ImageUtil.getImage("/assets/rock1.png").then(img=>img);
+    let smlRockImg = await AssetUtil.getImage("/assets/rock1.png").then(img=>img);
+    let smlRockImg2 = await AssetUtil.getImage("/assets/rock1.png").then(img=>img);
+    let smlRockImg3 = await AssetUtil.getImage("/assets/rock1.png").then(img=>img);
+    let smlRockImg4 = await AssetUtil.getImage("/assets/rock1.png").then(img=>img);
+    let smlRockImg5 = await AssetUtil.getImage("/assets/rock1.png").then(img=>img);
 
-    let midRockImg = await ImageUtil.getImage("/assets/rock2.png").then(img=>img);
-    let midRockImg2 = await ImageUtil.getImage("/assets/rock2.png").then(img=>img);
-    let midRockImg3 = await ImageUtil.getImage("/assets/rock2.png").then(img=>img);
-    let midRockImg4 = await ImageUtil.getImage("/assets/rock2.png").then(img=>img);
-    let midRockImg5 = await ImageUtil.getImage("/assets/rock2.png").then(img=>img);
+    let midRockImg = await AssetUtil.getImage("/assets/rock2.png").then(img=>img);
+    let midRockImg2 = await AssetUtil.getImage("/assets/rock2.png").then(img=>img);
+    let midRockImg3 = await AssetUtil.getImage("/assets/rock2.png").then(img=>img);
+    let midRockImg4 = await AssetUtil.getImage("/assets/rock2.png").then(img=>img);
+    let midRockImg5 = await AssetUtil.getImage("/assets/rock2.png").then(img=>img);
 
-    let bigRockImg = await ImageUtil.getImage("/assets/rock3.png").then(img=>img);
-    let bigRockImg2 = await ImageUtil.getImage("/assets/rock3.png").then(img=>img);
-    let bigRockImg3 = await ImageUtil.getImage("/assets/rock3.png").then(img=>img);
-    let bigRockImg4 = await ImageUtil.getImage("/assets/rock3.png").then(img=>img);
-    let bigRockImg5 = await ImageUtil.getImage("/assets/rock3.png").then(img=>img);
+    let bigRockImg = await AssetUtil.getImage("/assets/rock3.png").then(img=>img);
+    let bigRockImg2 = await AssetUtil.getImage("/assets/rock3.png").then(img=>img);
+    let bigRockImg3 = await AssetUtil.getImage("/assets/rock3.png").then(img=>img);
+    let bigRockImg4 = await AssetUtil.getImage("/assets/rock3.png").then(img=>img);
+    let bigRockImg5 = await AssetUtil.getImage("/assets/rock3.png").then(img=>img);
 
 
     //setting images to global imgMap

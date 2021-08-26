@@ -10,7 +10,7 @@ import { AssetLoadable } from "../lib/ntfc/AssetLoadable.js";
 import { Initiable } from "../lib/ntfc/Initiable.js";
 import { ColliderUtil } from "../lib/util/ColliderUtil.js";
 import { CollisionUtil } from "../lib/util/CollisionUtil.js";
-import { ImageUtil } from '../lib/util/ImageUtil.js';
+import { AssetUtil } from '../lib/util/AssetUtil.js';
 import { TileUtil } from "../lib/util/TileUtil.js";
 
 
@@ -303,25 +303,25 @@ export class AndroidLevel extends BaseLevel
 
         //loading the image that contains all the tiles for the bakground
         //and saving it in the imageMap to be used when needed
-        let tileBackground = await ImageUtil.getImage("/assets/platform/citybg.png").then(img=>img);
+        let tileBackground = await AssetUtil.getImage("/assets/platform/citybg.png").then(img=>img);
         this.imageMap.set("tileBackground", tileBackground);
 
-        let androidWalkingImg = await ImageUtil.getImage("/assets/platform/androidwalking.png").then(img=>img);
+        let androidWalkingImg = await AssetUtil.getImage("/assets/platform/androidwalking.png").then(img=>img);
         this.imageMap.set("androidWalking", androidWalkingImg);
 
-        let androidWeakPunchImg = await ImageUtil.getImage("/assets/platform/androidpunch.png").then(img=>img);
+        let androidWeakPunchImg = await AssetUtil.getImage("/assets/platform/androidpunch.png").then(img=>img);
         this.imageMap.set("androidpunch", androidWeakPunchImg);
 
-        let androidJumpImg = await ImageUtil.getImage("/assets/platform/androidjump.png").then(img=>img);
+        let androidJumpImg = await AssetUtil.getImage("/assets/platform/androidjump.png").then(img=>img);
         this.imageMap.set("androidJump", androidJumpImg);
 
-        let androidStandImg = await ImageUtil.getImage("/assets/platform/androidstand.png").then(img=>img);
+        let androidStandImg = await AssetUtil.getImage("/assets/platform/androidstand.png").then(img=>img);
         this.imageMap.set("androidStand", androidStandImg);
 
-        let tankImg = await ImageUtil.getImage("/assets/platform/tank.png").then(img=>img);
+        let tankImg = await AssetUtil.getImage("/assets/platform/tank.png").then(img=>img);
         this.imageMap.set( "tank", tankImg );
 
-        let tankShatteredImg = await ImageUtil.getImage("/assets/platform/tank-sheet.png").then(img=>img);
+        let tankShatteredImg = await AssetUtil.getImage("/assets/platform/tank-sheet.png").then(img=>img);
         this.imageMap.set( "tankShattered", tankShatteredImg );
 
     }

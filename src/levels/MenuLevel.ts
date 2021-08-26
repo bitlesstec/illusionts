@@ -10,6 +10,7 @@ import { PlatformLevel } from './PlatformLevel.js';
 import { AndroidLevel } from './AndroidLevel.js';
 import { CollisionLevel } from './Collisionlevel.js';
 import { TowerDefense } from './TowerDefense.js';
+import { ControllerLevel } from './ControllerLevel.js';
 
 /**
  * this is a level that creates a menu to load other levels
@@ -82,6 +83,7 @@ export class MenuLevel extends BaseLevel
                 ctx.fillText( "Tile example" ,40, 110);
                 ctx.fillText( "Collision 1" ,40, 130);
                 ctx.fillText( "Tower Defense" ,40, 150);
+                ctx.fillText( "Gamepad Level" ,40, 170);
 
                 this.menuSelector.render(ctx);
                 
@@ -118,10 +120,10 @@ export class MenuLevel extends BaseLevel
             case 40: //arrow down
             this.gameSelected +=1;
             this.menuSelector.moveY(20);
-            if( this.menuSelector.points[0].y > 150)
+            if( this.menuSelector.points[0].y > 170)
             {
-                this.menuSelector.points[0].y = 150;
-                this.gameSelected=6;
+                this.menuSelector.points[0].y = 170;
+                this.gameSelected=7;
             }
             break;
 
@@ -155,6 +157,9 @@ export class MenuLevel extends BaseLevel
                 case 6:
                     GameManager.getInstance().loadLevel( new TowerDefense() );
                     GameManager.getInstance().scaleCanvas(1,1);
+                    break; 
+                case 7:
+                        GameManager.getInstance().loadLevel( new ControllerLevel() );
                     break; 
             }
             // GameManager.getInstance().loadLevel( levelToLoad );

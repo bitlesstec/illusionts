@@ -4,7 +4,7 @@ import { BaseLevel } from "../lib/level/BaseLevel.js";
 import { GameState } from "../lib/manager/GameState.js";
 import { AssetLoadable } from "../lib/ntfc/AssetLoadable.js";
 import { Initiable } from "../lib/ntfc/Initiable.js";
-import { ImageUtil } from "../lib/util/ImageUtil.js";
+import { AssetUtil } from "../lib/util/AssetUtil.js";
 import { TileUtil } from "../lib/util/TileUtil.js";
 
 
@@ -57,16 +57,16 @@ export class TowerDefense extends BaseLevel implements Initiable, AssetLoadable
     async loadImages(): Promise<void>  
     {
        // loading images/assets of the game
-       let bgtilesImg = await ImageUtil.getImage( "/assets/towerdefense/bgtiles.png" ).then( img => img );
+       let bgtilesImg = await AssetUtil.getImage( "/assets/towerdefense/bgtiles.png" ).then( img => img );
        this.imageMap.set( "bgtiles" , bgtilesImg );
 
-       let enemyImg = await ImageUtil.getImage( "/assets/towerdefense/enemy.png" ).then( img => img );
+       let enemyImg = await AssetUtil.getImage( "/assets/towerdefense/enemy.png" ).then( img => img );
        this.imageMap.set( "enemy" , enemyImg );
 
-       let turretImg = await ImageUtil.getImage( "/assets/towerdefense/turret.png" ).then( img => img );
+       let turretImg = await AssetUtil.getImage( "/assets/towerdefense/turret.png" ).then( img => img );
        this.imageMap.set( "turret" , turretImg );
 
-       let bulletImg = await ImageUtil.getImage( "/assets/towerdefense/redBullet.png" ).then( img => img );
+       let bulletImg = await AssetUtil.getImage( "/assets/towerdefense/redBullet.png" ).then( img => img );
        this.imageMap.set( "bullet" , bulletImg )
 
     }

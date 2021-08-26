@@ -50,7 +50,6 @@ constructor( levelWidht:number, levelHeight:number, viewWidth?:number, viewHeigh
     this.audioManager = new AudioManager();
     this.imageMap = new Map<string, HTMLImageElement>();
     this.spriteList = [];
-
     this.levelWidth = levelWidht; 
     this.levelHeight = levelHeight;
 

@@ -1,11 +1,10 @@
-import { Config } from "../lib/cfg/Config.js";
+
 import { Tile } from "../lib/graphic/Tile.js";
 import { BaseLevel } from "../lib/level/BaseLevel.js";
-import { GameManager } from "../lib/manager/GameManager.js";
 import { GameState } from "../lib/manager/GameState.js";
 import { AssetLoadable } from "../lib/ntfc/AssetLoadable.js";
 import { Initiable } from "../lib/ntfc/Initiable.js";
-import { ImageUtil } from '../lib/util/ImageUtil.js';
+import { AssetUtil } from '../lib/util/AssetUtil.js';
 import { TileUtil } from "../lib/util/TileUtil.js";
 
 
@@ -89,7 +88,7 @@ export class PlatformLevel extends BaseLevel
 
         //loading the image that contains all the tiles for the bakground
         //and saving it in the imageMap to be used when needed
-        let tileBackground = await ImageUtil.getImage("/assets/platform-tiles.png").then(img=>img);
+        let tileBackground = await AssetUtil.getImage("/assets/platform-tiles.png").then(img=>img);
         this.imageMap.set("tileBg", tileBackground);
     }
 

@@ -9,7 +9,7 @@ export interface Gamepadable{
     /**
      * this must be used in UPDATE() method, this will poll gamepad events
      */
-    poll(gameoads:Gamepad[]):void;
+    poll(gamepads:Gamepad[]):void;
 
     /**
      * this will check if a button defined by it index is pressed or not,

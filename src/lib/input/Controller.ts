@@ -3,7 +3,10 @@ import { Gamepadable } from "../ntfc/input/Gamepadable.js";
 
 export class Controller implements Gamepadable
 {
-    
+    //other gamepads tested
+    // DragonRise Inc.   Generic   USB  Joystick   (STANDARD GAMEPAD Vendor: 0079 Product: 0006)
+
+
     static readonly DEAD_THRESHOLD:number = 0.2;
     static readonly XAXIS_DEAD_THRESHOLD:number = Controller.DEAD_THRESHOLD;
     static readonly YAXIS_DEAD_THRESHOLD:number = Controller.DEAD_THRESHOLD;

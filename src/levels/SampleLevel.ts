@@ -16,6 +16,7 @@ import { TileUtil } from '../lib/util/TileUtil.js';
 import { TileMap } from './TileMap.js';
 import { Tile } from '../lib/graphic/Tile.js';
 import { HUDSprite } from '../lib/graphic/HUDSprite.js';
+import { Background } from '../lib/graphic/Background.js';
 
 
 /**
@@ -26,6 +27,10 @@ import { HUDSprite } from '../lib/graphic/HUDSprite.js';
 export class SampleLevel extends BaseLevel
                          implements AssetLoadable, Initiable
 {
+
+    bg:Background;
+
+
     circle:Sprite;
     circleShape:CircleShape;
     lineShape:LineShape;
@@ -98,6 +103,8 @@ export class SampleLevel extends BaseLevel
         this.damageTxt.setPosition(this.levelWidth/2, this.levelHeight/2);
         this.damageTxt.setExpiration(100);
 
+        this.bg = new Background( this.imageMap.get("starbg") );
+
         this.gameState=GameState.PLAYING;
     }
   
@@ -122,6 +129,10 @@ export class SampleLevel extends BaseLevel
             case GameState.PLAYING:
                 // let cnt = Math.floor( ++this.angleCounter*delta);
                 // console.log( "game is in PLAYING state: " );
+
+            this.bg.scrollX( 2, 640 );    
+            this.bg.scrollY( 3, 480 ); 
+
             let cnt = this.angleCounter++;
             this.circleShape.endAngle= cnt;
             if(this.angleCounter >= 360) this.angleCounter = 0;
@@ -174,6 +185,8 @@ export class SampleLevel extends BaseLevel
                 ctx.fillStyle = "#000";
                 ctx.fillRect( 0, 0, this.levelWidth, this.levelHeight );
 
+                this.bg.render(ctx);
+
                 TileUtil.renderTiles( ctx, this.imageMap.get( "tileImage" ), this.tiles );
 
                 //set white color and print hello word in screen at 20, 20
@@ -217,6 +230,9 @@ export class SampleLevel extends BaseLevel
 
         let tileImage = await AssetUtil.getImage("/assets/mazegametiles.png").then(img=>img);
         this.imageMap.set( "tileImage", tileImage );
+
+        let bgImage = await AssetUtil.getImage("/assets/starfield.png").then(img=>img);
+        this.imageMap.set( "starbg", bgImage );
     }
 
     loadSounds(): void {

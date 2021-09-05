@@ -13,6 +13,10 @@ import { MenuLevel } from './levels/MenuLevel.js';
 //you can set canvas id as well as width and height
 let game = GameManager.getInstance("canvas", 640, 480);//canvas width and height by default
 
+
+// game.setFps(30); //changin fps of this game to 30
+game.setCalculateFps(); //allow fps calculation
+
 //enabling mouse control because a level of the game uses mouse events
 game.enableMouseControl=true;
 //game.loadLevel( new SampleLevel() );

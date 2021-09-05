@@ -78,15 +78,15 @@ update( delta:number ){
                 // }
 
 
-                // for( let i in this.gpad.gamePad.buttons ){
-                //     if( this.gpad.gamePad.buttons[i].pressed ){
+                for( let i in this.gpad.gamePad.buttons ){
+                    if( this.gpad.gamePad.buttons[i].pressed ){
 
-                //         console.log( i )
-                //         console.log( this.gpad.gamePad.buttons[i] )
-                //     } 
-                // }
+                        console.log( i )
+                        console.log( this.gpad.gamePad.buttons[i] )
+                    } 
+                }
 
-                console.log( this.gpad.gamePad.axes[0] )
+                // console.log( this.gpad.gamePad.axes[0] )
                 // for( let gpad of this.gpad.gamePad.buttons )
                 // {
                 //     if( gpad.pressed)

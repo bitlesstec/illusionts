@@ -24,10 +24,13 @@ import {Config} from "../cfg/Config.js";
 
     delta: number;
     lastUpdate: number;
+    fps:number;
+    millisPerFrame:number; // this is 1000 / fps
+    fpsCounter:number;
+    calculateFps:boolean;
+    // step:number;
     //  currentTimestamp:number;
 
-    fps:number;
-    step:number;
     
     canvas:HTMLCanvasElement;
     context2D: CanvasRenderingContext2D;
@@ -57,7 +60,13 @@ import {Config} from "../cfg/Config.js";
         this.delta = 0;
         this.lastUpdate = 0;
         this.fps = 60;// 1000/30;  //30 fps, use 1000/60 to set it to 60 fps
-        this.step = 1/this.fps;
+        this.millisPerFrame = 1/this.fps;
+
+
+        //below are tho show and set FPS counter
+        this.fpsCounter = 0;
+        this.calculateFps = false;
+
         this.gameData= new Map<string, string>();
 
         //this will set @font-face style element
@@ -93,17 +102,46 @@ import {Config} from "../cfg/Config.js";
     }
 
     //this is the gameloop
+    // run()
+    // {
+    //     //@NOTE: check if current level !== undefined
+    //     let now = Date.now();
+    //     this.delta = ( now - this.lastUpdate ) / 1000;//this.fps;
+    //     this.lastUpdate = now;
+    //     if( this.currentLevel )
+    //     {
+    //         this.currentLevel.update( this.delta );
+    //         this.currentLevel.render( this.context2D );
+    //     }
+    //     requestAnimationFrame( this.run.bind(this) );
+    // }
+
+
     run()
     {
-        //@NOTE: check if current level !== undefined
         let now = Date.now();
-        this.delta = ( now - this.lastUpdate ) / 1000;//this.fps;
-        this.lastUpdate = now;
-        if( this.currentLevel !== undefined )
+        // this.delta = now - this.lastUpdate;
+        this.delta = ( now - this.lastUpdate ) / 1000; //this will give like 0.016 which is ok for delta
+        
+        if( this.calculateFps )
         {
-            this.currentLevel.update( this.delta );
-            this.currentLevel.render( this.context2D );
+            this.fpsCounter = Math.ceil(  1/this.delta ); //29411764
+            console.log(`FPS: ${this.fpsCounter}`);
         }
+            
+
+        if( this.delta >= this.millisPerFrame )
+        {
+            if( this.currentLevel )
+            {
+                this.currentLevel.update( this.delta );
+                this.currentLevel.render( this.context2D );
+                this.lastUpdate = now;
+            }
+
+        }
+
+        // if(this.currentLevel)this.currentLevel.render( this.context2D );
         requestAnimationFrame( this.run.bind(this) );
     }
 
@@ -269,6 +307,29 @@ import {Config} from "../cfg/Config.js";
         this.context2D.measureText(txt).width;
     }
 
+    /**
+     * this will set new fps for the game and will change,
+     * millisPerFrame variable used in game loop.
+     * RECOMMENDED to run this before game start and not to
+     * change this while game is runnig
+     * @param fps 
+     */
+    setFps( fps:number )
+    {
+        // this.millisPerFrame = 1000 / fps;
+        this.millisPerFrame = 1 / fps;
+        console.log("setting MILLIS PER FRAME: ", this.millisPerFrame)
+    }
+
+    /**
+     * if this function is called without parameters will set
+     * calculateFps to true, otherwise fpsCounter will be always 0
+     * @param calculate 
+     */
+    setCalculateFps( calculate:boolean = true )
+    {
+        this.calculateFps = calculate;
+    }
     // getTextHeight(txt:string)
     // {
     //     this.context.measureText(txt).;

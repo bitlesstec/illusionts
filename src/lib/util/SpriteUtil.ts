@@ -1,3 +1,5 @@
+import { Point } from "../graphic/Point.js";
+import { BaseShape } from "../graphic/shape/BaseShape.js";
 import { Sprite } from "../graphic/Sprite.js";
 import { CollisionUtil } from "./CollisionUtil.js";
 
@@ -143,5 +145,27 @@ export class SpriteUtil
 
         return sprites;
     }//
+
+
+    /**
+     * this function will make defined sprite  rotate around point X & Y, it
+     * can also work to rotate the sprite around another sprite
+     * 
+     * CAUTION, THIS FLIKERS
+     * @param spr 
+     * @param x 
+     * @param y 
+     * @param distance 
+     * @param angle 
+     */
+    static rotateAround( spr:Sprite, x:number, y:number, distance:number, angle:number)
+    {
+        //check for pivots in the future, to make rotate around sprite pivot
+        let rotX= x - spr.getX() + ( distance * Math.cos(angle) ) - spr.w/2;
+        let rotY= y - spr.getY() + ( distance * Math.sin(angle) ) - spr.h/2;
+
+        spr.setX( Math.floor(rotX) );
+        spr.setY( Math.floor(rotY) );
+    }
 
 }//

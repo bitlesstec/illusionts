@@ -51,7 +51,7 @@ export class AudioManager implements Audioable
         if( mscName )
         {
             this.currentPlay = mscName;
-            var currentPlay:HTMLAudioElement = this.audioList.get( mscName );
+            let currentPlay:HTMLAudioElement = this.audioList.get( mscName );
             this.isPaused = false;
             currentPlay.autoplay = true;
             currentPlay.muted=false;
@@ -59,7 +59,7 @@ export class AudioManager implements Audioable
         }
         else
         {
-            var currentPlay:HTMLAudioElement = this.audioList.get( this.currentPlay );
+            let currentPlay:HTMLAudioElement = this.audioList.get( this.currentPlay );
             await currentPlay.play();
             this.isPaused = false;
         }
@@ -87,7 +87,7 @@ export class AudioManager implements Audioable
      */
     pause(): void {
         this.isPaused=true;
-        var currentPlay:HTMLAudioElement = this.audioList.get( this.currentPlay );
+        let currentPlay:HTMLAudioElement = this.audioList.get( this.currentPlay );
         currentPlay.pause();
     }
 

@@ -141,6 +141,7 @@ export class TowerDefense extends BaseLevel implements Initiable, AssetLoadable
         this.enemy = new Enemy( this.imageMap.get("enemy") );
         this.enemy.setPosition( 64, 0 );
         this.enemy.spdY=1;
+        this.enemy.label="enemy";
         this.spriteList.push(this.enemy);
         
 
@@ -148,6 +149,7 @@ export class TowerDefense extends BaseLevel implements Initiable, AssetLoadable
         {
             this.turrets[i] = new Turret( this.imageMap.get("turret") );   
             this.turrets[i].visible = false; 
+            this.turrets[i].label="turret";
             this.spriteList.push(this.turrets[i]);
         }
 
@@ -155,6 +157,7 @@ export class TowerDefense extends BaseLevel implements Initiable, AssetLoadable
         {
             this.bullets[i] = new Sprite( this.imageMap.get("bullet") );
             this.bullets[i].visible=false;
+            this.bullets[i].label="bullet"
             this.spriteList.push(this.bullets[i]);
         }
         
@@ -211,7 +214,7 @@ export class TowerDefense extends BaseLevel implements Initiable, AssetLoadable
             for( let tur of this.turrets)
             {
                 //inside this method on its class is the logic for the update
-                tur.update(delta, this.enemy, this.bullets);
+                tur.update(delta,this.bullets);
             }
 
 

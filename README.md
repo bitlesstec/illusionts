@@ -28,5 +28,5 @@
 - touch example
 - touch swap
 - create example of tiles that are inside the view
-- rotate around
-
+- rotate around example
+- create scrolling platform with tileset and save data/game

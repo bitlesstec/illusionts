@@ -1,5 +1,6 @@
 import { ImageMeasures } from "../../../lib/graphic/ImageMeasures.js";
 import { Sprite } from "../../../lib/graphic/Sprite.js";
+import { GameManager } from "../../../lib/manager/GameManager.js";
 import { Task } from "../../../lib/task/Task.js";
 import { SpriteUtil } from "../../../lib/util/SpriteUtil.js";
 
@@ -17,8 +18,12 @@ export class Turret extends Sprite
         this.shootTask = new Task();
     }
 
-    update(delta: number, enemy:Sprite, bullets:Sprite[]): void 
+    update(delta: number, bullets:Sprite[]): void 
     {
+
+        // let en = GameManager.getInstance().currentLevel.spriteList;
+
+        let enemy = SpriteUtil.getSpriteGroupByLabel("enemy")[0];
         this.shootTask.process(()=>
         {
             //if task completer then can shoot again

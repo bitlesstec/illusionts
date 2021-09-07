@@ -1,6 +1,7 @@
 import { Point } from "../graphic/Point.js";
 import { BaseShape } from "../graphic/shape/BaseShape.js";
 import { Sprite } from "../graphic/Sprite.js";
+import { GameManager } from "../manager/GameManager.js";
 import { CollisionUtil } from "./CollisionUtil.js";
 
 /**
@@ -138,11 +139,11 @@ export class SpriteUtil
      * @param labelToLook 
      * @param spriteList 
      */
-    static getSpriteByLabel( labelToLook:string, spriteList:Sprite[] ): Sprite[]
+    static getSpriteGroupByLabel(labelToLook:string):Sprite[]
     {
+        let spriteList:Sprite[]=GameManager.getInstance().currentLevel.spriteList;
         let sprites: Sprite[] =
             spriteList.filter( spr => spr.label === labelToLook );
-
         return sprites;
     }//
 

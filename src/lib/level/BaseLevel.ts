@@ -7,6 +7,7 @@ import { GameState } from "../manager/GameState.js";
 import { Camera } from "../camera/Camera.js";
 import {AudioManager} from "../audio/AudioManager.js";
 import { BaseShape } from "../graphic/shape/BaseShape.js";
+import { Sprite } from "../graphic/Sprite.js";
 
 /**
  * this class will represent a level in the game, will
@@ -26,7 +27,7 @@ imageMap: Map<string, HTMLImageElement>;
 
 //used to maintain all the sprites in a single place, 
 //so we can iterate this map and use render method of each sprite for example
-spriteList: BaseShape[];// | Sprite[];
+spriteList: Sprite[];
 
 camera: Camera;
 

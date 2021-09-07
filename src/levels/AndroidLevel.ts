@@ -376,7 +376,7 @@ export class AndroidLevel extends BaseLevel
             ctx.strokeStyle="white";
             // ctx.lineWidth=2;
 
-            //uncomment to show camera margins
+            //UNCOMMENT TO SHOW CAMERA MARGINS
             // ctx.beginPath();
             // ctx.moveTo( this.camera.viewX+this.marginLeft-1, this.camera.viewY );
             // ctx.lineTo( this.camera.viewX+this.marginLeft-1, this.camera.viewHeight );

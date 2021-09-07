@@ -10,7 +10,6 @@ import { Point } from "../graphic/Point";
  * getRandomRange
  * directRuleof3
  * reverseRuleOf3
- * 
  */
 export class MathUtil
 {
@@ -39,7 +38,7 @@ export class MathUtil
 
     /**
      * if value is mayor than max value, max value will be returned
-     * if value is minor than min value, min valye will be returned
+     * if value is minor than min value, min value will be returned
      * if value is between range of max and min value, then value will be returned
      * @param value 
      * @param minValue 
@@ -117,74 +116,6 @@ export class MathUtil
     static toRadians( angle:number ):number
     {
       return angle * ( Math.PI / 180 );
-    }
-
-
-    /**
-     * trayectoria parabolica de un objeto
-     * @NOTE buscar como mejorar este codigo, ver como programar projectir parabolico
-     * @param initPoint 
-     * @param destPoint 
-     * @param minSpd 
-     * @param maxSpd 
-     */
-    static projectileTrajectory( initPoint:Point, destPoint:Point, minSpd:number, maxSpd:number ):[ number, number ]
-    {
-        let xi:number = initPoint.x;
-        let yi:number = initPoint.y;
-        let xf:number = destPoint.x;
-        let yf:number = destPoint.y;
-
-        let grav:number = 9.8;
-
-
-        let xdir:number = Math.sign( xf-xi );
-        xf=xi + Math.abs( xf-xi );
-
-        if( xi === xf ){
-            xf = ++xi;
-        }
-
-        let c:number = ( grav / ( 2 * Math.pow( minSpd, 2 ) ) ) * ( Math.pow( xf-xi, 2 ) );
-
-        let potmin:number = minSpd;
-        while(  Math.pow( xf-xi,2)-4 * (c * ( c -yf + yi ) ) < 0 )
-        {
-            potmin+=5;
-            if( xi === xf ){ xf = ++xi; }
-            c =  ( grav / ( 2 * Math.pow( potmin, 2 ) ) ) * ( Math.pow( xf-xi, 2 ) );
-        }
-
-        let res =  -( xf -xi ) - Math.sqrt( Math.pow(xf-xi,2)-4 * ( c * ( c-yf-yi ) ) ) / -2 * c
-
-        let ang:number = Math.atan( res ) * 180 / Math.PI;
-
-        if(xdir === -1){
-            ang += 2 * Math.abs( ang - 90 );
-        }
-
-        let pot:number = Math.min( minSpd, maxSpd );
-
-        return [ this.lengthDirX( pot, ang )/60, this.lengthDirY( pot, ang )/60 ];
-
-    }
-
-
-    static projectile( launchAngle:number, spd:number ):[ number, number ]
-    {
-        let DEG2RAD:number = Math.PI/180;
-        let g:number = 9.8;
-        let time:number = 10;
-
-        let ang:number = launchAngle * DEG2RAD;
-        let v0x:number = spd * Math.cos(ang); // initial velocity in x
-        let v0y:number = spd * Math.sin(ang); // initial velocity in y
-
-        // let x:number = (v0x * time);
-        // // // double y = (v0y * time) + (0.5 * g * (float)Math.Pow(time, 2));
-        // let y:number = (0.5 * g * time + v0y) * time
-
-        return [ v0x, -v0y];
     }
 
 }//

@@ -9,7 +9,7 @@ import { XpaceRocksLevel } from './XpaceRocksLevel.js';
 import { PlatformLevel } from './PlatformLevel.js';
 import { AndroidLevel } from './AndroidLevel.js';
 import { CollisionLevel } from './Collisionlevel.js';
-import { TowerDefense } from './TowerDefense.js';
+import { TowerDefense } from './towerdefense/TowerDefense.js';
 import { ControllerLevel } from './ControllerLevel.js';
 
 /**

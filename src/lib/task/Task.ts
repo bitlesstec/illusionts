@@ -16,7 +16,7 @@ export class Task
      * this is to set any process to be executed after several gamethicks
      * @param executer 
      */
-process( executer = function(){} )
+process( executor = function(){} )
 {
     this.counter--;
 
@@ -24,7 +24,7 @@ process( executer = function(){} )
     {
         this.counter = 0;
         this.active = false;
-        executer();//.execute();
+        executor();//.execute();
     }
 
 }//
@@ -44,7 +44,7 @@ getCounter():number
 setCounter( counter:number ):void
 { 
     this.counter = counter; 
-    this.active = ( counter == 0 )? false : true;
+    this.active = ( counter === 0 )? false : true;
 }
 
 

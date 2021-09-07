@@ -75,7 +75,7 @@ export class AudioManager implements Audioable
         // if there is volume and is not muted this sfx will play
         if( this.volume > 0 || !this.isMuted )
         {
-            var currentSfx:HTMLAudioElement = this.audioList.get( sfxName );
+            let currentSfx:HTMLAudioElement = this.audioList.get( sfxName );
             currentSfx.autoplay=false;
             await currentSfx.play();
         }

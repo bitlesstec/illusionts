@@ -41,7 +41,7 @@ export class SpriteUtil
      * @param spd 
      * @param setAngle if this is set to true, spr:Sprite angle will be set
      */
-    static moveToAngle( spr:Sprite, angle:number, spd:number, setAngle:boolean )
+    static moveToAngle( spr:Sprite, angle:number, spd:number, setAngle:boolean=false )
     {
         if( setAngle )
             spr.angle = angle;

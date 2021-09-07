@@ -26,6 +26,9 @@ import { TileUtil } from "../lib/util/TileUtil.js";
 export class PlatformLevel extends BaseLevel
                            implements AssetLoadable, Initiable
 {
+    readonly DEG2RAD:number = Math.PI/180;
+    readonly ang:number = 45 * this.DEG2RAD;
+    launchForce:number = 9;
 
     tilesRows:number = 15;
     tilesCols:number = 40;
@@ -39,7 +42,9 @@ export class PlatformLevel extends BaseLevel
     mouseX:number = 0;
     mouseY:number = 0;
 
+    //vars to projectile which affects red circle when space is released
     angle:number = 0;
+    launchTime:number=0;
 
     //this array contains the frame of the image that will be set in the background
     tileMap:any  =
@@ -80,14 +85,14 @@ export class PlatformLevel extends BaseLevel
         break;
 
         case GameState.PLAYING:
-            // this.camera.moveX(1);
+        // this.camera.moveX(1);
 
+        //UPDATING PROJECTILE MOVEMENT
+        let spdYY = (9.81 *  (Date.now() - this.launchTime) / 1000) - ( this.launchForce * Math.sin( this.ang))
+        let vy = spdYY * delta * 10;
 
-           
-
-            // this.circle.move();
-            // this.circle.spdY += 9.8 *delta ;
-            
+        this.circle.moveX( this.circle.spdX * delta * 10);
+        this.circle.moveY(vy);
         break;
         }
     }
@@ -96,8 +101,10 @@ export class PlatformLevel extends BaseLevel
     async init(){
         await this.loadImages();
 
-        this.tiles = TileUtil.parse( this.tileMap,  this.tilesCols, this.tilesRows, 32,32 );
+        console.log("loading sounds")
+        await this.loadSounds();
 
+        this.tiles = TileUtil.parse( this.tileMap,  this.tilesCols, this.tilesRows, 32,32 );
 
         this.circle = new CircleShape( new Point( 100,100 ), 20, "red" );
 
@@ -105,6 +112,8 @@ export class PlatformLevel extends BaseLevel
         this.purpleCircle.setPosition(100, 250);
 
         // afther everything is loaded change state to playing
+
+        this.audioManager.play("bgmusic");
         this.gameState = GameState.PLAYING;
     }
 
@@ -122,7 +131,28 @@ export class PlatformLevel extends BaseLevel
     }
 
     //those are not usable for now
-    loadSounds(): void {}
+    async loadSounds(): Promise<void> {
+        try{
+            console.log("1")
+            let bgmusic = await AssetUtil.getAudio("/assets/music/Boss-Time-David-Ruenda.mp3").then(audio=>audio);
+            console.log("2")
+            let gunfx = await AssetUtil.getAudio("/assets/music/snd_gun.wav").then(audio=>{ console.log("resolved"); return audio } );
+            console.log("3")
+            let audioList:Map<string, HTMLAudioElement>= new Map();
+            // audioList.set( "bgmusic", bgmusic);
+            audioList.set( "gunfx", gunfx);
+            console.log("4")
+            this.audioManager.loadSounds( audioList );
+        }
+        catch(error)
+        {
+            console.log(error)
+        }
+
+        
+        console.log("end loading sounds")
+    }
+
     loadData(): void {}
 
 
@@ -143,7 +173,7 @@ export class PlatformLevel extends BaseLevel
         
 
         ctx.clearRect(0,0, 640,480);
-        // TileUtil.renderTiles( ctx, this.imageMap.get( "tileBg" ), this.tiles );
+        TileUtil.renderTiles( ctx, this.imageMap.get( "tileBg" ), this.tiles );
 
 
         this.circle.render(ctx);
@@ -152,8 +182,7 @@ export class PlatformLevel extends BaseLevel
 
         //must be after we put the tiles, otherwise it wont show
         ctx.fillStyle ="#000";
-        ctx.fillText("use A or D to move the view", this.camera.viewX+20, this.camera.viewY+20)
-
+        ctx.fillText(`use A or D to move the view| lacunchForce ${this.launchForce}`, this.camera.viewX+20, this.camera.viewY+20 );
 
         ctx.restore();
         // SpriteUtil.rotateAround( this.purpleCircle, 100, 250, 100, this.angle); this.angle+=1;
@@ -187,22 +216,32 @@ export class PlatformLevel extends BaseLevel
     {
         switch( event.keyCode )
         {
-        case 32: //D
-        console.log( `up: ${this.mouseX} - ${this.mouseY} ` )
+            case 87://W
+                //PLAY SOUND EFFECT 
+                this.audioManager.playSfx("gunfx");
+                break;
+            case 65: //A
+            this.launchForce++;
+            break;
 
-        // let arr:any = MathUtil.projectileTrajectory( new Point(this.circle.getX(), this.circle.getY() ),
-        //                                                        new Point( this.mouseX, this.mouseY ), 300, 600 );
-        let arr:any = MathUtil.projectile(65,9);
+            case 68: //D
+            this.launchForce--;
+            break;
 
+            case 32: //SPACE
 
-        this.circle.setX(100)
-        this.circle.setY(300)                          
-        this.circle.spdX = arr[0];
-        this.circle.spdY = arr[1];
+            //SETTING INITIAL PROJECTILE MOVEMENT
+                this.circle.setX(100)
+                this.circle.setY(300)  
+                // let ang:number = launchAngle * DEG2RAD;
+                let v0x:number = this.launchForce * Math.cos(this.ang); // initial velocity in x
+                let v0y:number = this.launchForce * Math.sin(this.ang); // initial velocity in y
 
-        console.log( `up: ${this.mouseX} - ${this.mouseY} == ${this.circle.spdX} - ${this.circle.spdY} ` )
+                this.circle.spdX = v0x;
+                this.circle.spdY = v0y;
 
-        break;
+                this.launchTime = Date.now();
+            break;
         }
     }
 
@@ -213,5 +252,7 @@ export class PlatformLevel extends BaseLevel
         this.mouseX = event.clientX - boundingRect.left;
         this.mouseY = event.clientY - boundingRect.top;
     }
+
+
 
 }//

@@ -277,7 +277,6 @@ import {Config} from "../cfg/Config.js";
      * @param fontName 
      */
     setFont( fontSize:number, fontName:string ){
-        console.log(`${fontSize}px ${ fontName }`)
         this.fontName=fontName;
         this.context2D.font = `${fontSize}px ${ fontName }`;
     }
@@ -318,7 +317,6 @@ import {Config} from "../cfg/Config.js";
     {
         // this.millisPerFrame = 1000 / fps;
         this.millisPerFrame = 1 / fps;
-        console.log("setting MILLIS PER FRAME: ", this.millisPerFrame)
     }
 
     /**

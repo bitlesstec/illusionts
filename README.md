@@ -23,9 +23,10 @@
 
 ## Work in progress
 - paralax example
-- balistics/projectile trajectories
+- audio example
 - tower defense level example
 - touch example
 - touch swap
-- ajax
-- load tiles from tilemap file
+- create example of tiles that are inside the view
+- rotate around
+

@@ -1,8 +1,10 @@
+import { Config } from "../../lib/cfg/Config.js";
 import { Collider } from "../../lib/graphic/shape/Collider.js";
 import { Sprite } from "../../lib/graphic/Sprite.js";
 import { Tile } from "../../lib/graphic/Tile.js";
 import { MouseControl } from "../../lib/input/MouseControl.js";
 import { BaseLevel } from "../../lib/level/BaseLevel.js";
+import { GameManager } from "../../lib/manager/GameManager.js";
 import { GameState } from "../../lib/manager/GameState.js";
 import { AssetLoadable } from "../../lib/ntfc/AssetLoadable.js";
 import { Initiable } from "../../lib/ntfc/Initiable.js";
@@ -142,7 +144,7 @@ export class TowerDefense extends BaseLevel implements Initiable, AssetLoadable
         this.enemy.setPosition( 64, 0 );
         this.enemy.spdY=1;
         this.enemy.label="enemy";
-        this.spriteList.push(this.enemy);
+        this.spriteMap.set("enemy", [this.enemy] );
         
 
         for( let i = 0; i < this.MAX_TURRETS ;i++ )
@@ -150,17 +152,17 @@ export class TowerDefense extends BaseLevel implements Initiable, AssetLoadable
             this.turrets[i] = new Turret( this.imageMap.get("turret") );   
             this.turrets[i].visible = false; 
             this.turrets[i].label="turret";
-            this.spriteList.push(this.turrets[i]);
         }
+        this.spriteMap.set("turrets", this.turrets);
 
         for( let i = 0; i < 30 ;i++ )
         {
             this.bullets[i] = new Sprite( this.imageMap.get("bullet") );
             this.bullets[i].visible=false;
-            this.bullets[i].label="bullet"
-            this.spriteList.push(this.bullets[i]);
+            this.bullets[i].label="bullet";
         }
-        
+        this.spriteMap.set("bullets", this.bullets);
+
 
         this.turretHUD = new Sprite( this.imageMap.get("turret") );
         this.turretHUD.setPosition( this.levelWidth-this.turretHUD.w, 0 );
@@ -176,6 +178,7 @@ export class TowerDefense extends BaseLevel implements Initiable, AssetLoadable
         this.colliderMoveRight = new Collider( 2*32,7*32,32,32);
         this.colliderMoveUp = new Collider( 14*32,6*32,32,32);
 
+        GameManager.getInstance().setFont( 10, Config.DEFAULT_FONT_NAME);
 
         this.gameState=GameState.PLAYING;
     }
@@ -261,10 +264,18 @@ export class TowerDefense extends BaseLevel implements Initiable, AssetLoadable
             TileUtil.renderTiles( ctx, this.imageMap.get( "bgtiles" ), this.tiles );
 
 
-            for( let spr of this.spriteList )
+            for( let spr of this.spriteMap.get("turrets") )
             {
                 spr.render(ctx);
             }
+
+            for( let spr of this.spriteMap.get("bullets") )
+            {
+                spr.render(ctx);
+            }
+
+            this.enemy.render(ctx);
+
 
             this.turretSelected.render(ctx);
 

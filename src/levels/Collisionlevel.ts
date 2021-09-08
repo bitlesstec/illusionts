@@ -70,19 +70,7 @@ export class CollisionLevel extends BaseLevel
 
         this.bulletSprite = new Sprite( this.imageMap.get( "bulletImage" ) );
         this.bulletSprite.visible=false;
-
-        //#YOU CAN ALSO PUT ALL SPRITES INSIDE spriteList AND ITERATE IT TO RENDER ALL
-        // OR USE IT FOR COLLISION CHECKING...
-        // this.spriteList.push( this.HUD );
-        // this.spriteList.push( this.redSprite );
-        // this.spriteList.push( this.blueSprite );
-
-        // this.spriteList.push( this.arrow );
-       
-        // this.spriteList.push( this.laser );
-        // this.spriteList.push( this.blueLine );
         
-        console.log( "size: "+this.spriteList.length );
         this.gameState=GameState.PLAYING;
     }
 

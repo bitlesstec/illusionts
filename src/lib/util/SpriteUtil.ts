@@ -135,20 +135,33 @@ export class SpriteUtil
     // @todo getSpriteByLabel or getSpriteGroupByLabel
 
     /**
-     * this method will return a list of sprites containing the label specified
+     * this method will return a list of sprites containing the label specified from
+     * defined spriteGroup
      * @param labelToLook 
-     * @param spriteList 
+     * @param spriteGroup 
      */
-    static getSpriteGroupByLabel(labelToLook:string):Sprite[]
+    static getSpriteGroupByLabel( labelToLook:string, spriteGroup:Sprite[] ): Sprite[]
     {
-        let spriteList:Sprite[]=GameManager.getInstance().currentLevel.spriteList;
         let sprites: Sprite[] =
-            spriteList.filter( spr => spr.label === labelToLook );
+            spriteGroup.filter( spr => spr.label === labelToLook );
+
         return sprites;
     }//
 
 
     /**
+     * this will return a group of sprites that are contained in
+     * currentLevel.spriteMap defined by groupName
+     * @param groupName 
+     * @returns 
+     */
+    static getSpriteGroup( groupName:string ):Sprite[]
+    {
+        return GameManager.getInstance().currentLevel.spriteMap.get( groupName );
+    }
+
+    /**
+     * DOES NOT WORK
      * this function will make defined sprite  rotate around point X & Y, it
      * can also work to rotate the sprite around another sprite
      * 

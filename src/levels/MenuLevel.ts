@@ -156,7 +156,7 @@ export class MenuLevel extends BaseLevel
                     break; 
                 case 6:
                     GameManager.getInstance().loadLevel( new TowerDefense() );
-                    GameManager.getInstance().scaleCanvas(1,1);
+                    GameManager.getInstance().scaleCanvas(1,1);//scaling to adjust canvas to towerdefense level width and height
                     break; 
                 case 7:
                         GameManager.getInstance().loadLevel( new ControllerLevel() );

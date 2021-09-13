@@ -4,7 +4,7 @@ import { Sprite } from "../graphic/Sprite.js";
 import { GameManager } from "../manager/GameManager.js";
 
 
-export class MouseControl
+export class PointerControl
 {
 
     pointPressed:Point;
@@ -13,30 +13,35 @@ export class MouseControl
     isPressed:boolean;
     isReleased:boolean;
 
+    //below can be used to check when is was pressed and released to get
+    //elapsed time between those, i dont have a use for them right now
+    startTime:number;
+    endTime:number;
+
     constructor()
     {
         this.pointPressed = new Point();
         this.pointReleased = new Point();
     }
 
-    mousePressed(e:MouseEvent)
+    pointerPressed(e:MouseEvent|TouchEvent)
     {
         this.pointPressed = this.getFixedMouseXY(e);
         this.isPressed = true;
         this.isReleased = false;
     }
 
-    mouseReleased(e:MouseEvent)
+    pointerReleased(e:MouseEvent|TouchEvent)
     {
         this.pointReleased = this.getFixedMouseXY(e);
         this.isPressed = false;
         this.isReleased = true;
     }
 
-    mouseMove(e:MouseEvent)
+    pointerMove(e:MouseEvent|TouchEvent)
     {
         this.pointPressed = this.getFixedMouseXY(e);
-        this.isPressed = true;
+        this.isPressed = true; //should it be false?
         this.isReleased = false;
     }
 
@@ -45,12 +50,30 @@ export class MouseControl
      * a different position and those values are relative to it
      * @param e 
      */
-    private getFixedMouseXY(e:MouseEvent):Point
+    private getFixedMouseXY(e:MouseEvent|TouchEvent):Point
     {
         let boundingRect = GameManager.getInstance().canvas.getBoundingClientRect();
+        let eX=0;
+        let eY=0;
+        if(e.type ==="touchend" && e instanceof TouchEvent)
+        {
+            eX = e.changedTouches[0].clientX; eX-=boundingRect.left;
+            eY = e.changedTouches[0].clientY; eY-=boundingRect.top;
+        }
+        else
+        {
+        //getting coordinates from Mouse or Touch events
+        eX = e instanceof MouseEvent? e.clientX : e.touches[0].clientX; eX-=boundingRect.left;
+        eY = e instanceof MouseEvent? e.clientY : e.touches[0].clientY; eY-=boundingRect.top;
+        }
+               
+        
 
-        let eX = e.clientX - boundingRect.left;
-        let eY = e.clientY - boundingRect.top;
+        
+        //if canvas is scaled i have to divide mouse corrdinates by scale
+        eX = GameManager.getInstance().xScale !== 1?eX/GameManager.getInstance().xScale : eX;
+        eY = GameManager.getInstance().yScale !== 1?eY/GameManager.getInstance().yScale : eY;
+
         return new Point(eX, eY);
     }
 

@@ -37,10 +37,11 @@ export class Turret extends Sprite
            {
                if( !bul.visible && this.canshoot )
                {
+                   let bulletSpd=4;
                 console.log("bullet visible");
                    bul.visible=true;
                    bul.setPosition( this.getX()+16, this.getY()+16);
-                   SpriteUtil.moveToAngle(bul, this.angle, 2);
+                   SpriteUtil.moveToAngle(bul, this.angle, bulletSpd);
                    this.canshoot=false;
                    this.shootTask.setCounter(100);
                    break;

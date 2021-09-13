@@ -15,13 +15,13 @@ let game = GameManager.getInstance("canvas", 640, 480);//canvas width and height
 
 
 // game.setFps(30); //changing fps of this game to 30
-// game.setCalculateFps(); //allow fps calculation
+// game.setCalculateFps(); //allow fps calculation in console
 
-//enabling mouse control because a level of the game uses mouse events
+//enabling mouse/touche control because some leves use those events
 game.enableMouseControl=true;
+game.enableTouchControl=true;
 //game.loadLevel( new SampleLevel() );
 game.loadLevel( new MenuLevel() );
-
 
 //use this to set new canvas scale
 // game.scaleCanvas(2,2);

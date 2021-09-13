@@ -167,4 +167,9 @@ export class MenuLevel extends BaseLevel
         }//
     }
 
+    touchEnd(e:TouchEvent)
+    {
+        GameManager.getInstance().loadLevel( new TowerDefense() );
+        GameManager.getInstance().scaleCanvas(1,1);//scaling to adjust canvas to towerdefense level width and height
+    }
 }

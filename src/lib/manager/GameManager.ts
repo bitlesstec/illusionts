@@ -186,23 +186,6 @@ import {Config} from "../cfg/Config.js";
         
     }
 
-    // run()
-    // {
-        
-    //     let now = Date.now();
-    //     this.delta = Math.min( 1, ( now - this.lastUpdate ) / 1000 );
-    //     while( this.delta > this.step )
-    //     {
-    //         this.delta = this.delta - this.step;
-    //         this.currentLevel.update( this.delta );
-            
-    //     }
-    //     this.currentLevel.render( this.context );
-    //     this.lastUpdate = now;
-    //     requestAnimationFrame( this.run.bind(this) );
-
-    // }//
-
     /**
      * this is the method that will load  level specified and will
      * become the current level ( even if there was another level previously)
@@ -328,9 +311,40 @@ import {Config} from "../cfg/Config.js";
     {
         this.calculateFps = calculate;
     }
+
+    //@TODO
     // getTextHeight(txt:string)
     // {
     //     this.context.measureText(txt).;
     // }
+
+    /**
+     * DO NOT USE, NEEDS MORE TESTING
+     */
+    setFullScreen()
+    {
+       let deviceWidth:number = window.innerWidth;
+       let deviceHeight:number = window.innerHeight;
+
+       let aspectRatio:number = this.currentLevel.levelWidth/this.currentLevel.levelHeight;
+       console.log("AR: ", aspectRatio)
+
+       let newWidth:number = deviceHeight * aspectRatio;
+
+       //get new aspect ratio to scale canvas to full screen
+       
+        let newXScale:number = Math.floor( newWidth/this.currentLevel.levelWidth );
+        let newYScale:number = Math.floor( deviceHeight/this.currentLevel.levelHeight );
+
+        console.log(`device msrs: ${deviceWidth} - ${deviceHeight}`);
+        console.log(`new msrs: ${newWidth} - ${deviceHeight}`);
+        console.log(`new scale: ${newXScale.toFixed(1)} - ${newYScale.toFixed(1)}`);
+
+        this.canvas.width=newWidth;
+        this.canvas.height=deviceHeight;
+
+        this.context2D.scale( newXScale, newYScale );
+
+    }
 
 }//

@@ -2,12 +2,13 @@ import { Config } from "../../lib/cfg/Config.js";
 import { Collider } from "../../lib/graphic/shape/Collider.js";
 import { Sprite } from "../../lib/graphic/Sprite.js";
 import { Tile } from "../../lib/graphic/Tile.js";
-import { MouseControl } from "../../lib/input/MouseControl.js";
+import { PointerControl } from "../../lib/input/PointerControl.js";
 import { BaseLevel } from "../../lib/level/BaseLevel.js";
 import { GameManager } from "../../lib/manager/GameManager.js";
 import { GameState } from "../../lib/manager/GameState.js";
 import { AssetLoadable } from "../../lib/ntfc/AssetLoadable.js";
 import { Initiable } from "../../lib/ntfc/Initiable.js";
+import { Task } from "../../lib/task/Task.js";
 import { AssetUtil } from "../../lib/util/AssetUtil.js";
 import { CollisionUtil } from "../../lib/util/CollisionUtil.js";
 import { TileUtil } from "../../lib/util/TileUtil.js";
@@ -70,10 +71,12 @@ export class TowerDefense extends BaseLevel implements Initiable, AssetLoadable
     turretHUD:Sprite;
     turretSelected:Sprite;
 
-    mouseControl:MouseControl;
+    pointerControl:PointerControl;
 
     colliderMoveRight:Collider;
     colliderMoveUp:Collider;
+
+    spawnEnemyTask:Task;
 
 
     constructor()
@@ -111,14 +114,14 @@ export class TowerDefense extends BaseLevel implements Initiable, AssetLoadable
         let parser = new DOMParser(); 
         let xmlData = parser.parseFromString( data, "text/xml");
 
-        console.log(" DATAnodeValue: ", xmlData.getElementsByTagName("layer")[0].getElementsByTagName("data")[0].innerHTML);
+        // console.log(" DATAnodeValue: ", xmlData.getElementsByTagName("layer")[0].getElementsByTagName("data")[0].innerHTML);
 
         let xmlDataArray:string = xmlData.getElementsByTagName("layer")[0].getElementsByTagName("data")[0].innerHTML;
         // console.log("xmlDataArray: ", xmlDataArray)
 
         //this is an string array, must be number[]
         let tileArray:string[]= xmlDataArray.split(",");
-        console.log("tileArray: ", tileArray)
+        // console.log("tileArray: ", tileArray)
 
          for ( let i in tileArray )
          {
@@ -131,6 +134,18 @@ export class TowerDefense extends BaseLevel implements Initiable, AssetLoadable
 
     async init()
     {
+
+        let medidas = [6.47,2.7,5.45,1.6,2.65,4.45,1.54,1.47]
+let res = 0;
+        for ( let n of medidas)
+        {
+            res+= n*2.15;
+            console.log(` medida ${n} x 2.15 = ${n*2.15}`);
+            
+        }
+        console.log(`total m2: ${res}`)
+        console.log(`total a pagar (m2 x 100) - ${res*100}`)
+
         this.currentTurrets = 0;
         this.curretnMoney = 0;
 
@@ -171,7 +186,7 @@ export class TowerDefense extends BaseLevel implements Initiable, AssetLoadable
         this.turretSelected.visible = false;
         this.turretSelected.alpha=0.7;
 
-        this.mouseControl = new MouseControl();
+        this.pointerControl = new PointerControl();
 
 
         //colliders will move enemy direction
@@ -179,6 +194,8 @@ export class TowerDefense extends BaseLevel implements Initiable, AssetLoadable
         this.colliderMoveUp = new Collider( 14*32,6*32,32,32);
 
         GameManager.getInstance().setFont( 10, Config.DEFAULT_FONT_NAME);
+
+        this.spawnEnemyTask = new Task();
 
         this.gameState=GameState.PLAYING;
     }
@@ -192,6 +209,14 @@ export class TowerDefense extends BaseLevel implements Initiable, AssetLoadable
 
             break;
             case GameState.PLAYING:
+
+                this.spawnEnemyTask.process( ()=>{
+                    this.enemy.setPosition( 64, -32 );
+                    this.enemy.visible=true;
+                    this.enemy.spdY=1;
+                    this.enemy.spdX=0;
+                    this.enemy.hp=10;
+                });
 
             //moving enemy
             if(this.enemy.visible)
@@ -237,6 +262,8 @@ export class TowerDefense extends BaseLevel implements Initiable, AssetLoadable
                         {
                             console.log("enemy killed");
                             this.enemy.visible=false;
+                            //this will set initial values and spawn enemy again
+                            this.spawnEnemyTask.setCounter(100)
                         }
                         break;
                     }
@@ -279,12 +306,16 @@ export class TowerDefense extends BaseLevel implements Initiable, AssetLoadable
 
             this.turretSelected.render(ctx);
 
-            // ctx.strokeStyle="red";
-            // for( let tile of this.tiles)
-            // {
-            //     if( tile.imageIndex===1)
-            //     ctx.strokeRect( tile.x, tile.y, tile.w, tile.h )
-            // }
+            if(this.turretSelected.visible)
+            {
+                ctx.strokeStyle="red";
+                for( let tile of this.tiles)
+                {
+                    if( tile.imageIndex===1)
+                    ctx.strokeRect( tile.x, tile.y, tile.w, tile.h )
+                }
+            }
+            
             
             // ctx.strokeStyle="blue"
             // if(this.mouseControl.isPressed && this.turretSelected.visible)
@@ -304,13 +335,13 @@ export class TowerDefense extends BaseLevel implements Initiable, AssetLoadable
 
     mouseUp(e:MouseEvent)
     {
-        this.mouseControl.mouseReleased(e);
-        if(this.mouseControl.isReleased)
+        this.pointerControl.pointerReleased(e);
+        if(this.pointerControl.isReleased)
         {
             if(this.turretSelected.visible)
             {
-                let xx:number = Math.floor(this.mouseControl.pointReleased.x/32);
-                let yy:number = Math.floor(this.mouseControl.pointReleased.y/32);
+                let xx:number = Math.floor(this.pointerControl.pointReleased.x/32);
+                let yy:number = Math.floor(this.pointerControl.pointReleased.y/32);
                 
                 let pos:number = (yy*this.cols)+xx;
                 pos-=1;
@@ -339,27 +370,80 @@ export class TowerDefense extends BaseLevel implements Initiable, AssetLoadable
 
     mouseDown(e:MouseEvent)
     {
-        this.mouseControl.mousePressed(e);
-        if( this.mouseControl.spritePressed( this.turretHUD ) )
+        this.pointerControl.pointerPressed(e);
+        if( this.pointerControl.spritePressed( this.turretHUD ) )
         {
             this.turretSelected.visible=true;
-            this.turretSelected.setPosition( this.mouseControl.pointPressed.x - this.turretSelected.w/2,
-                this.mouseControl.pointPressed.y - this.turretSelected.h/2);
+            this.turretSelected.setPosition( this.pointerControl.pointPressed.x - this.turretSelected.w/2,
+                this.pointerControl.pointPressed.y - this.turretSelected.h/2);
         }
-
-
     }
 
     mouseMove(e:MouseEvent)
     {
-        this.mouseControl.mouseMove(e);
-        if( this.mouseControl.isPressed  && this.turretSelected.visible )
+        this.pointerControl.pointerMove(e);
+        if( this.pointerControl.isPressed  && this.turretSelected.visible )
         {
-            this.turretSelected.setPosition( this.mouseControl.pointPressed.x - this.turretSelected.w/2,
-                                             this.mouseControl.pointPressed.y - this.turretSelected.h/2);
+            this.turretSelected.setPosition( this.pointerControl.pointPressed.x - this.turretSelected.w/2,
+                                             this.pointerControl.pointPressed.y - this.turretSelected.h/2);
         }
     }
 
+    touchStart(e:TouchEvent)
+    {
+        this.pointerControl.pointerPressed(e);
+        if( this.pointerControl.spritePressed( this.turretHUD ) )
+        {
+            this.turretSelected.visible=true;
+            this.turretSelected.setPosition( this.pointerControl.pointPressed.x - this.turretSelected.w/2,
+                this.pointerControl.pointPressed.y - this.turretSelected.h/2);
+        }
+    }
+
+    touchEnd(e:TouchEvent)
+    {
+        this.pointerControl.pointerReleased(e);
+        if(this.pointerControl.isReleased)
+        {
+            if(this.turretSelected.visible)
+            {
+                let xx:number = Math.floor(this.pointerControl.pointReleased.x/32);
+                let yy:number = Math.floor(this.pointerControl.pointReleased.y/32);
+                
+                let pos:number = (yy*this.cols)+xx;
+                pos-=1;
+                console.log(`tilemap post value: ${this.tileMap[pos]}`)
+    
+                if(this.tileMap[pos] === 1 ) //possible deploy
+                {
+                    for( let spr of this.turrets )
+                    {
+                            if(!spr.visible)
+                            {
+                                 this.currentTurrets++;
+                                spr.visible=true;
+                                spr.setPosition( xx*32, yy*32 );
+                                console.log(`deployed at: xx ${xx} - yy ${yy} | ${xx*32} ${yy*32}`)
+                                break;
+                            }
+                    }
+    
+                }
+                this.turretSelected.visible=false;
+            }//turret visible
+
+        }
+    }
+
+    touchMove(e:TouchEvent)
+    {
+        this.pointerControl.pointerMove(e);
+        if( this.pointerControl.isPressed  && this.turretSelected.visible )
+        {
+            this.turretSelected.setPosition( this.pointerControl.pointPressed.x - this.turretSelected.w/2,
+                                             this.pointerControl.pointPressed.y - this.turretSelected.h/2);
+        }
+    }
 
 
 }

@@ -20,3 +20,13 @@
 ## Troubleshooting
 - when you add a new asset it wont be reflected in game/asset folder when build, until you delete game folder and build again
 - every time you start http-server you have to clean browser cache or data otherwise new changes won't be reflected
+
+## Work in progress
+- paralax example
+- audio example
+- tower defense level example
+- touch example
+- touch swap
+- create example of tiles that are inside the view
+- rotate around example
+- create scrolling platform with tileset and save data/game

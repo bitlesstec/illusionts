@@ -8,6 +8,7 @@ import { Controllable } from "../ntfc/input/Controllable.js";
  * you can create your player controller and not to be
  * writing the same every level, with this you can
  * create the instance and call processController defined method.
+ * @deprecated this may not be long needed, check to remove it
  */
 export abstract class BaseGameController implements Controllable
 {

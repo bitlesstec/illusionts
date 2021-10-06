@@ -1,6 +1,7 @@
 import { Gamepadable } from "../ntfc/input/Gamepadable.js";
 
 
+<<<<<<< HEAD
 
 export class Controller implements Gamepadable
 {
@@ -8,6 +9,13 @@ export class Controller implements Gamepadable
 
     //#IDS FOR DIFFERENT CONTROLLERS:
     //XBOX360 - Xbox 360 Controller (XInput STANDARD GAMEPAD  
+=======
+export class Controller implements Gamepadable
+{
+    //other gamepads tested
+    // DragonRise Inc.   Generic   USB  Joystick   (STANDARD GAMEPAD Vendor: 0079 Product: 0006)
+
+>>>>>>> examples
 
     static readonly DEAD_THRESHOLD:number = 0.2;
     static readonly XAXIS_DEAD_THRESHOLD:number = Controller.DEAD_THRESHOLD;
@@ -33,7 +41,10 @@ export class Controller implements Gamepadable
     static readonly GEN_BTN_15:number = 15;
     static readonly GEN_BTN_16:number = 16;
     static readonly GEN_BTN_17:number = 17;
+<<<<<<< HEAD
 
+=======
+>>>>>>> examples
     static readonly GEN_LEFTSTICK_XAXIS:number = 0; //analog values from -1 to 1
     static readonly GEN_LEFTSTICK_YAXIS:number = 1; //analog values from -1 to 1
     static readonly GEN_RIGTHSTICK_XAXIS:number = 2; //analog values from -1 to 1
@@ -42,6 +53,10 @@ export class Controller implements Gamepadable
 
 
     //XBOX ONE MAPPING
+<<<<<<< HEAD
+=======
+    //XBOX360 - Xbox 360 Controller (XInput STANDARD GAMEPAD 
+>>>>>>> examples
     static readonly XBOXONE_BTN_A:number = Controller.GEN_BTN_0;
     static readonly XBOXONE_BTN_B:number = Controller.GEN_BTN_1;
     static readonly XBOXONE_BTN_X:number = Controller.GEN_BTN_2;
@@ -59,7 +74,10 @@ export class Controller implements Gamepadable
     static readonly XBOXONE_DPAD_LEFT:number = Controller.GEN_BTN_14;
     static readonly XBOXONE_DPAD_RIGTH:number = Controller.GEN_BTN_15;
     static readonly XBOXONE_XBOX_BTN:number = Controller.GEN_BTN_16;
+<<<<<<< HEAD
 
+=======
+>>>>>>> examples
     static readonly XBOXONE_LEFTSTICK_XAXIS:number = Controller.GEN_LEFTSTICK_XAXIS;
     static readonly XBOXONE_LEFTSTICK_YAXIS:number = Controller.GEN_LEFTSTICK_YAXIS;
     static readonly XBOXONE_RIGTHSTICK_XAXIS:number = Controller.GEN_RIGTHSTICK_XAXIS;
@@ -70,6 +88,33 @@ export class Controller implements Gamepadable
     // XBOX 360 MAPPING
 
     // PS4 MAPPING
+<<<<<<< HEAD
+=======
+    // Sony Interactive Entertainment Wireless Controller (STANDARD GAMEPAD Vendor: 054c Product: 09cc)
+    static readonly PS4_BTN_X:number = Controller.GEN_BTN_0;
+    static readonly PS4_BTN_O:number = Controller.GEN_BTN_1;  
+    static readonly PS4_BTN_SQUARE:number = Controller.GEN_BTN_2; 
+    static readonly PS4_BTN_TRIANGLE:number = Controller.GEN_BTN_3; 
+    static readonly PS4_BTN_L1:number = Controller.GEN_BTN_4;
+    static readonly PS4_BTN_R1:number = Controller.GEN_BTN_5;
+    static readonly PS4_BTN_L2:number = Controller.GEN_BTN_6; //analog value
+    static readonly PS4_BTN_R2:number = Controller.GEN_BTN_7; //analog value
+    static readonly PS4_BTN_SHARE:number = Controller.GEN_BTN_8;
+    static readonly PS4_BTN_OPTIONS:number = Controller.GEN_BTN_9;
+    static readonly PS4_LEFT_STICK_BTN:number = Controller.GEN_BTN_10;
+    static readonly PS4_RIGTH_STICK_BTN:number = Controller.GEN_BTN_11;
+    static readonly PS4_DPAD_UP:number = Controller.GEN_BTN_12;
+    static readonly PS4_DPAD_DOWN:number = Controller.GEN_BTN_13;
+    static readonly PS4_DPAD_LEFT:number = Controller.GEN_BTN_14;
+    static readonly PS4_DPAD_RIGTH:number = Controller.GEN_BTN_15;
+    static readonly PS4_PS_BTN:number = Controller.GEN_BTN_16;
+    static readonly PS4_LEFTSTICK_XAXIS:number = Controller.GEN_LEFTSTICK_XAXIS;
+    static readonly PS4_LEFTSTICK_YAXIS:number = Controller.GEN_LEFTSTICK_YAXIS;
+    static readonly PS4_RIGTHSTICK_XAXIS:number = Controller.GEN_RIGTHSTICK_XAXIS;
+    static readonly PS4_RIGTHSTICK_YAXIS:number = Controller.GEN_RIGTHSTICK_YAXIS;
+
+
+>>>>>>> examples
 
     // ps3 MAPPING
 

@@ -220,10 +220,11 @@ return this.rectangleCollision( spr1.getX(), spr1.getY(), spr1.w, spr1.h,
 }
 
 /**
- * this will check if there is a collision between sprite 1 and sprite 2
- * if so, and push is true, then sprite 2 will be pushed by 1px
- * if push argument is false, then this method will return the side 
- * where the collision occured
+ * this will check if there is a bounding box collision between 2 sprites,
+ * if there is collision will return an string like:
+ * 'top', 'bottom', 'left', 'right' indicating the side of the collision.
+ * by default push is optional and set to false, however if 'push'
+ * is equal to 'true' then spr2 will be pushed/moved 1px
  * @param spr1 
  * @param spr2 
  * @param push 

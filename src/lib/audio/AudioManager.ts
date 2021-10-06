@@ -45,6 +45,7 @@ export class AudioManager implements Audioable
      * present this will play current played file
      * @param mscName 
      */
+<<<<<<< HEAD
     async play(mscName?: string):Promise<void>{
         console.log("file played")
         if( mscName === undefined )
@@ -54,13 +55,25 @@ export class AudioManager implements Audioable
             this.isPaused = false;
         }
         else
+=======
+    async play(mscName?: string):Promise<void>
+    {
+        
+        if( mscName )
+>>>>>>> examples
         {
             this.currentPlay = mscName;
-            var currentPlay:HTMLAudioElement = this.audioList.get( mscName );
+            let currentPlay:HTMLAudioElement = this.audioList.get( mscName );
             this.isPaused = false;
             currentPlay.autoplay = true;
             currentPlay.muted=false;
             await currentPlay.play();
+        }
+        else
+        {
+            let currentPlay:HTMLAudioElement = this.audioList.get( this.currentPlay );
+            await currentPlay.play();
+            this.isPaused = false;
         }
    
     }
@@ -74,7 +87,7 @@ export class AudioManager implements Audioable
         // if there is volume and is not muted this sfx will play
         if( this.volume > 0 || !this.isMuted )
         {
-            var currentSfx:HTMLAudioElement = this.audioList.get( sfxName );
+            let currentSfx:HTMLAudioElement = this.audioList.get( sfxName );
             currentSfx.autoplay=false;
             await currentSfx.play();
         }
@@ -86,7 +99,7 @@ export class AudioManager implements Audioable
      */
     pause(): void {
         this.isPaused=true;
-        var currentPlay:HTMLAudioElement = this.audioList.get( this.currentPlay );
+        let currentPlay:HTMLAudioElement = this.audioList.get( this.currentPlay );
         currentPlay.pause();
     }
 

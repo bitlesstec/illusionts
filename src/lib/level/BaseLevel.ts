@@ -1,92 +1,3 @@
-<<<<<<< HEAD
-import {Renderable} from "../ntfc/Renderable.js";
-import {Updatable} from "../ntfc/Updatable.js";
-import { Touchable } from "../ntfc/input/Touchable.js";
-import { Mousable } from "../ntfc/input/Mousable.js";
-import { Keyable } from "../ntfc/input/Keyable.js";
-import { GameState } from "../manager/GameState.js";
-import { Camera } from "../camera/Camera.js";
-import {AudioManager} from "../audio/AudioManager.js";
-import { BaseShape } from "../graphic/shape/BaseShape.js";
-
-/**
- * this class will represent a level in the game, will
- * contain sprites for player, enemies and other objects, background
- * images, etc.
- */
-export abstract class BaseLevel
-       implements Renderable, Updatable, Touchable, Mousable, Keyable
-{
-
-//
-audioManager:AudioManager;
-
-//used to load all images that can be used to create sprites or
-//set new animations for sprites 
-imageMap: Map<string, HTMLImageElement>;
-
-//used to maintain all the sprites in a single place, 
-//so we can iterate this map and use render method of each sprite for example
-spriteList: BaseShape[];// | Sprite[];
-
-camera: Camera;
-
-//actual gameState of the level, by default loading!
-gameState:GameState;
-
-levelWidth:number;
-levelHeight:number;
-
-/**
- * this constructors set level width and height which is not the same as viewWidth and viewHeight.
- * viewWidth/viewHeight are measures used by camera.
- * @param levelWidht 
- * @param levelHeight 
- * @param viewWidth 
- * @param viewHeight 
- */
-constructor( levelWidht:number, levelHeight:number, viewWidth?:number, viewHeight?:number )
-{ 
-    this.gameState = GameState.LOADING;
-    this.audioManager = new AudioManager();
-    this.imageMap = new Map<string, HTMLImageElement>();
-    this.spriteList = [];
-
-    this.levelWidth = levelWidht; 
-    this.levelHeight = levelHeight;
-
-    if( viewWidth !== undefined && viewHeight !== undefined )
-        this.camera = new Camera( levelWidht, levelHeight, viewWidth, viewHeight );
-    else
-        this.camera = new Camera( levelWidht, levelHeight );
-}//
-
-
-render( ctx:CanvasRenderingContext2D ){}
-update( delta:number ){}
-
-//Input Events, all this are eventListeners attached to canvas but gamepad
-//@note:if below lines are commented they will cause an issue with GameManager.loadLevel function
-touchStart( event: Event ){}
-touchMove( event: Event ){}
-touchEnd( event: Event ){}
-touchLeave( event: Event ){}
-touchCancel( event: Event ){}
-
-mouseDown( event: Event ){}
-mouseUp( event: Event ){}
-mouseMove( event: Event ){}
-mouseOut( event: Event ){}
-mouseOver( event: Event ){}
-
-keyDown( event: Event ){}
-keyUp( event: Event ){}
-
-gamePadConnected( event: Event ){}
-gamePadDisconnected( event: Event ){}
-gamePadButtonPressed( event: Event ){}
-gamePadAxisMovement( event: Event ){}
-=======
 import {Renderable} from "../ntfc/Renderable.js";
 import {Updatable} from "../ntfc/Updatable.js";
 import { Touchable } from "../ntfc/input/Touchable.js";
@@ -118,7 +29,7 @@ imageMap: Map<string, HTMLImageElement>;
 //so we can iterate this map and use render method of each sprite for example
 // spriteList: Sprite[];
 
-//this will allow to separate in group several screens like player, enemies, bosses, items, etc.
+//this will allow to separate sprites in several groups like: player, enemies, bosses, items, etc.
 spriteMap: Map<string, Sprite[] >;
 
 camera: Camera;
@@ -177,5 +88,4 @@ GamePadConnected( event: Event ){}
 GamePadDisconnected( event: Event ){}
 GamePadButtonPressed( event: Event ){}
 GamePadAxisMovement( event: Event ){}
->>>>>>> examples
 }//

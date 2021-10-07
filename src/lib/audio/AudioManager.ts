@@ -45,22 +45,11 @@ export class AudioManager implements Audioable
      * present this will play current played file
      * @param mscName 
      */
-<<<<<<< HEAD
-    async play(mscName?: string):Promise<void>{
-        console.log("file played")
-        if( mscName === undefined )
-        {
-            var currentPlay:HTMLAudioElement = this.audioList.get( this.currentPlay );
-            await currentPlay.play();
-            this.isPaused = false;
-        }
-        else
-=======
+
     async play(mscName?: string):Promise<void>
     {
         
         if( mscName )
->>>>>>> examples
         {
             this.currentPlay = mscName;
             let currentPlay:HTMLAudioElement = this.audioList.get( mscName );

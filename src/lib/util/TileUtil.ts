@@ -9,6 +9,7 @@ export class TileUtil
  * as tiles, the result will be a list of the x and y position where the tile should be displayed
  * as well as the width, height and the image each tile repreent.
  * NOTE: all frames at index 0 are ignored, because those act as empty spaces in tile map creation
+ * and are useful to sort all the other Tiles on their correct position
  * @param tileMap 
  * @param cols 
  * @param rows 

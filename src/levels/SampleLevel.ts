@@ -248,28 +248,28 @@ export class SampleLevel extends BaseLevel
        soundList.set( "bgmusic", bgmusic );
        soundList.set( "sfxsound", sfxSound );
 
-       this.audioManager.loadSounds( soundList );
+    //    this.audioManager.loadSounds( soundList );
     }
 
     loadData(): void {
     }
 
-    isLoadComplete(): boolean {
-        let loadedImgs = 0;
-        let loadedSounds = 0;
+    // isLoadComplete(): boolean {
+    //     let loadedImgs = 0;
+    //     let loadedSounds = 0;
 
-        for ( let img of this.imageMap.values() ) 
-        {
-            if( img.complete ) loadedImgs++;
-        }
+    //     for ( let img of this.imageMap.values() ) 
+    //     {
+    //         if( img.complete ) loadedImgs++;
+    //     }
 
-        for( let snd of this.audioManager.audioList.values() )
-        {
-            if( snd.readyState )loadedSounds++;
-        }   
+    //     for( let snd of this.audioManager.audioList.values() )
+    //     {
+    //         if( snd.readyState )loadedSounds++;
+    //     }   
 
-        return this.imageMap.size === loadedImgs && this.audioManager.audioList.size === loadedSounds;
-    }
+    //     return this.imageMap.size === loadedImgs && this.audioManager.audioList.size === loadedSounds;
+    // }
 
 
     keyUp( event:KeyboardEvent )
@@ -280,7 +280,7 @@ export class SampleLevel extends BaseLevel
             this.userName = prompt("Enter User Email:");
             break;
             case 32: //SPACE
-            this.audioManager.playSfx( "sfxsound" );
+            // this.audioManager.playSfx( "sfxsound" );
             GameManager.getInstance().takeScreenshot();
             break;
         }//

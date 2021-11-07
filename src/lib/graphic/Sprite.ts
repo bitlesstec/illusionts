@@ -68,7 +68,6 @@ export class Sprite extends BaseShape
         this.animationEnd = false;
         this.lastFrame = 0;
         this.currentFrame = 0;
-
         this.animationLoop = AnimationLoop.FORWARD;
         this.animationStep = 0;
         this.animationStepLimit = 10;

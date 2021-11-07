@@ -132,22 +132,22 @@ export class PlatformLevel extends BaseLevel
 
     //those are not usable for now
     async loadSounds(): Promise<void> {
-        try{
-            console.log("1")
-            let bgmusic = await AssetUtil.getAudio("/assets/music/Boss-Time-David-Ruenda.mp3").then(audio=>audio);
-            console.log("2")
-            let gunfx = await AssetUtil.getAudio("/assets/music/snd_gun.wav").then(audio=>{ console.log("resolved"); return audio } );
-            console.log("3")
-            let audioList:Map<string, HTMLAudioElement>= new Map();
-            // audioList.set( "bgmusic", bgmusic);
-            audioList.set( "gunfx", gunfx);
-            console.log("4")
-            this.audioManager.loadSounds( audioList );
-        }
-        catch(error)
-        {
-            console.log(error)
-        }
+        // try{
+        //     console.log("1")
+        //     let bgmusic = await AssetUtil.getAudio("/assets/music/Boss-Time-David-Ruenda.mp3").then(audio=>audio);
+        //     console.log("2")
+        //     let gunfx = await AssetUtil.getAudio("/assets/music/snd_gun.wav").then(audio=>{ console.log("resolved"); return audio } );
+        //     console.log("3")
+        //     let audioList:Map<string, HTMLAudioElement>= new Map();
+        //     // audioList.set( "bgmusic", bgmusic);
+        //     audioList.set( "gunfx", gunfx);
+        //     console.log("4")
+        //     // this.audioManager.loadSounds( audioList );
+        // }
+        // catch(error)
+        // {
+        //     console.log(error)
+        // }
 
         
         console.log("end loading sounds")
@@ -218,7 +218,7 @@ export class PlatformLevel extends BaseLevel
         {
             case 87://W
                 //PLAY SOUND EFFECT 
-                this.audioManager.playSfx("gunfx");
+                // this.audioManager.playSfx("gunfx");
                 break;
             case 65: //A
             this.launchForce++;

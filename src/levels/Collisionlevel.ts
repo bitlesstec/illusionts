@@ -171,7 +171,9 @@ export class CollisionLevel extends BaseLevel
 
     }
 
-    loadSounds(): void {}
+    async loadSounds(): Promise<void> 
+    {
+    }
 
     loadData(): void {}
 
@@ -209,6 +211,11 @@ export class CollisionLevel extends BaseLevel
             break;
 
             case 32: //SPACE
+            if(!this.audioManager.pause)
+                this.audioManager.resume();
+            else
+                this.audioManager.pause();
+
             //#SHOOT BULLET
             this.bulletSprite.visible=true;
             this.bulletSprite.setPosition( this.arrowShooter.getX() + this.arrowShooter.w/2, this.arrowShooter.getY() + this.arrowShooter.h/2);

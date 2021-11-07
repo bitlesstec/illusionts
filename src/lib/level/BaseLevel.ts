@@ -18,7 +18,6 @@ export abstract class BaseLevel
        implements Renderable, Updatable, Touchable, Mousable, Keyable
 {
 
-//
 audioManager:AudioManager;
 
 //used to load all images that can be used to create sprites or

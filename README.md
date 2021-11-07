@@ -23,10 +23,8 @@
 
 ## Work in progress
 - paralax example
-- audio example
-- tower defense level example
-- touch example
-- touch swap
+- tower defense level example ( in progress )
+- touch example with touch swap
 - create example of tiles that are inside the view
 - rotate around example
 - create scrolling platform with tileset and save data/game

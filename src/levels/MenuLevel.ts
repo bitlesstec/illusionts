@@ -11,6 +11,7 @@ import { AndroidLevel } from './AndroidLevel.js';
 import { CollisionLevel } from './Collisionlevel.js';
 import { TowerDefense } from './towerdefense/TowerDefense.js';
 import { ControllerLevel } from './ControllerLevel.js';
+import { AudioLevel } from './AudioLevel.js';
 
 /**
  * this is a level that creates a menu to load other levels
@@ -39,19 +40,6 @@ export class MenuLevel extends BaseLevel
         this.gameState = GameState.PLAYING;
     }
 
-    // update( delta:number )
-    // {
-
-    //     switch( this.gameState )
-    //     {
-    //         case GameState.LOADING:
-    //             this.init();
-    //         break;
-    //         case GameState.PLAYING:
-            
-    //         break;
-    //     }
-    // }
 
 
     render( ctx:CanvasRenderingContext2D)
@@ -84,6 +72,7 @@ export class MenuLevel extends BaseLevel
                 ctx.fillText( "Collision 1" ,40, 130);
                 ctx.fillText( "Tower Defense" ,40, 150);
                 ctx.fillText( "Gamepad Level" ,40, 170);
+                ctx.fillText( "Audio Level" ,40, 190);
 
                 this.menuSelector.render(ctx);
                 
@@ -120,10 +109,10 @@ export class MenuLevel extends BaseLevel
             case 40: //arrow down
             this.gameSelected +=1;
             this.menuSelector.moveY(20);
-            if( this.menuSelector.points[0].y > 170)
+            if( this.menuSelector.points[0].y > 190)
             {
-                this.menuSelector.points[0].y = 170;
-                this.gameSelected=7;
+                this.menuSelector.points[0].y = 190;
+                this.gameSelected=8;
             }
             break;
 
@@ -160,6 +149,9 @@ export class MenuLevel extends BaseLevel
                     break; 
                 case 7:
                         GameManager.getInstance().loadLevel( new ControllerLevel() );
+                    break; 
+                case 8:
+                        GameManager.getInstance().loadLevel( new AudioLevel() );
                     break; 
             }
             // GameManager.getInstance().loadLevel( levelToLoad );

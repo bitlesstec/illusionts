@@ -54,7 +54,6 @@ export class SampleLevel extends BaseLevel
 
     constructor()
     {
-       
         //setting level width and height
         super( 640, 480 );
         // this.init(); //init can be also here instead GAMESTATE.LOADING

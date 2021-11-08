@@ -12,6 +12,7 @@ import { CollisionLevel } from './Collisionlevel.js';
 import { TowerDefense } from './towerdefense/TowerDefense.js';
 import { ControllerLevel } from './ControllerLevel.js';
 import { AudioLevel } from './AudioLevel.js';
+import { TouchLevel } from './TouchLevel.js';
 
 /**
  * this is a level that creates a menu to load other levels
@@ -73,6 +74,8 @@ export class MenuLevel extends BaseLevel
                 ctx.fillText( "Tower Defense" ,40, 150);
                 ctx.fillText( "Gamepad Level" ,40, 170);
                 ctx.fillText( "Audio Level" ,40, 190);
+                ctx.fillText( "Touch Level" ,40, 210);
+
 
                 this.menuSelector.render(ctx);
                 
@@ -110,10 +113,10 @@ export class MenuLevel extends BaseLevel
             case 40: //arrow down
             this.gameSelected +=1;
             this.menuSelector.moveY(20);
-            if( this.menuSelector.points[0].y > 190)
+            if( this.menuSelector.points[0].y > 210)
             {
-                this.menuSelector.points[0].y = 190;
-                this.gameSelected=8;
+                this.menuSelector.points[0].y = 210;
+                this.gameSelected=9;
             }
             break;
 
@@ -153,6 +156,9 @@ export class MenuLevel extends BaseLevel
                     break; 
                 case 8:
                         GameManager.getInstance().loadLevel( new AudioLevel() );
+                    break; 
+                case 9:
+                        GameManager.getInstance().loadLevel( new TouchLevel() );
                     break; 
             }
             // GameManager.getInstance().loadLevel( levelToLoad );

@@ -6,13 +6,10 @@ export class Camera
 
 x:number;
 y:number;
-
 private xMin:number; //minimum x where we can move the view
 private yMin:number;
-
 private xMax:number; //maximun x where the view can be moved
 private yMax:number;
-
 private levelWidth:number;
 private levelHeight:number;
 viewWidth:number;

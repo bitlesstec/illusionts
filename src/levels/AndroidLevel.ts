@@ -358,7 +358,7 @@ export class AndroidLevel extends BaseLevel
             
             ctx.translate(this.camera.x, this.camera.y);
 
-            TileUtil.renderTiles( ctx, this.imageMap.get( "tileBackground" ), this.tiles );
+            TileUtil.renderTiles( ctx, this.imageMap.get( "tileBackground" ), this.tiles, this.camera );
 
 
             //rendering tanks

@@ -16,7 +16,6 @@ export class CollisionUtil
 {
 
 private static instance: CollisionUtil;
-
 private constructor(){};
 
 public static getInstance()
@@ -36,7 +35,7 @@ public static getInstance()
  */
 getDistance( p1:number, w1:number, p2:number, w2:number ):number
 {
-return( p2 + w2/2) - (p1 + w1/2);
+    return( p2 + w2/2) - (p1 + w1/2);
 }
 
 /**
@@ -75,7 +74,7 @@ getCombinedHalf( half1:number, half2:number ):number
  */
 isOverlaped( value1:number, value2:number ):boolean
 {
-return (  Math.abs( value1 ) < value2 );
+    return (  Math.abs( value1 ) < value2 );
 }
 
 /**

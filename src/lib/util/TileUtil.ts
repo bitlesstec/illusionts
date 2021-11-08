@@ -1,8 +1,8 @@
+import { Camera } from "../camera/Camera.js";
 import { Tile } from "../graphic/Tile.js";
 
 export class TileUtil
 {
-
  
 /**
  * this function will transform an array of numbers, used to represent the image frames should be act
@@ -56,41 +56,51 @@ static parse( tileMap:number[], cols:number, rows:number, tileWidth:number, tile
  * @param ctx 
  * @param img 
  * @param tiles 
+ * @param camera if this value is set, onlye tiles inside camera view will be rendered 
  */
-static renderTiles( ctx: CanvasRenderingContext2D, img:HTMLImageElement, tiles:Tile[] ):void
+static renderTiles( ctx: CanvasRenderingContext2D, img:HTMLImageElement, tiles:Tile[], camera?:Camera, margin?:number ):void
 {
-    // using lambda
-    // tiles.forEach( (tile) => 
-    // {
-    //     ctx.drawImage
-    //     (
-    //         img,
-    //         tile.imageIndex * tile.w , 0,
-    //         tile.w, tile.h,
-    //         Math.floor( tile.x ), Math.floor( tile.y ),
-    //         tile.w, tile.h
-    //     );
 
-    // }); 
-    
-    for( let x = 0; x < tiles.length; x++)
+    //render only tiles inside camera view
+    if(camera !== undefined)
     {
-        ctx.drawImage
-        ( 
-            img,tiles[x].srcX,tiles[x].srcY,
-            tiles[x].w,tiles[x].h,
-            tiles[x].x,tiles[x].y,
-            tiles[x].w,tiles[x].h
-        );
-        // ctx.drawImage
-        // (
-        //     img,
-        //     tiles[x].imageIndex * tiles[x].w, 0,
-        //     tiles[x].w, tiles[x].h,
-        //     Math.ceil( tiles[x].x ), Math.ceil( tiles[x].y ),
-        //     tiles[x].w, tiles[x].h
-        // );
+        // console.log("entering camera rendering")
+        //setting parameters for view where tiles will be displayed
+        let mar = margin?margin:32;
+        let x2 = camera.viewX - mar;
+        let w2 = camera.viewWidth + mar;
+        let y2 = camera.viewY - mar;
+        let h2 = camera.viewHeight + mar;
+
+        console.log(`x2:${x2} w2:${w2}, y2:${y2}, h2:${h2}`);
+        console.log(`VX: ${camera.viewX} VY: ${camera.viewY} | ${camera.x},${camera.y}`);
+        
+        for(let ind = 0; ind < tiles.length; ind++)
+        {
+            if( tiles[ind].x >= x2 && tiles[ind].x+tiles[ind].w <= x2+w2 && tiles[ind].y >= y2 && tiles[ind].y+tiles[ind].h <= y2+h2 )
+            {
+                ctx.drawImage( 
+                    img,tiles[ind].srcX,tiles[ind].srcY,tiles[ind].w,tiles[ind].h,
+                    tiles[ind].x,tiles[ind].y,tiles[ind].w,tiles[ind].h);
+            }
+            else{
+                continue;
+            }
+        }
+
+
+    }else{
+
+        for( let ind = 0; ind < tiles.length; ind++)
+        {
+            ctx.drawImage( 
+                img,tiles[ind].srcX,tiles[ind].srcY,tiles[ind].w,tiles[ind].h,
+                tiles[ind].x,tiles[ind].y,tiles[ind].w,tiles[ind].h);
+        }
+
     }
+
+    
 
 }//
 

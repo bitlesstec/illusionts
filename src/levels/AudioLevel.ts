@@ -147,6 +147,9 @@ export class AudioLevel extends BaseLevel
             // else
             //     this.audioManager.pause();
             break;
+            case 90: //z
+                console.log("showing message once")
+            break;
 
 
 

@@ -49,6 +49,8 @@ import {Config} from "../cfg/Config.js";
     xScale:number;
     yScale:number;
 
+    private firstLevelLoaded:boolean;//used to add evenListeners only once in canvas
+
     /**
      * create a GameManager Instance, this manager starts the 
      * game loop, if width and height are not defined, it will get that
@@ -61,13 +63,12 @@ import {Config} from "../cfg/Config.js";
         this.lastUpdate = 0;
         this.fps = 60;// 1000/30;  //30 fps, use 1000/60 to set it to 60 fps
         this.millisPerFrame = 1/this.fps;
-
-
         //below are tho show and set FPS counter
         this.fpsCounter = 0;
         this.calculateFps = false;
 
         this.gameData= new Map<string, string>();
+        this.firstLevelLoaded=false;
 
         //this will set @font-face style element
         this.configureFont( Config.DEFAULT_FONT_NAME, Config.DFLT_FNT_NAME_PATH );
@@ -196,39 +197,44 @@ import {Config} from "../cfg/Config.js";
     {
         this.currentLevel = level;
 
-        // mouse events
-        if(this.enableMouseControl)
+        if(!this.firstLevelLoaded)
         {
-            this.canvas.addEventListener("mousedown", (event) => this.currentLevel.mouseDown(event));
-            this.canvas.addEventListener("mousemove", (event) => this.currentLevel.mouseMove(event));
-            this.canvas.addEventListener("mouseup", (event) => this.currentLevel.mouseUp(event));
-            this.canvas.addEventListener("mouseout", (event) => this.currentLevel.mouseOut(event));
-            this.canvas.addEventListener("mouseover",(event) =>  this.currentLevel.mouseOver(event));
-        }
-        
-        // touch events
-        if(this.enableTouchControl)
-        {
-            this.canvas.addEventListener("touchstart",(event) =>  this.currentLevel.touchStart(event));
-            this.canvas.addEventListener("touchmove", (event) => this.currentLevel.touchMove(event));
-            this.canvas.addEventListener("touchend",(event) =>  this.currentLevel.touchEnd(event));
-            this.canvas.addEventListener("touchcancel",(event) =>  this.currentLevel.touchCancel(event));
-            this.canvas.addEventListener("touchleave",(event) =>  this.currentLevel.touchLeave(event));    
-        }
+            this.firstLevelLoaded=true;
+              // mouse events
+            if(this.enableMouseControl)
+            {
+                this.canvas.addEventListener("mousedown", (event) => this.currentLevel.mouseDown(event));
+                this.canvas.addEventListener("mousemove", (event) => this.currentLevel.mouseMove(event));
+                this.canvas.addEventListener("mouseup", (event) => this.currentLevel.mouseUp(event));
+                this.canvas.addEventListener("mouseout", (event) => this.currentLevel.mouseOut(event));
+                this.canvas.addEventListener("mouseover",(event) =>  this.currentLevel.mouseOver(event));
+            }
+            
+            // touch events
+            if(this.enableTouchControl)
+            {
+                this.canvas.addEventListener("touchstart",(event) =>  this.currentLevel.touchStart(event));
+                this.canvas.addEventListener("touchmove", (event) => this.currentLevel.touchMove(event));
+                this.canvas.addEventListener("touchend",(event) =>  this.currentLevel.touchEnd(event));
+                this.canvas.addEventListener("touchcancel",(event) =>  this.currentLevel.touchCancel(event));
+                this.canvas.addEventListener("touchleave",(event) =>  this.currentLevel.touchLeave(event));    
+            }
 
-        // keyboard events
-        if(this.enableKeyboardControl)
-        {
-            this.canvas.addEventListener("keydown", (event) => this.currentLevel.keyDown(event) );
-            this.canvas.addEventListener("keyup", (event) => this.currentLevel.keyUp(event));    
-        }
+            // keyboard events
+            if(this.enableKeyboardControl)
+            {
+                this.canvas.addEventListener("keydown", (event) => this.currentLevel.keyDown(event) );
+                this.canvas.addEventListener("keyup", (event) => this.currentLevel.keyUp(event));    
+            }
 
-        //NOTE AT THIS POINT THIS NEEDS MORE TESTING
-        if( this.enableGamePadControl)
-        {
-            this.canvas.addEventListener("gamepadconnected", (event) => this.currentLevel.keyDown(event) );
-            this.canvas.addEventListener("gamepaddisconnected", (event) => this.currentLevel.keyDown(event) );
-        }
+            //NOTE AT THIS POINT THIS NEEDS MORE TESTING
+            if( this.enableGamePadControl)
+            {
+                this.canvas.addEventListener("gamepadconnected", (event) => this.currentLevel.keyDown(event) );
+                this.canvas.addEventListener("gamepaddisconnected", (event) => this.currentLevel.keyDown(event) );
+            }
+        }//firstLevelLoaded
+      
         
     }
 

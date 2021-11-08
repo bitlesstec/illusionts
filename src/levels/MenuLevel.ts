@@ -93,6 +93,7 @@ export class MenuLevel extends BaseLevel
         switch( event.keyCode )
         {
             case 87: //W
+            console.log("pressing W")
             // this.gameState=100; //@TEST MORE
             // break;
             case 38: //arrow up

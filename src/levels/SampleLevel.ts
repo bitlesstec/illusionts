@@ -8,8 +8,9 @@ export class SampleLevel extends BaseLevel implements Initiable
 
     constructor()
     {
-        super( 640, 480);
-        this.init();
+        //setting level width and height
+        super( 640, 480 );
+        this.init(); //init can be also here instead GAMESTATE.LOADING
     }
 
     init(): void {
@@ -34,7 +35,20 @@ export class SampleLevel extends BaseLevel implements Initiable
                 ctx.fillText( "Hello World!" ,20,20);
                 break;
         }
-
+       
     }
+
+    /**
+     * this function load the images before they can be used
+     */
+    async loadImages(): Promise<void> {
+    }
+
+    loadSounds(): void {
+    }
+
+    loadData(): void {
+    }
+
 
 }

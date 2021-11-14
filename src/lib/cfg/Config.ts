@@ -6,7 +6,8 @@ export class Config
 /**
 * every sprite isntance created will have its own id
 */
-static SPRITE_ID_COUNTER:number = 1000;
+static SPRITE_ID_COUNTER:number = 1000; //to create id's for sprites
+static AUDIO_PLAYING_ID_COUNTER:number = 1000; //to create ids for audio files
 
 //default name and path for custom font
 static readonly DEFAULT_FONT_NAME:string = "press-start";

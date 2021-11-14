@@ -1,3 +1,4 @@
+import { AudioManager } from "../audio/AudioManager.js";
 import { GameManager } from "../manager/GameManager.js";
 
 
@@ -30,15 +31,16 @@ export class AssetUtil
         return null;
     }
 
-    static async getAudio( filePath:string):Promise<HTMLAudioElement>
+    /**
+     * this will return an audio buffer object that must be set to BaseLevel.AudioManager
+     * @param filePath 
+     * @returns 
+     */
+    static async getAudioBuffer(filePath:string):Promise<AudioBuffer>
     {
-        console.log(filePath)
-        return new Promise( (resolve, reject) =>{
-            let audioToLoad:HTMLAudioElement = new Audio(filePath);
-            audioToLoad.onload = ()=> resolve(audioToLoad);
-            audioToLoad.onerror = reject;
-            // audioToLoad.src = filePath;
-        } );
+        let audio = await this.makeAsyncRequest( "get", filePath, true );
+        let audioContext = new AudioContext();
+        return await audioContext.decodeAudioData( audio );
     }
 
 
@@ -48,9 +50,10 @@ export class AssetUtil
      * if that's the case be careful about CORS
      * @param requestType 
      * @param url 
+     * @param isArrayBuffer true to specify requestType as 'arraybuffer' that is used for audio buffer files/objects 
      * @returns 
      */
-    static async makeAsyncRequest( requestType:string, url:string ):Promise<any>
+    static async makeAsyncRequest( requestType:string, url:string,  isArrayBuffer?:boolean ):Promise<any>
     {
 
         return new Promise( (resolve, reject ) =>{
@@ -65,6 +68,7 @@ export class AssetUtil
               
             }
             asyncRequest.open( requestType, url, true);
+            if(isArrayBuffer)asyncRequest.responseType="arraybuffer";//used for audio
             asyncRequest.send();
         } );
     }

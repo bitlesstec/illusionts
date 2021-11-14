@@ -1,146 +1,148 @@
-import { Audioable } from "./Audioable.js";
+import { Audio } from "./Audio.js";
+//import { Audioable } from "./Audioable.js";
 
 
 /**
  * this class will handle all functions used to play audios
- * or sounds in a game
+ * or sounds in a game, in fact an instance of this class is set
+ * in BaseLevel.
+ * 
+ * note to me: seems stable for now, check for improvement later
  */
-export class AudioManager implements Audioable
+export class AudioManager// implements Audioable
 {
 
-    currentPlay:string;
-    audioList:Map<string, HTMLAudioElement>;
+    //this is the Audio Context where all buffers will be created and pointed to destination
+    static audioCtx:AudioContext;
+    static playingList:Map<String, AudioBufferSourceNode>;//to keep track of current playing aduios
+
+    //this will keep al Audio files where the source nodes are created
+    //audio files created ( in play() ) will be added to "playingList"
+    //but will be removed from that list after finishing...
+    audioList:Map<string, Audio>; 
     
-    // private audioCtx:AudioContext;
     private volume:number;
     private lastVolume:number;
-    // private sfxVolume:number;
-    private autoPlay:boolean;
+    private gainNode:GainNode;
     private isPaused:boolean;
     private isMuted:boolean;
+
+    // sound source nodes for sfx and background music
+    // private sfxSourceNode:AudioBufferSourceNode;
+    // private musicSourceNode:AudioBufferSourceNode;
 
     constructor()
     {
         //this is needed to start audio context api
-        // this.audioCtx = new AudioContext();
-        this.volume = 1;
-        this.autoPlay = false;
-        // this.cicleCount = 0;
-        this.audioList = new Map<string, HTMLAudioElement>();
+        AudioManager.audioCtx = new AudioContext();
+        this.gainNode = AudioManager.audioCtx.createGain();
+        this.volume = 0.1//1;
+        this.gainNode.gain.value = this.volume;
+        this.audioList = new Map<string, Audio>();
+        AudioManager.playingList = new Map<string, AudioBufferSourceNode>();
         this.isPaused=false;
         this.isMuted=false;
+        // this.sfxSourceNode = this.audioCtx.createBufferSource();
+        // this.musicSourceNode = this.audioCtx.createBufferSource();
     }
 
-    /**
-     * this method will set the list of sound files to use
-     * @param soundList 
-     */
-    loadSounds( soundList:Map<string, HTMLAudioElement> )
-    {
-        this.audioList = soundList;
-    }
 
     /**
      * play audio file specified by mscName, if no argument is 
      * present this will play current played file
      * @param mscName 
      */
-
-    async play(mscName?: string):Promise<void>
+    play(name: string, millis?:number):void
     {
-        
-        if( mscName )
-        {
-            this.currentPlay = mscName;
-            let currentPlay:HTMLAudioElement = this.audioList.get( mscName );
-            this.isPaused = false;
-            currentPlay.autoplay = true;
-            currentPlay.muted=false;
-            await currentPlay.play();
-        }
-        else
-        {
-            let currentPlay:HTMLAudioElement = this.audioList.get( this.currentPlay );
-            await currentPlay.play();
-            this.isPaused = false;
-        }
-   
+        let starTime =  millis?millis:0;
+        this.isPaused = false;
+        let sourceNode = this.audioList.get( name ).getSourceNode();
+        console.log(`playing ${name} at ${starTime}`)
+        sourceNode.start( starTime );
     }
   
-    /**
-     * this method should be used to play sound effects
-     * @param soundName 
-     */
-    async playSfx( sfxName:string ):Promise<void>
-    {
-        // if there is volume and is not muted this sfx will play
-        if( this.volume > 0 || !this.isMuted )
-        {
-            let currentSfx:HTMLAudioElement = this.audioList.get( sfxName );
-            currentSfx.autoplay=false;
-            await currentSfx.play();
-        }
-
-    }
 
     /**
-     * this will pause current playing audio file
+     * this will pause current audioContext that are playing
      */
     pause(): void {
         this.isPaused=true;
-        let currentPlay:HTMLAudioElement = this.audioList.get( this.currentPlay );
-        currentPlay.pause();
+        AudioManager.audioCtx.suspend();
     }
 
     /**
+     * this will resume (unpause) current audioContext
+     */
+    resume(): void {
+        this.isPaused=false;
+        AudioManager.audioCtx.resume();
+    }
+
+    /**
+     * @param this will mute all sounds (current AudioContext)
+     */
+    mute(): void {
+        this.isMuted = true;
+            this.gainNode.gain.value = 0;
+            this.lastVolume = this.volume;
+    }
+
+    /**
+     * this will unmute all sounds (current AudioContext)
+     */
+    unmute(){
+        this.isMuted = false;
+        this.volume = this.lastVolume;
+        this.gainNode.gain.value = this.volume;
+    }
+
+    /**
+     * this will stop all sounds matching "name" in playingList
      * 
-     * @param mute 
+     * @param name 
      */
-    mute(mute: boolean): void {
-        var currentPlay:HTMLAudioElement = this.audioList.get( this.currentPlay );
-        currentPlay.muted = mute;
-        this.isMuted = mute;
-        if( this.isMuted )
-            currentPlay.volume = 0;
-        else
-            currentPlay.volume = this.lastVolume;
+    stop(name:string){
+        for(let key of AudioManager.playingList.keys() )
+        {
+            if( key.includes( name )  )
+            {
+                AudioManager.playingList.get( key ).stop();
+                AudioManager.playingList.delete( name );
+            }
+
+        }
     }
-    
+
     /**
-     * stops audio file playing
+     * this will stop all sounds playing, and will clear
+     * playinglist
      */
-    stop(): void {
-        var currentPlay:HTMLAudioElement = this.audioList.get( this.currentPlay );
-        currentPlay.pause();
-        currentPlay.currentTime = 0;
+    stopAll()
+    {   
+        console.log(`before stopall ${AudioManager.playingList.size}`)
+        for(let key of AudioManager.playingList.keys() )
+            AudioManager.playingList.get( key ).stop();
+
+            AudioManager.playingList.clear();
+            console.log(`after stopall ${AudioManager.playingList.size}`)
     }
+
     
-    /**
-     * this will change the volume of the audio file, must be
-     * a range between 0 and 1
-     * @param volumeLevel 
-     */
-    setVolume(volumeLevel: number): void 
+    addSound( name:string, buffer:AudioBuffer, loop:boolean = false )
     {
-        var currentVolume:number = volumeLevel;
-        if( currentVolume >= 1 ) currentVolume = 1;
-        if( currentVolume <= 0 ) currentVolume = 0;
-        this.lastVolume = currentVolume;
-        var currentPlay:HTMLAudioElement = this.audioList.get( this.currentPlay );
-        currentPlay.volume = this.lastVolume;
+        let audio:Audio = new Audio( name, buffer, loop );
+        this.audioList.set( name, audio );
     }
-    
+
     /**
-     * this will set auto loop if current play
-     * @param enableLoop 
+     * this will set volume in Audio Context destination device
+     * only accepts numbers between 0 to 1
+     * @param gain 
      */
-    autoLoop(enableLoop: boolean): void {
-        this.autoPlay = enableLoop;
-        var currentPlay:HTMLAudioElement = this.audioList.get( this.currentPlay );
-        if( this.autoPlay )
-            currentPlay.autoplay = true;
-        else
-            currentPlay.autoplay = false;
+    setVolume(gain:number)
+    {
+        let gainValue = gain>=1?1:gain;
+        this.gainNode.gain.value = gainValue;
     }
 
 }

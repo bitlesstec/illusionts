@@ -3,7 +3,11 @@ import { Point } from "../graphic/Point.js";
 import { Sprite } from "../graphic/Sprite.js";
 import { GameManager } from "../manager/GameManager.js";
 
-
+/**
+ * this class is an utility class to use in mouse or touch events, to know
+ * wheter there is a click or touch event, it also saves point pressed coordinates (X & Y)
+ * and point released coordinates, it also contains some utilities to check for swipe actions
+ */
 export class PointerControl
 {
 
@@ -62,14 +66,11 @@ export class PointerControl
         }
         else
         {
-        //getting coordinates from Mouse or Touch events
-        eX = e instanceof MouseEvent? e.clientX : e.touches[0].clientX; eX-=boundingRect.left;
-        eY = e instanceof MouseEvent? e.clientY : e.touches[0].clientY; eY-=boundingRect.top;
+            //getting coordinates from Mouse or Touch events
+            eX = e instanceof MouseEvent? e.clientX : e.touches[0].clientX; eX-=boundingRect.left;
+            eY = e instanceof MouseEvent? e.clientY : e.touches[0].clientY; eY-=boundingRect.top;
         }
-               
-        
-
-        
+          
         //if canvas is scaled i have to divide mouse corrdinates by scale
         eX = GameManager.getInstance().xScale !== 1?eX/GameManager.getInstance().xScale : eX;
         eY = GameManager.getInstance().yScale !== 1?eY/GameManager.getInstance().yScale : eY;
@@ -77,11 +78,18 @@ export class PointerControl
         return new Point(eX, eY);
     }
 
+    /**
+     * this will check distance between this.pointReleased.x and this.pointPressed.x against minDistance
+     * if pointDistance is bigger than minDistance then swipe action ocurred, 
+     * if pointReleased.x > pointPressed.x then is SWIPE RIGHT
+     * if pointReleased.x < pointPressed.x then is SWIPE LEFT
+     * @param minDistance 
+     * @returns 
+     */
     swipeXAxis( minDistance:number ):number
     {
         let res:number=-1;
         let dx:number = this.getPointDistance( this.pointReleased.x, this.pointPressed.x );
-
         if(dx > minDistance )
         {
             if( this.pointReleased.x > this.pointPressed.x) res = Config.SWIPTE_RIGHT;
@@ -91,6 +99,14 @@ export class PointerControl
         return res;
     }
 
+    /**
+     * this will check distance between this.pointReleased.y and this.pointPressed.y against minDistance
+     * if pointDistance is bigger than minDistance then swipe action ocurred, 
+     * if pointReleased.y > pointPressed.y then is SWIPE DOWN
+     * if pointReleased.y < pointPressed.y then is SWIPE UP
+     * @param minDistance 
+     * @returns 
+     */
     swipeYAxis( minDistance:number ):number{
         let res:number = -1;
         let dy:number = this.getPointDistance(this.pointReleased.y, this.pointPressed.y);
@@ -104,19 +120,46 @@ export class PointerControl
         return res;
     }
 
-
+    /**
+     * check if swipe action is ocurred in right direction
+     * suggestion: this can be used in touchEnd | mouseUp
+     * and touchMove | mouseMove should not be enabled
+     * @param minDistance 
+     * @returns 
+     */
     swipeRight( minDistance:number ):boolean{
         return this.swipeXAxis( minDistance ) === Config.SWIPTE_RIGHT;
     }
 
+    /**
+     * check if swipe action is ocurred in left direction
+     * suggestion: this can be used in touchEnd | mouseUp
+     * and touchMove | mouseMove should not be enabled
+     * @param minDistance 
+     * @returns 
+     */
     swipeLeft( minDistance:number ):boolean{
         return this.swipeXAxis( minDistance ) === Config.SWIPTE_LEFT;
     }
 
+    /**
+     * check if swipe action is ocurred in up direction
+     * suggestion: this can be used in touchEnd | mouseUp
+     * and touchMove | mouseMove should not be enabled
+     * @param minDistance 
+     * @returns 
+     */
     swipeUp( minDistance:number ):boolean{
         return this.swipeYAxis( minDistance ) === Config.SWIPTE_UP;
     }
 
+    /**
+     * check if swipe action is ocurred in down direction
+     * suggestion: this can be used in touchEnd | mouseUp
+     * and touchMove | mouseMove should not be enabled
+     * @param minDistance 
+     * @returns 
+     */
     swipeDown( minDistance:number ):boolean{
         return this.swipeYAxis( minDistance ) === Config.SWIPTE_DOWN;
     }

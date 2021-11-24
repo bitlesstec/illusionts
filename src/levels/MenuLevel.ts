@@ -68,8 +68,8 @@ export class MenuLevel extends BaseLevel
 
                 ctx.fillText( "Examples 1" ,40, 50);
                 ctx.fillText( "Xpace Rocks" ,40, 70);
-                ctx.fillText( "Platform Game" ,40, 90);
-                ctx.fillText( "Tile example" ,40, 110);
+                ctx.fillText( "Platform Camera Game" ,40, 90);
+                ctx.fillText( "Tile example Android" ,40, 110);
                 ctx.fillText( "Collision 1" ,40, 130);
                 ctx.fillText( "Tower Defense" ,40, 150);
                 ctx.fillText( "Gamepad Level" ,40, 170);

@@ -1,9 +1,10 @@
 import { Camera } from "../camera/Camera.js";
+import { Config } from "../cfg/Config.js";
 import { Tile } from "../graphic/Tile.js";
 
 export class TileUtil
 {
- 
+
 /**
  * this function will transform an array of numbers, used to represent the image frames should be act
  * as tiles, the result will be a list of the x and y position where the tile should be displayed
@@ -49,14 +50,19 @@ static parse( tileMap:number[], cols:number, rows:number, tileWidth:number, tile
         return tileList;
 }//
 
+
+
 /**
  * this function will render tiles, it needs an array of tiles which will be assosiated
- * to an image frame with tile.imageIndex property
- * @todo make only show the tiles that are in the view/level bounds
+ * to an image frame with tile.imageIndex property.
+ * if there is a camera tiles will be rendered only inside viewWidth and viewHeight,
+ * if no camera is present it will render all tiles ,this is useful if we have an 
+ * static small level with low ammount of tiles to render.
  * @param ctx 
  * @param img 
  * @param tiles 
- * @param camera if this value is set, onlye tiles inside camera view will be rendered 
+ * @param camera 
+ * @param margin this margin is the ammount of extra
  */
 static renderTiles( ctx: CanvasRenderingContext2D, img:HTMLImageElement, tiles:Tile[], camera?:Camera, margin?:number ):void
 {
@@ -66,14 +72,14 @@ static renderTiles( ctx: CanvasRenderingContext2D, img:HTMLImageElement, tiles:T
     {
         // console.log("entering camera rendering")
         //setting parameters for view where tiles will be displayed
-        let mar = margin?margin:32;
+        let mar = margin?margin:Config.CAMERA_MARGIN;
         let x2 = camera.viewX - mar;
-        let w2 = camera.viewWidth + mar;
+        let w2 = camera.viewX + camera.viewWidth + mar;
         let y2 = camera.viewY - mar;
-        let h2 = camera.viewHeight + mar;
+        let h2 = camera.viewY + camera.viewHeight + mar;
 
-        console.log(`x2:${x2} w2:${w2}, y2:${y2}, h2:${h2}`);
-        console.log(`VX: ${camera.viewX} VY: ${camera.viewY} | ${camera.x},${camera.y}`);
+        // console.log(`x2:${x2} w2:${w2}, y2:${y2}, h2:${h2}`);
+        // console.log(`VX: ${camera.viewX} VY: ${camera.viewY} | ${camera.x},${camera.y}`);
         
         for(let ind = 0; ind < tiles.length; ind++)
         {

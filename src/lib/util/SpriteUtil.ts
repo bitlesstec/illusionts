@@ -164,7 +164,7 @@ export class SpriteUtil
      * this function will make rotate Sprite around center point
      * @param spr 
      * @param center 
-     * @param angle this must be how many angles will be updating every thick e.g: angle+= 2 * delta ( inside update(delta) function)
+     * @param angle this must be how many angles will be updating every thick e.g: angle+= 2 * delta ( update update(delta) function)
      * @param distRad this is the radio distance between center and sprite, by default is 32
      */
     static rotateAround( spr:Sprite, center:Point, angle:number,distRad:number = 32)
@@ -182,8 +182,8 @@ export class SpriteUtil
         // spr.setY( (xx * sin) + (yy * cos)  + center.y);
 
         //check for pivots in the future, to make rotate around sprite pivot
-        let rotX= ( center.x - spr.w/2 )  + ( distRad * cos );;
-        let rotY= ( center.y - spr.h/2 )  + ( distRad * sin );;
+        let rotX= ( center.x - spr.w/2 )  + ( distRad * cos );
+        let rotY= ( center.y - spr.h/2 )  + ( distRad * sin );
 
         spr.setX( rotX );
         spr.setY( rotY );

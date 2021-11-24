@@ -80,7 +80,7 @@ export class MenuLevel extends BaseLevel
                 this.menuSelector.render(ctx);
                 
             break;
-            case 100:
+            case GameState.INPUT_SCREEN:
                 let mod = document.getElementById("emailModal");
                 mod.classList.add("open");
                 break;

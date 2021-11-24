@@ -18,5 +18,6 @@ SAVING,//show animation while game is beign saved
 SAVED,
 GAMEPAD_CONNECTED,
 GAMEPAD_DISCONNECTED,
-GAMEPAD_CONNECTING
+GAMEPAD_CONNECTING,
+INPUT_SCREEN //to use it when we open html popup for now
 }

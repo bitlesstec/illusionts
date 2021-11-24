@@ -1,4 +1,5 @@
 
+import { Config } from "../lib/cfg/Config.js";
 import { Point } from "../lib/graphic/Point.js";
 import { CircleShape } from "../lib/graphic/shape/CircleShape.js";
 import { Sprite } from "../lib/graphic/Sprite.js";
@@ -26,6 +27,8 @@ import { TileUtil } from "../lib/util/TileUtil.js";
 export class PlatformLevel extends BaseLevel
                            implements AssetLoadable, Initiable
 {
+
+    //for parabolic movement
     readonly DEG2RAD:number = Math.PI/180;
     readonly ang:number = 45 * this.DEG2RAD;
     launchForce:number = 9;
@@ -42,8 +45,11 @@ export class PlatformLevel extends BaseLevel
     mouseX:number = 0;
     mouseY:number = 0;
 
-    //vars to projectile which affects red circle when space is released
+    //for rotating around purple circle
     angle:number = 0;
+    radioDistance = 32;
+
+
     launchTime:number=0;
 
     //this array contains the frame of the image that will be set in the background
@@ -93,6 +99,13 @@ export class PlatformLevel extends BaseLevel
 
         this.circle.moveX( this.circle.spdX * delta * 10);
         this.circle.moveY(vy);
+
+        this.angle += 5 * delta;//how  many angles by stepp will be rotating
+        SpriteUtil.rotateAround( this.purpleCircle, new Point(205,205), this.angle, this.radioDistance );
+
+
+
+
         break;
         }
     }
@@ -112,8 +125,6 @@ export class PlatformLevel extends BaseLevel
         this.purpleCircle.setPosition(100, 250);
 
         // afther everything is loaded change state to playing
-
-        this.audioManager.play("bgmusic");
         this.gameState = GameState.PLAYING;
     }
 
@@ -132,25 +143,6 @@ export class PlatformLevel extends BaseLevel
 
     //those are not usable for now
     async loadSounds(): Promise<void> {
-        // try{
-        //     console.log("1")
-        //     let bgmusic = await AssetUtil.getAudio("/assets/music/Boss-Time-David-Ruenda.mp3").then(audio=>audio);
-        //     console.log("2")
-        //     let gunfx = await AssetUtil.getAudio("/assets/music/snd_gun.wav").then(audio=>{ console.log("resolved"); return audio } );
-        //     console.log("3")
-        //     let audioList:Map<string, HTMLAudioElement>= new Map();
-        //     // audioList.set( "bgmusic", bgmusic);
-        //     audioList.set( "gunfx", gunfx);
-        //     console.log("4")
-        //     // this.audioManager.loadSounds( audioList );
-        // }
-        // catch(error)
-        // {
-        //     console.log(error)
-        // }
-
-        
-        console.log("end loading sounds")
     }
 
     loadData(): void {}
@@ -166,28 +158,26 @@ export class PlatformLevel extends BaseLevel
         case GameState.PLAYING:
 
             
-
         ctx.save();
         ctx.translate(this.camera.x, this.camera.y);
-
-        
 
         ctx.clearRect(0,0, 640,480);
         TileUtil.renderTiles( ctx, this.imageMap.get( "tileBg" ), this.tiles );
 
-
         this.circle.render(ctx);
-
-       
 
         //must be after we put the tiles, otherwise it wont show
         ctx.fillStyle ="#000";
         ctx.fillText(`use A or D to move the view| lacunchForce ${this.launchForce}`, this.camera.viewX+20, this.camera.viewY+20 );
+        ctx.fillText(`use SPACE to launch red ball `, this.camera.viewX+20, this.camera.viewY+40 );
+        ctx.fillText(`use W or S to change rotation distance ${this.radioDistance}`, this.camera.viewX+20, this.camera.viewY+60 );
 
         ctx.restore();
         // SpriteUtil.rotateAround( this.purpleCircle, 100, 250, 100, this.angle); this.angle+=1;
         this.purpleCircle.render(ctx);
             
+        ctx.fillRect(200, 200, 10, 10 );
+
         break;
         }
 
@@ -206,8 +196,7 @@ export class PlatformLevel extends BaseLevel
             this.camera.moveX(3);
             break;
 
-            // case 87: //W - trust
-            // break;
+            
         }//
 
     }//
@@ -216,10 +205,17 @@ export class PlatformLevel extends BaseLevel
     {
         switch( event.keyCode )
         {
-            case 87://W
-                //PLAY SOUND EFFECT 
-                // this.audioManager.playSfx("gunfx");
-                break;
+            case 87: //W ncrease rotation distance
+                this.radioDistance+=2;
+                if( this.radioDistance >= 200 )this.radioDistance=200;
+                console.log("inc dist")
+            break;
+            case 83: //S decrease rotation distance 
+                this.radioDistance-=2;
+                if( this.radioDistance <= 1)this.radioDistance = 1;
+                console.log("dec dist")
+            break;
+
             case 65: //A
             this.launchForce++;
             break;

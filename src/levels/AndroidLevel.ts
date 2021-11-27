@@ -12,6 +12,7 @@ import { ColliderUtil } from "../lib/util/ColliderUtil.js";
 import { CollisionUtil } from "../lib/util/CollisionUtil.js";
 import { AssetUtil } from '../lib/util/AssetUtil.js';
 import { TileUtil } from "../lib/util/TileUtil.js";
+import { Point } from "../lib/graphic/Point.js";
 
 
 /**
@@ -264,7 +265,7 @@ export class AndroidLevel extends BaseLevel
 
         this.androidSprite = new Sprite(this.imageMap.get("androidStand"));
         this.androidSprite.setPosition(20, this.levelHeight - this.androidSprite.h - 16 );
-        this.androidSprite.pivotX=this.androidSprite.w/2;//uset to set xScale at this point for all animations
+        this.androidSprite.pivot = new Point( this.androidSprite.w/2, this.androidSprite.h/2);//uset to set xScale at this point for all animations
         this.androidSprite.animationStepLimit=6;
 
         this.setMargings();

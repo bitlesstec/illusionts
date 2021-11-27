@@ -24,12 +24,12 @@ static parse( tileMap:number[], cols:number, rows:number, tileWidth:number, tile
         
         for( let i = 0; i < rows; i++ )
             {
-                let tiley = i * tileHeight;
+                let tileY = i * tileHeight;
             
                     //for de columnas
                     for( let j = 0; j < cols; j++ )
                     {
-                        let tilex = j * tileWidth;
+                        let tileX = j * tileWidth;
                       
                         //value of tileMap, can be image or solid tile
                         let tileFrame = tileMap[ tileIndex ];
@@ -40,7 +40,7 @@ static parse( tileMap:number[], cols:number, rows:number, tileWidth:number, tile
                         //other tiles used as sprite positions, etc.
                         if( tileFrame == 0 ) continue;
                                 
-                        let t = new Tile( tilex, tiley, tileWidth, tileHeight, 
+                        let t = new Tile( tileX, tileY, tileWidth, tileHeight, 
                                         tileFrame*tileWidth , srcY , tileFrame );
 
                         tileList.push( t );//tile added
@@ -87,7 +87,7 @@ static renderTiles( ctx: CanvasRenderingContext2D, img:HTMLImageElement, tiles:T
             {
                 ctx.drawImage( 
                     img,tiles[ind].srcX,tiles[ind].srcY,tiles[ind].w,tiles[ind].h,
-                    tiles[ind].x,tiles[ind].y,tiles[ind].w,tiles[ind].h);
+                        tiles[ind].x,tiles[ind].y,tiles[ind].w,tiles[ind].h);
             }
             else{
                 continue;
@@ -101,7 +101,7 @@ static renderTiles( ctx: CanvasRenderingContext2D, img:HTMLImageElement, tiles:T
         {
             ctx.drawImage( 
                 img,tiles[ind].srcX,tiles[ind].srcY,tiles[ind].w,tiles[ind].h,
-                tiles[ind].x,tiles[ind].y,tiles[ind].w,tiles[ind].h);
+                    tiles[ind].x,tiles[ind].y,tiles[ind].w,tiles[ind].h);
         }
 
     }

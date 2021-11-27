@@ -1,9 +1,11 @@
+import { BaseTile } from "../graphic/BaseTile.js";
 import { Point } from "../graphic/Point.js";
 import { BaseShape } from "../graphic/shape/BaseShape.js";
 import { Collider } from "../graphic/shape/Collider.js";
 import { LineShape } from "../graphic/shape/LineShape.js";
 import { PolygonShape } from "../graphic/shape/PolygonShape.js";
 import { Sprite } from "../graphic/Sprite.js";
+import { Tile } from "../graphic/Tile.js";
 
 
 /**
@@ -230,7 +232,6 @@ return this.rectangleCollision( spr1.getX(), spr1.getY(), spr1.w, spr1.h,
  */
 sideAndPushCollision( spr1:Sprite | Collider, spr2:Sprite | Collider, push:boolean = false ):string
 {
-    
 let collisionSide:string = "none";
 
 let vx:number = this.getDistance( spr2.getX(), spr2.w, spr1.getX(), spr1.w );
@@ -250,6 +251,7 @@ let vyabs = Math.abs( vy );
             
             if( overlapX >= overlapY )
             {
+                
                     if( vy > 0 )
                     {
                         collisionSide = "top";
@@ -258,9 +260,11 @@ let vyabs = Math.abs( vy );
                     }
                     else
                     {
+                        console.log(`before ${spr1.points[0].y} overLY ${overlapY}`)
                         collisionSide = "bottom";
                         if( push )spr2.points[0].y+=1;//   .setY(spr2.getY()+1);
                         spr1.points[0].y-= overlapY;//   setY(spr1.getY() - overlapY);
+                        console.log(`after ${spr1.points[0].y} `)
                     }
 
             }
@@ -453,6 +457,72 @@ pointAndCircleCollision( point:Point, x:number, y:number, radius:number )
     let dx = point.x-x;
     let dy = point.y-y;
     return( dx*dx + dy*dy < radius*radius );
+}
+
+
+/**
+ * this function will use tiles as colider, to check collisions
+ * tile indexes are:
+ * 1 - solid tile
+ * 2 - left slope
+ * 3 - right slope
+ * @param spr 
+ * @param tiles 
+ */
+tileCollision(spr:Sprite | Collider, tiles:Tile[]|BaseTile[]):string
+{
+
+    // let collisionSide:string;
+    // let solidTile:number = 0;
+    // let leftSlope:number = 1;
+    // let rightSlope:number = 2;
+
+    for( let idx=0; idx < tiles.length; idx++ )
+    {
+        // console.log(`iterating tile: ${idx}`)
+        let tile:Tile | BaseTile = tiles[idx];
+        let tileIndex = tile.index;
+
+        switch(tileIndex)
+        {
+
+            case 2:
+            case 3:
+
+                this.rectangleCollision( spr.getX(), spr.getY(), spr.w, spr.h, tile.x, tile.y, tile.w, tile.h )
+                {
+                    let colpos:number =  (spr.getX() + spr.anchor.x) - tile.x;// + tile.w)
+                    if( colpos > 0 && colpos <= tile.w )
+                    {
+                        let yval:number = colpos;
+                        // console.log("yval", yval)
+                        if( tile.index === 3 )
+                            yval = tile.h - colpos;
+                        
+                        spr.setY( (tile.y + tile.h) - ( spr.anchor.y + yval ) )
+                        return "bottom";
+                    }
+
+                }
+            break;
+            case 1:
+                //console.log("entro 1")
+                // spr1:Sprite | Collider, spr2:Sprite | Collider, push:boolean = false
+                let col = new Collider( tile.x, tile.y, tile.w, tile.h );
+                let colside = this.sideAndPushCollision( spr, col );
+                if( colside !== "none") return colside;
+                else continue;
+                // { spr.setY( spr.getY() - spr.spdY ) }
+                
+            
+
+        }
+        
+
+    }
+    
+
+
 }
 
 

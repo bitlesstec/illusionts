@@ -14,6 +14,7 @@ import { ControllerLevel } from './ControllerLevel.js';
 import { AudioLevel } from './AudioLevel.js';
 import { TouchLevel } from './TouchLevel.js';
 import { ParallaxLevel } from './ParallaxLevel.js';
+import { BlackCatGamePlatformer } from './catgame/BlackCatGamePlatformer.js';
 
 /**
  * this is a level that creates a menu to load other levels
@@ -76,6 +77,8 @@ export class MenuLevel extends BaseLevel
                 ctx.fillText( "Audio Level" ,40, 190);
                 ctx.fillText( "Touch Level" ,40, 210);
                 ctx.fillText( "Parallax Level" ,40, 230);
+                ctx.fillText( "Black Cat platformer" ,40, 250);
+
 
                 this.menuSelector.render(ctx);
                 
@@ -113,10 +116,10 @@ export class MenuLevel extends BaseLevel
             case 40: //arrow down
             this.gameSelected +=1;
             this.menuSelector.moveY(20);
-            if( this.menuSelector.points[0].y > 230)
+            if( this.menuSelector.points[0].y > 250)
             {
-                this.menuSelector.points[0].y = 230;
-                this.gameSelected=10;
+                this.menuSelector.points[0].y = 250;
+                this.gameSelected=11;
             }
             break;
 
@@ -164,6 +167,9 @@ export class MenuLevel extends BaseLevel
                     GameManager.getInstance().loadLevel( new ParallaxLevel() );
                     GameManager.getInstance().scaleCanvas(2,2);
                     break; 
+                case 11:
+                    GameManager.getInstance().loadLevel( new BlackCatGamePlatformer() );
+                    break;
             }
             // GameManager.getInstance().loadLevel( levelToLoad );
             // break;

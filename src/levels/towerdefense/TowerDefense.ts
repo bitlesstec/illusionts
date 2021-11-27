@@ -105,6 +105,8 @@ export class TowerDefense extends BaseLevel implements Initiable, AssetLoadable
 
     loadSounds(): void {
     }
+
+    
     async loadData(): Promise<void> {
 
         //LOADING XML/TMX tiled map content as XML, parsing it to extract map array to use as tiledmap
@@ -311,7 +313,7 @@ let res = 0;
                 ctx.strokeStyle="red";
                 for( let tile of this.tiles)
                 {
-                    if( tile.imageIndex===1)
+                    if( tile.index===1)
                     ctx.strokeRect( tile.x, tile.y, tile.w, tile.h )
                 }
             }

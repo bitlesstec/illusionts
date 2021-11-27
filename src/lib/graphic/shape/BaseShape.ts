@@ -27,6 +27,9 @@ export abstract class BaseShape
 
     label:string;
 
+    pivot:Point;
+    anchor:Point;
+    
     constructor(basePoint?:Point)
     {
         this.id = ++Config.SPRITE_ID_COUNTER;

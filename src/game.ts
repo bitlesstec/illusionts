@@ -9,6 +9,8 @@
 import {GameManager} from './lib/manager/GameManager.js';
 // import { SampleLevel } from './levels/SampleLevel.js';
 import { MenuLevel } from './levels/MenuLevel.js';
+import { SplashScreenLevel } from './levels/SplashScreenLevel.js';
+
 
 //you can set canvas id as well as width and height
 let game = GameManager.getInstance("canvas", 640, 480);//canvas width and height by default
@@ -22,6 +24,8 @@ game.enableMouseControl=true;
 game.enableTouchControl=true;
 //game.loadLevel( new SampleLevel() );
 game.loadLevel( new MenuLevel() );
+// game.loadLevel( new SplashScreenLevel() );
+
 
 //use this to set new canvas scale
 // game.scaleCanvas(2,2);

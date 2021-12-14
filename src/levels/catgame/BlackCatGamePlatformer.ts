@@ -12,6 +12,7 @@ import { Sprite } from '../../lib/graphic/Sprite.js';
 import { AnimationLoop } from '../../lib/graphic/AnimationLoop.js';
 import { CollisionUtil } from '../../lib/util/CollisionUtil.js'
 import { Point } from '../../lib/graphic/Point.js';
+import { Collider } from '../../lib/graphic/shape/Collider.js';
 
 export class BlackCatGamePlatformer extends BaseLevel
 implements AssetLoadable, Initiable
@@ -97,9 +98,15 @@ implements AssetLoadable, Initiable
         this.cat.animationStepLimit = 5;
         this.cat.spdY=0;
 
+        const slopeCollider = new Collider( 18, 0, 10, 40, this.cat);
+        slopeCollider.anchor= new Point( 1, this.cat.h );
+        this.cat.colliders.set("slopeCollider", slopeCollider );
+
 
         this.moveLeft=false;
         this.moveRight=false;
+
+        
 
         this.gameState = GameState.PLAYING;
     }
@@ -125,7 +132,7 @@ implements AssetLoadable, Initiable
 
         let tileJson:any = await AssetUtil.makeAsyncRequest( "get", "/assets/catgame/black_platform_tile_map.json").then( data => data );
         tileJson = JSON.parse(tileJson);  
-        console.log( tileJson.layers[0].data ) //.layers[0].data );
+        // console.log( tileJson.layers[0].data ) //.layers[0].data );
 
         // this.tileMap = tileJson.layers[0].data;
     }
@@ -139,6 +146,16 @@ implements AssetLoadable, Initiable
             case GameState.LOADING:
             break;
             case GameState.PLAYING:
+
+
+            this.updateCount++;
+            if(this.updateCount >= 30 )
+            {
+                this.updateCount = 0;
+                console.log( `X: ${this.cat.colliders.get("slopeCollider").getX()} - Y:${this.cat.colliders.get("slopeCollider").getY()}` )
+                console.log( `XXX: ${this.cat.colliders.get("slopeCollider").parent.getX()} - YYY:${this.cat.colliders.get("slopeCollider").parent.getY()}` )
+            }
+
 
             if(this.moveRight)
             {
@@ -166,30 +183,49 @@ implements AssetLoadable, Initiable
             //check collision with tiles here
             if( this.cat.spdY > 0 || this.onGround )
             {
-                let colside =  this.colissionUtil.tileCollision( this.cat, this.tiles );
-
-                this.updateCount++;
-                if( this.updateCount > 30 && colside )
+                // let colside =  this.colissionUtil.tileCollision( this.cat.colliders.get("slopeCollider"), this.tiles );
+                let colside = "";
+                
+                for( let tile of this.tiles )
                 {
-                    this.updateCount = 0;
-                    console.log(" colside: "+colside )
-                }
-                    
-     
-                 if( colside === "bottom" )//&& this.ySpd >=0 )
-                 {
-                     // console.log("bottom")
+                    colside = this.colissionUtil.sideAndPushCollision( this.cat.colliders.get("slopeCollider"), 
+                                                                    new Collider( tile.x, tile.y,tile.w,tile.h)  );
+                
+                    if( colside === "bottom" ) {
                      this.onGround=true;
                      this.jump=false;
-                     this.cat.spdY = 0;// - this.ySpd ;
-                     // this.cat.setY( this.cat.getY() -2 )
-                     // this.cat.setY( this.cat.getY() - this.cat.spdY );
-                     //  break;
-                 }
+                     this.cat.spdY = 0;
+                     break;
+                    }
+                }
+                
+                // let colside =  this.colissionUtil.tileCollision( this.cat, this.tiles );
+                // this.updateCount++;
+                // if( this.updateCount > 30 && colside )
+                // {
+                //     this.updateCount = 0;
+                //     console.log(" colside: "+colside )
+                //     // let col = this.cat.colliders.get("slopeCollider")
+                //     // console.log(`x:${col.getX()} y:${col.getY()} w:${col.w} h:${col.h}`)
+                // }
+                    
+     
+                //  if( colside === "bottom" )//&& this.ySpd >=0 )
+                //  {
+                //      // console.log("bottom")
+                //      this.onGround=true;
+                //      this.jump=false;
+                //      this.cat.spdY = 0;// - this.ySpd ;
+                //      // this.cat.setY( this.cat.getY() -2 )
+                //      // this.cat.setY( this.cat.getY() - this.cat.spdY );
+                //      //  break;
+                //  }
             }
 
            
 
+            break;
+            case GameState.BREAK_POINT:
             break;
         }
 
@@ -207,7 +243,9 @@ implements AssetLoadable, Initiable
         {
             case GameState.LOADING:
             break;
+            
             case GameState.PLAYING:
+            case GameState.BREAK_POINT:
             
             //blue sky bg
             ctx.fillStyle ="#5fcde4";
@@ -218,7 +256,12 @@ implements AssetLoadable, Initiable
 
             this.cat.render(ctx);
 
+            ctx.fillStyle = "red";
+            const col:Collider =  this.cat.colliders.get("slopeCollider");
+            ctx.fillRect( col.getX(), col.getY(), col.w, col.h );
+
             break;
+            
         }
 
     }

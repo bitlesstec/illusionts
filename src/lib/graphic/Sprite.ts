@@ -67,7 +67,7 @@ export class Sprite extends BaseShape
         this.animationLoop = AnimationLoop.FORWARD;
         this.animationStep = 0;
         this.animationStepLimit = 10;
-
+        this.colliders = new Map();
         // this.pivot = new Point(0,0);
         // this.anchor =new Point(0,0);
         

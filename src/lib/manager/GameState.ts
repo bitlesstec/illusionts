@@ -19,5 +19,6 @@ SAVED,
 GAMEPAD_CONNECTED,
 GAMEPAD_DISCONNECTED,
 GAMEPAD_CONNECTING,
-INPUT_SCREEN //to use it when we open html popup for now
+INPUT_SCREEN, //to use it when we open html popup for now
+BREAK_POINT,
 }

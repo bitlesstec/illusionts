@@ -16,7 +16,7 @@ import { SplashScreenLevel } from './levels/SplashScreenLevel.js';
 let game = GameManager.getInstance("canvas", 640, 480);//canvas width and height by default
 
 
-// game.setFps(30); //changing fps of this game to 30
+// game.setFps(15); //changing fps of this game to 30
 // game.setCalculateFps(); //allow fps calculation in console
 
 //enabling mouse/touche control because some leves use those events

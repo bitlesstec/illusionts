@@ -6,9 +6,6 @@ import { LineShape } from "../graphic/shape/LineShape.js";
 import { PolygonShape } from "../graphic/shape/PolygonShape.js";
 import { Sprite } from "../graphic/Sprite.js";
 import { Tile } from "../graphic/Tile.js";
-import { GameManager } from "../manager/GameManager.js";
-import { GameState } from "../manager/GameState.js";
-import { DevUtil } from "./DevUtil.js";
 
 
 /**
@@ -234,10 +231,10 @@ return this.rectangleCollision( spr1.getX(), spr1.getY(), spr1.w, spr1.h,
  * @param push 
  * @param movSpd this is the ammount of movement when push, by default 1
  */
-sideAndPushCollision( spr1:Sprite | Collider, spr2:Sprite | Collider, push:boolean = false, movSpd:number=1 ):string
+sideAndPushCollision( spr1:Sprite | Collider, spr2:Sprite | Collider, push:boolean = false, movSpd:number=1 ):string|undefined
 {
-let collisionSide:string = "none";
 
+let collisionSide:string = undefined;
 let colliderParent:Sprite = undefined;
 if(spr1 instanceof Collider && spr1.parent !== undefined)
 {
@@ -253,32 +250,32 @@ let combinedHalfHeight= this.getCombinedHalf( spr1.h, spr2.h );
 let vxabs = Math.abs( vx );
 let vyabs = Math.abs( vy );
 
-        if( (vxabs < combinedHalfWidth) && (vyabs < combinedHalfHeight) )
+        if( ( vxabs < combinedHalfWidth ) && ( vyabs < combinedHalfHeight ) )
         {
         let overlapX = combinedHalfWidth  - vxabs; 
         let overlapY = combinedHalfHeight - vyabs;
             
             if( overlapX >= overlapY )
             {
-                
-                    if( vy > 0 )
-                    {
-                        collisionSide = "top";
-                        if( push )spr2.points[0].y-=movSpd; 
-                        if( colliderParent )
-                            colliderParent.points[0].y+=overlapY;
-                        else 
-                            spr1.points[0].y+= overlapY; 
-                    }
-                    else
-                    {
-                        collisionSide = "bottom";
-                        if( push )spr2.points[0].y+=movSpd;
-                        if( colliderParent )
-                            colliderParent.points[0].y-=overlapY;
+                    
+                        if( vy > 0 )
+                        {
+                            collisionSide = "top";
+                            if( push )spr2.points[0].y-=movSpd; 
+                            if( colliderParent )
+                                colliderParent.points[0].y+=overlapY;
+                            else 
+                                spr1.points[0].y+= overlapY; 
+                        }
                         else
-                            spr1.points[0].y-= overlapY;
-                    }
+                        {
+                            collisionSide = "bottom";
+                            if( push )spr2.points[0].y+=movSpd;
+                            if( colliderParent )
+                                colliderParent.points[0].y-=overlapY;
+                            else
+                                spr1.points[0].y-= overlapY;
+                        }
 
             }
             else
@@ -491,7 +488,9 @@ pointAndCircleCollision( point:Point, x:number, y:number, radius:number )
 tileCollision(spr:Sprite | Collider, tiles:Tile[]|BaseTile[]):string
 {
 
+    let response = "";
     let counter = 0;
+
     // let collisionSide:string;
     // let solidTile:number = 0;
     // let leftSlope:number = 1;
@@ -506,62 +505,63 @@ tileCollision(spr:Sprite | Collider, tiles:Tile[]|BaseTile[]):string
         switch(tileIndex)
         {
 
-            // case 2:
-            // case 3:
+            case 2:
+            case 3:
 
-            //     this.rectangleCollision( spr.getX(), spr.getY(), spr.w, spr.h, tile.x, tile.y, tile.w, tile.h )
-            //     {
-            //         // let colpos:number = 0;
+                let isColiding:boolean = this.rectangleCollision( spr.getX(), spr.getY(), spr.w, spr.h, tile.x, tile.y, tile.w, tile.h );
+                // const sprX:number = spr.getX() + (spr.anchor?spr.anchor.x:0);
+                // const sprY:number = spr.getY() + (spr.anchor?spr.anchor.y:0);
+                // let isColiding:boolean =  this.pointCollision( sprX, sprY, tile.x, tile.y, tile.w, tile.h );
 
-            //         // if( spr instanceof Collider )
-            //         // {
-            //         //     colpos = 
-            //         // }
-
-            //         let colpos:number =  (spr.getX() + spr.anchor.x) - tile.x;// + tile.w)
-            //         // console.log(":::entro colpos:", colpos)
-            //         if( colpos > 0 && colpos <= tile.w )
-            //         {
+                if( isColiding )
+                {
+                    
+                    let colpos:number =  (spr.getX() + spr.anchor.x) - tile.x;// + tile.w)
+                    // console.log(":::entro colpos:", colpos)
+                    if( colpos > 0 && colpos <= tile.w )
+                    {
                         
-            //             let yval:number = colpos;
-            //             // console.log("yval", yval)
-            //             if( tile.index === 3 )
-            //                 yval = tile.h - colpos;
-                        
-            //             spr.setY( (tile.y + tile.h) - ( spr.anchor.y + yval ) )
-            //             // spr.setY( ( tile.y - spr.h ) + ( tile.h - yval ) );
-            //             // spr.setY( tile.y );
-            //             return "bottom";
-            //         }
+                        let yval:number = colpos;
+                        // console.log("yval", yval)
+                        if( tile.index === 3 )
+                            yval = (tile.h - colpos) +1; //+1 here fixes to get stuck with solid tile ( with value 1 )
 
-            //     }
-            // break;
+                            if( spr instanceof Collider && spr.parent )
+                            {
+                                spr.parent.setY( ( tile.y - spr.h ) + ( tile.h - yval ) )
+                            }
+                            else
+                            {
+                                spr.setY( ( tile.y - spr.h ) + ( tile.h - yval ) );
+                            }
+                        
+                        // spr.setY( (tile.y + tile.h) - ( spr.anchor.y + yval ) )
+                        // spr.setY( ( tile.y - spr.h ) + ( tile.h - yval ) );
+                        response += ".bottom";
+                        return response;// "bottom";
+                    }
+
+                }
+            break;
             case 1:
                 
-                // spr1:Sprite | Collider, spr2:Sprite | Collider, push:boolean = false
                 let col = new Collider( tile.x, tile.y, tile.w, tile.h );
                 let colside = this.sideAndPushCollision( spr, col );
 
-                // counter++;
-                // if(counter >=30)
-                // {
-                //     console.log("hasparent:: ", spr)
-                //     counter = 0;
-                //     console.log("entro 1:: ", colside)
-                // }
-                if( colside !== "none")return colside;
-                // else continue;
-                // { spr.setY( spr.getY() - spr.spdY ) }
+                if( colside )
+                {
+                    response += "." + colside+"tile"+idx;
+                }
             break;
             
 
         }
         
 
-    }
-    
-
-
+    }//for
+    if( response )
+    console.log( "returning response:", response )
+return response;
 }
 
 

@@ -17,16 +17,14 @@ import { Collider } from '../../lib/graphic/shape/Collider.js';
 export class BlackCatGamePlatformer extends BaseLevel
 implements AssetLoadable, Initiable
 {
-    readonly colissionUtil:CollisionUtil= CollisionUtil.getInstance();
+    readonly colissionUtil:CollisionUtil = CollisionUtil.getInstance();
     // tileMap:number[]=[];
     tiles:Tile[];
-
-
     cat:Sprite;
     
     moveRight:boolean;
     moveLeft:boolean;
-    readonly CAT_SPD:number=25;
+    readonly CAT_SPD:number=35;
 
     //jump related variables
     jump:boolean=true;
@@ -35,40 +33,63 @@ implements AssetLoadable, Initiable
     ySpd:number=0;
 
     updateCount:number=0;
+    marginLeft:number = 0;
+    marginRight:number = 0; 
+
+    catIcons:Sprite[]=[];
+
+    iconRetrieved:number=0;
 
 
-    // tileMap:number[]=[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-    //                   0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-    //                   0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-    //                   0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
-    //                   0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
-    //                   0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
-    //                   0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
-    //                   0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 1, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
-    //                   0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 1, 1, 1, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
-    //                   0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 1, 1, 1, 1, 1, 1, 1, 3, 0, 0, 0, 0, 0, 0, 0, 2, 1, 1, 1, 1, 1, 1, 
-    //                   0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 3, 0, 0, 0, 0, 0, 2, 1, 1, 1, 1, 1, 1, 1, 
-    //                   0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 3, 0, 0, 0, 2, 1, 1, 1, 1, 1, 1, 1, 1, 
-    //                   0, 0, 0, 0, 0, 2, 1, 3, 0, 0, 0, 0, 0, 0, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 
-    //                   0, 0, 0, 0, 2, 1, 1, 1, 3, 0, 0, 0, 0, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 
-    //                   1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
+    tileMap:number[]=[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+                      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+                      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+                      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+                      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 1, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+                      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 1, 1, 1, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+                      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 1, 1, 1, 1, 1, 1, 1, 3, 0, 0, 0, 0, 0, 0, 0, 2, 1, 1, 1, 1, 1, 1, 
+                      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 3, 0, 0, 0, 0, 0, 2, 1, 1, 1, 1, 1, 1, 1, 
+                      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 3, 0, 0, 0, 2, 1, 1, 1, 1, 1, 1, 1, 1, 
+                      0, 0, 0, 0, 0, 2, 1, 3, 0, 0, 0, 0, 0, 0, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 
+                      0, 0, 0, 0, 2, 1, 1, 1, 3, 0, 0, 0, 0, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 
+                      1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
 
 
-    tileMap:number[]=  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-                        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-                        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-                        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
-                        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
-                        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
-                        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
-                        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 1, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
-                        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 1, 0, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
-                        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 1, 1, 1, 1, 1, 1, 0, 3, 0, 0, 0, 0, 0, 0, 0, 2, 1, 1, 1, 1, 1, 1, 
-                        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 1, 1, 1, 1, 1, 1, 1, 0, 3, 0, 0, 0, 0, 0, 2, 0, 1, 1, 1, 1, 1, 1, 
-                        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 3, 0, 0, 0, 2, 0, 1, 1, 1, 1, 1, 1, 1, 
-                        0, 0, 0, 0, 0, 2, 1, 3, 0, 0, 0, 0, 0, 0, 2, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 
-                        0, 0, 0, 0, 2, 0, 1, 0, 3, 0, 0, 0, 0, 2, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 
-                        1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
+    catIconsMap:number[]=[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                          0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                          0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                          0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                          0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                          0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                          0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                          0, 0, 0, 0, 0, 5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                          0, 0, 0, 5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                          0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5, 0,
+                          0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                          0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                          0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                          0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                          0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                          0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+
+    // tileMap:number[]=  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    //                     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    //                     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    //                     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+    //                     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+    //                     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+    //                     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+    //                     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 1, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+    //                     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 1, 0, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+    //                     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 1, 1, 1, 1, 1, 1, 0, 3, 0, 0, 0, 0, 0, 0, 0, 2, 1, 1, 1, 1, 1, 1, 
+    //                     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 1, 1, 1, 1, 1, 1, 1, 0, 3, 0, 0, 0, 0, 0, 2, 0, 1, 1, 1, 1, 1, 1, 
+    //                     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 3, 0, 0, 0, 2, 0, 1, 1, 1, 1, 1, 1, 1, 
+    //                     0, 0, 0, 0, 0, 2, 1, 3, 0, 0, 0, 0, 0, 0, 2, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 
+    //                     0, 0, 0, 0, 2, 0, 1, 0, 3, 0, 0, 0, 0, 2, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 
+    //                     1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
 
                         
 
@@ -76,13 +97,13 @@ implements AssetLoadable, Initiable
     {
         super( 1280, 480, 640, 480 );
         this.init();
-
     }
 
     async init(): Promise<void>  {
        
-        await this.loadData();
+        
         await this.loadImages();
+        await this.loadData();
         await this.loadSounds();
       
 
@@ -91,22 +112,22 @@ implements AssetLoadable, Initiable
 
 
         this.cat = new Sprite( this.imageMap.get("catImg"), { srcX:0 , srcY:0 , w:38, h:40, frames: 3 } );
-        this.cat.setPosition( 20, 200)//480-32-this.cat.h );
+        this.cat.setPosition( 20, 200 );//this will put cat in middle air
          
         this.cat.animationLoop = AnimationLoop.NONE;
-        this.cat.anchor= new Point( this.cat.w/2, this.cat.h );
+        this.cat.anchor = new Point( this.cat.w/2, this.cat.h );
         this.cat.animationStepLimit = 5;
         this.cat.spdY=0;
 
-        const slopeCollider = new Collider( 18, 0, 10, 40, this.cat);
+        const slopeCollider = new Collider( 18, 0, 2, 40, this.cat);
         slopeCollider.anchor= new Point( 1, this.cat.h );
         this.cat.colliders.set("slopeCollider", slopeCollider );
-
 
         this.moveLeft=false;
         this.moveRight=false;
 
         
+        this.setMargings();
 
         this.gameState = GameState.PLAYING;
     }
@@ -133,8 +154,23 @@ implements AssetLoadable, Initiable
         let tileJson:any = await AssetUtil.makeAsyncRequest( "get", "/assets/catgame/black_platform_tile_map.json").then( data => data );
         tileJson = JSON.parse(tileJson);  
         // console.log( tileJson.layers[0].data ) //.layers[0].data );
-
         // this.tileMap = tileJson.layers[0].data;
+
+        //parse cat icon tiles to get correct position
+        let catIconTiles:Tile[]= TileUtil.parse( this.catIconsMap, 40, 15, 32, 32 );
+
+        //then create cat Icon Sprites
+        let nbr:number = 0;
+        for( let tile of catIconTiles )
+        {
+            this.catIcons[ nbr ] = new Sprite( this.imageMap.get( "catIconImg") );
+            this.catIcons[ nbr ].setPosition( tile.x, tile.y );
+            console.log("creating icon cat "+nbr)
+            nbr++;
+        }
+
+        console.log("length catIcon: "+this.catIcons.length)
+
     }
 
 
@@ -152,8 +188,8 @@ implements AssetLoadable, Initiable
             if(this.updateCount >= 30 )
             {
                 this.updateCount = 0;
-                console.log( `X: ${this.cat.colliders.get("slopeCollider").getX()} - Y:${this.cat.colliders.get("slopeCollider").getY()}` )
-                console.log( `XXX: ${this.cat.colliders.get("slopeCollider").parent.getX()} - YYY:${this.cat.colliders.get("slopeCollider").parent.getY()}` )
+                // console.log( `X: ${this.cat.colliders.get("slopeCollider").getX()} - Y:${this.cat.colliders.get("slopeCollider").getY()}` )
+                // console.log( `XXX: ${this.cat.colliders.get("slopeCollider").parent.getX()} - YYY:${this.cat.colliders.get("slopeCollider").parent.getY()}` )
             }
 
 
@@ -166,14 +202,13 @@ implements AssetLoadable, Initiable
                 this.cat.spdX = -this.CAT_SPD * delta;
             }
 
-            
-            // console.log( this.cat.getX() +" - "+ (this.cat.getY()+this.cat.h) )
-            // console.log(`enter spd ${this.cat.spdY} : ${this.jump} > ${this.onGround}`)
+            this.checkPlayerMargings(delta);
+
             //checking gravity
             if( this.jump || !this.onGround )
             {
-                    this.cat.spdY += this.grav * delta;
-                if( this.cat.spdY  >= 20 )this.cat.spdY = 20;
+                this.cat.spdY += this.grav * delta;
+                if( this.cat.spdY  >= 14 )this.cat.spdY = 14;
             }
 
             //make cat move depending spdX
@@ -186,44 +221,36 @@ implements AssetLoadable, Initiable
                 // let colside =  this.colissionUtil.tileCollision( this.cat.colliders.get("slopeCollider"), this.tiles );
                 let colside = "";
                 
-                for( let tile of this.tiles )
-                {
-                    colside = this.colissionUtil.sideAndPushCollision( this.cat.colliders.get("slopeCollider"), 
-                                                                    new Collider( tile.x, tile.y,tile.w,tile.h)  );
-                
-                    if( colside === "bottom" ) {
-                     this.onGround=true;
-                     this.jump=false;
-                     this.cat.spdY = 0;
-                     break;
-                    }
-                }
-                
-                // let colside =  this.colissionUtil.tileCollision( this.cat, this.tiles );
-                // this.updateCount++;
-                // if( this.updateCount > 30 && colside )
-                // {
-                //     this.updateCount = 0;
-                //     console.log(" colside: "+colside )
-                //     // let col = this.cat.colliders.get("slopeCollider")
-                //     // console.log(`x:${col.getX()} y:${col.getY()} w:${col.w} h:${col.h}`)
-                // }
+                    colside =  this.colissionUtil.tileCollision( this.cat.colliders.get("slopeCollider"), this.tiles );
                     
-     
-                //  if( colside === "bottom" )//&& this.ySpd >=0 )
-                //  {
-                //      // console.log("bottom")
-                //      this.onGround=true;
-                //      this.jump=false;
-                //      this.cat.spdY = 0;// - this.ySpd ;
-                //      // this.cat.setY( this.cat.getY() -2 )
-                //      // this.cat.setY( this.cat.getY() - this.cat.spdY );
-                //      //  break;
-                //  }
+                    if( colside )
+                    console.log(`colside: ${colside}`)
+                    
+                    if( colside.includes("bottom")  ) {
+                        console.log("entro bottom")
+                        this.onGround=true;
+                        this.jump=false;
+                        this.cat.spdY = 0;
+                        // this.gameState=GameState.BREAK_POINT;
+                        break;
+                    }
+                    else if( colside === "" )
+                    {
+                        this.onGround = false;
+                    }
+
             }
 
-           
 
+            //check collision between cat and cat icons
+            for( let catIcon of this.catIcons){
+                if( this.colissionUtil.spriteRectangleCollision( this.cat, catIcon ) && catIcon.visible ){
+                    this.iconRetrieved++;
+                    catIcon.visible=false;
+                }
+                
+            }
+            
             break;
             case GameState.BREAK_POINT:
             break;
@@ -245,8 +272,12 @@ implements AssetLoadable, Initiable
             break;
             
             case GameState.PLAYING:
-            case GameState.BREAK_POINT:
+            // case GameState.BREAK_POINT:
             
+            ctx.save();
+            
+            ctx.translate(this.camera.x, this.camera.y);
+
             //blue sky bg
             ctx.fillStyle ="#5fcde4";
             ctx.fillRect( this.camera.viewX, 0, this.levelWidth, this.levelHeight );
@@ -254,12 +285,21 @@ implements AssetLoadable, Initiable
             //render tiles inside camera view
             TileUtil.renderTiles( ctx, this.imageMap.get( "blacktileImg" ), this.tiles, this.camera, 32 );
 
+            ctx.fillStyle="white";
+            ctx.fillText("icons:"+this.iconRetrieved,this.camera.viewX + 20 ,this.camera.viewY+20 );
+
             this.cat.render(ctx);
 
             ctx.fillStyle = "red";
             const col:Collider =  this.cat.colliders.get("slopeCollider");
             ctx.fillRect( col.getX(), col.getY(), col.w, col.h );
 
+            for( let catIcon of this.catIcons ){
+                catIcon.render( ctx );
+            }
+            
+
+            ctx.restore();
             break;
             
         }
@@ -338,7 +378,19 @@ implements AssetLoadable, Initiable
     }//
 
 
+    setMargings()
+    {
+        let marginWidth = Math.ceil( this.camera.viewWidth/3 );
+        this.marginLeft = marginWidth;
+        this.marginRight = marginWidth*2; 
+    }
 
+    checkPlayerMargings(delta:number)
+    {
+
+        if( this.cat.getX()-8 < this.camera.viewX+this.marginLeft )  this.camera.moveX(-1);
+        else if( this.cat.getX()+8 > this.camera.viewX+this.marginRight ) this.camera.moveX( 1 );
+    }
 
 
 }

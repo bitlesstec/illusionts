@@ -255,9 +255,6 @@ export class AndroidLevel extends BaseLevel
     async init(){
         
         // GameManager.getInstance().setFont( Config.DEFAULT_FONT_NAME, Config.DFLT_FNT_NAME_PATH );
-
-        
-
         await this.loadImages();
 
         this.tiles = TileUtil.parse( this.tileMap, this.tilesCols, this.tilesRows, 16,16 );
@@ -269,7 +266,6 @@ export class AndroidLevel extends BaseLevel
         this.androidSprite.animationStepLimit=6;
 
         this.setMargings();
-
 
         this.tankList = [];
         for( let i=0; i < 8; i++ )

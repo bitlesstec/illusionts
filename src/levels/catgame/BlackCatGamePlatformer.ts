@@ -290,9 +290,9 @@ implements AssetLoadable, Initiable
 
             this.cat.render(ctx);
 
-            ctx.fillStyle = "red";
-            const col:Collider =  this.cat.colliders.get("slopeCollider");
-            ctx.fillRect( col.getX(), col.getY(), col.w, col.h );
+            // ctx.fillStyle = "red";
+            // const col:Collider =  this.cat.colliders.get("slopeCollider");
+            // ctx.fillRect( col.getX(), col.getY(), col.w, col.h );
 
             for( let catIcon of this.catIcons ){
                 catIcon.render( ctx );

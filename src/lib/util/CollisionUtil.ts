@@ -546,7 +546,7 @@ tileCollision(spr:Sprite | Collider, tiles:Tile[]|BaseTile[]):string
             case 1:
                 
                 let col = new Collider( tile.x, tile.y, tile.w, tile.h );
-                let colside = this.sideAndPushCollision( spr, col );
+                let colside = this.sideAndPushCollision2( spr, col );
 
                 if( colside )
                 {
@@ -564,5 +564,93 @@ tileCollision(spr:Sprite | Collider, tiles:Tile[]|BaseTile[]):string
 return response;
 }
 
+
+
+/**
+ * this will check if there is a bounding box collision between 2 sprites,
+ * if there is collision will return an string like:
+ * 'top', 'bottom', 'left', 'right' indicating the side of the collision.
+ * by default push is optional and set to false, however if 'push'
+ * is equal to 'true' then spr2 will be pushed/moved 1px
+ * @param spr1 
+ * @param spr2 
+ * @param push 
+ * @param movSpd this is the ammount of movement when push, by default 1
+ */
+ sideAndPushCollision2( spr1:Sprite | Collider, spr2:Sprite | Collider, push:boolean = false, movSpd:number=1 ):string|undefined
+ {
+ 
+ let collisionSide:string = undefined;
+ let colliderParent:Sprite = undefined;
+ if(spr1 instanceof Collider && spr1.parent !== undefined)
+ {
+     colliderParent = spr1.parent;
+ }
+ 
+ let vx:number = this.getDistance( spr2.getX(), spr2.w, spr1.getX(), spr1.w );
+ let vy:number = this.getDistance( spr2.getY(), spr2.h, spr1.getY(), spr1.h );
+ 
+ let combinedHalfWidth = this.getCombinedHalf( spr1.w, spr2.w );
+ let combinedHalfHeight= this.getCombinedHalf( spr1.h, spr2.h );
+ 
+ let vxabs = Math.abs( vx );
+ let vyabs = Math.abs( vy );
+ 
+         if( ( vxabs < combinedHalfWidth ) && ( vyabs < combinedHalfHeight ) )
+         {
+            let overlapX = combinedHalfWidth  - vxabs; 
+            let overlapY = combinedHalfHeight - vyabs;
+                
+            if( overlapY > 0 )
+            {
+                if( vy > 0 )
+                {
+                    collisionSide = "top";
+                    if( push )spr2.points[0].y-=movSpd; 
+                    if( colliderParent )
+                        colliderParent.points[0].y+=overlapY;
+                    else 
+                        spr1.points[0].y+= overlapY; 
+                }
+                else
+                {
+                    collisionSide = "bottom";
+                    if( push )spr2.points[0].y+=movSpd;
+                    if( colliderParent )
+                        colliderParent.points[0].y-=overlapY;
+                    else
+                        spr1.points[0].y-= overlapY;
+                }
+            }
+            else
+            if( overlapX > 0 )
+            {
+                if( vx > 0 )
+                {
+                    collisionSide = "left";
+                    if( push )spr2.points[0].x-=movSpd;
+                    if( colliderParent )
+                        colliderParent.points[0].x+=overlapX;
+                    else
+                        spr1.points[0].x+=overlapX;
+                }
+                else
+                {
+                    collisionSide = "right";
+                if( push )spr2.points[0].x+=movSpd;
+                if( colliderParent )
+                    colliderParent.points[0].x-=overlapX;
+                else
+                    spr1.points[0].x-=overlapX; 
+                }
+            }
+
+            
+
+ 
+         }
+         return collisionSide;
+ }//
+ 
 
 }//

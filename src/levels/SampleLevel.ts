@@ -10,7 +10,6 @@ import { Initiable } from '../lib/ntfc/Initiable.js';
 import { Point } from '../lib/graphic/Point.js';
 import { LineShape } from '../lib/graphic/shape/LineShape.js';
 import { PolygonShape } from '../lib/graphic/shape/PolygonShape.js';
-import { ImageMeasures } from '../lib/graphic/ImageMeasures.js';
 import { CollisionUtil } from '../lib/util/CollisionUtil.js';
 import { TileUtil } from '../lib/util/TileUtil.js';
 import { TileMap } from './TileMap.js';

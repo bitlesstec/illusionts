@@ -137,17 +137,6 @@ export class TowerDefense extends BaseLevel implements Initiable, AssetLoadable
     async init()
     {
 
-        let medidas = [6.47,2.7,5.45,1.6,2.65,4.45,1.54,1.47]
-let res = 0;
-        for ( let n of medidas)
-        {
-            res+= n*2.15;
-            console.log(` medida ${n} x 2.15 = ${n*2.15}`);
-            
-        }
-        console.log(`total m2: ${res}`)
-        console.log(`total a pagar (m2 x 100) - ${res*100}`)
-
         this.currentTurrets = 0;
         this.curretnMoney = 0;
 
@@ -225,13 +214,14 @@ let res = 0;
             {
                 this.enemy.move();
 
-                if( CollisionUtil.getInstance().sideAndPushCollision( this.colliderMoveRight, this.enemy ) === "top"  )
+                if(  CollisionUtil.getInstance().sideAndPushCollision( this.enemy, this.colliderMoveRight ) === "bottom" )
                 {
+                    console.log("collision top")
                     this.enemy.spdY=0;
                     this.enemy.spdX=1;
                 }
     
-                if( CollisionUtil.getInstance().sideAndPushCollision( this.colliderMoveUp, this.enemy ) === "left"  )
+                if( CollisionUtil.getInstance().sideAndPushCollision( this.enemy, this.colliderMoveUp ) === "right"  )
                 {
                     this.enemy.spdY=-1;
                     this.enemy.spdX=0;
@@ -319,7 +309,9 @@ let res = 0;
             }
             
             
-            // ctx.strokeStyle="blue"
+            ctx.strokeStyle="blue"
+            ctx.strokeRect( this.colliderMoveRight.getX(), this.colliderMoveRight.getY(), this.colliderMoveRight.w, this.colliderMoveRight.h)
+            
             // if(this.mouseControl.isPressed && this.turretSelected.visible)
             // {
             //     let xx:number = Math.floor(this.turretSelected.getX()/32);

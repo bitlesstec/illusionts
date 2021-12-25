@@ -4,8 +4,6 @@ import { Initiable } from '../../lib/ntfc/Initiable.js';
 import { AssetLoadable } from '../../lib/ntfc/AssetLoadable.js';
 import { AssetUtil } from "../../lib/util/AssetUtil.js";
 import { GameState } from '../../lib/manager/GameState.js';
-import { Task } from "../../lib/task/Task.js";
-import { GameManager } from '../../lib/manager/GameManager.js';
 import { Tile } from '../../lib/graphic/Tile.js';
 import { TileUtil } from '../../lib/util/TileUtil.js';
 import { Sprite } from '../../lib/graphic/Sprite.js';

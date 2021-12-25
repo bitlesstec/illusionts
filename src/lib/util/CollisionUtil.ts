@@ -1,6 +1,5 @@
 import { BaseTile } from "../graphic/BaseTile.js";
 import { Point } from "../graphic/Point.js";
-import { BaseShape } from "../graphic/shape/BaseShape.js";
 import { Collider } from "../graphic/shape/Collider.js";
 import { LineShape } from "../graphic/shape/LineShape.js";
 import { PolygonShape } from "../graphic/shape/PolygonShape.js";
@@ -508,7 +507,8 @@ tileCollision(spr:Sprite | Collider, tiles:Tile[]|BaseTile[]):string
             case 2:
             case 3:
 
-                let isColiding:boolean = this.rectangleCollision( spr.getX(), spr.getY(), spr.w, spr.h, tile.x, tile.y, tile.w, tile.h );
+                let isColiding:boolean = this.rectangleCollision( spr.getX(), spr.getY(), spr.w, spr.h,
+                                                                  tile.x, tile.y, tile.w, tile.h );
                 // const sprX:number = spr.getX() + (spr.anchor?spr.anchor.x:0);
                 // const sprY:number = spr.getY() + (spr.anchor?spr.anchor.y:0);
                 // let isColiding:boolean =  this.pointCollision( sprX, sprY, tile.x, tile.y, tile.w, tile.h );
@@ -546,7 +546,7 @@ tileCollision(spr:Sprite | Collider, tiles:Tile[]|BaseTile[]):string
             case 1:
                 
                 let col = new Collider( tile.x, tile.y, tile.w, tile.h );
-                let colside = this.sideAndPushCollision2( spr, col );
+                let colside = this.sideAndPushOnYAxisCollision( spr, col );
 
                 if( colside )
                 {
@@ -567,17 +567,17 @@ return response;
 
 
 /**
- * this will check if there is a bounding box collision between 2 sprites,
- * if there is collision will return an string like:
- * 'top', 'bottom', 'left', 'right' indicating the side of the collision.
- * by default push is optional and set to false, however if 'push'
- * is equal to 'true' then spr2 will be pushed/moved 1px
+ * this is similar to sideAndPushCollision method with the only difference that
+ * this first checks on Y axis, this is useful for platformer games where gravity
+ * exists, and it check collisions in Y axis putting the sprite in the right 
+ * spot to check for collisions in X axis the next iteration/step
+ * this is used in tile collision and is making slope work
  * @param spr1 
  * @param spr2 
  * @param push 
  * @param movSpd this is the ammount of movement when push, by default 1
  */
- sideAndPushCollision2( spr1:Sprite | Collider, spr2:Sprite | Collider, push:boolean = false, movSpd:number=1 ):string|undefined
+ sideAndPushOnYAxisCollision( spr1:Sprite | Collider, spr2:Sprite | Collider, push:boolean = false, movSpd:number=1 ):string|undefined
  {
  
  let collisionSide:string = undefined;
@@ -645,12 +645,9 @@ return response;
                 }
             }
 
-            
-
- 
          }
          return collisionSide;
  }//
- 
+
 
 }//

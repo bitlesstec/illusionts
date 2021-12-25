@@ -1,4 +1,4 @@
-import { Config } from "../lib/cfg/Config.js";
+
 import { AnimationLoop } from "../lib/graphic/AnimationLoop.js";
 import { Collider } from "../lib/graphic/shape/Collider.js";
 import { Sprite } from "../lib/graphic/Sprite.js";

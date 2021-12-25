@@ -7,7 +7,6 @@ import { TextSprite } from "../lib/graphic/TextSprite.js";
 import { AssetUtil } from "../lib/util/AssetUtil.js";
 import { Initiable } from "../lib/ntfc/Initiable.js";
 import { Mousable } from "../lib/ntfc/input/Mousable.js";
-import { AudioManager } from "../lib/audio/AudioManager.js";
 
 
 

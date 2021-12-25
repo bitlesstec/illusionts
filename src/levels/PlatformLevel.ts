@@ -1,5 +1,4 @@
 
-import { Config } from "../lib/cfg/Config.js";
 import { Point } from "../lib/graphic/Point.js";
 import { CircleShape } from "../lib/graphic/shape/CircleShape.js";
 import { Sprite } from "../lib/graphic/Sprite.js";
@@ -10,7 +9,6 @@ import { GameState } from "../lib/manager/GameState.js";
 import { AssetLoadable } from "../lib/ntfc/AssetLoadable.js";
 import { Initiable } from "../lib/ntfc/Initiable.js";
 import { AssetUtil } from '../lib/util/AssetUtil.js';
-import { MathUtil } from "../lib/util/MathUtil.js";
 import { SpriteUtil } from "../lib/util/SpriteUtil.js";
 import { TileUtil } from "../lib/util/TileUtil.js";
 

@@ -45,6 +45,7 @@ import {Config} from "../cfg/Config.js";
     enableTouchControl:boolean=false;
     enableMouseControl:boolean=false;
     enableGamePadControl:boolean=false;
+    enableResizeScreen:boolean=false;
 
     xScale:number;
     yScale:number;
@@ -233,6 +234,12 @@ import {Config} from "../cfg/Config.js";
                 this.canvas.addEventListener("gamepadconnected", (event) => this.currentLevel.keyDown(event) );
                 this.canvas.addEventListener("gamepaddisconnected", (event) => this.currentLevel.keyDown(event) );
             }
+
+            if( this.enableResizeScreen )
+            {
+                window.addEventListener( "resize", this.resizeScreen(), false );
+            }
+
         }//firstLevelLoaded
       
         
@@ -327,28 +334,36 @@ import {Config} from "../cfg/Config.js";
     /**
      * DO NOT USE, NEEDS MORE TESTING
      */
-    setFullScreen()
+    setFullScreen():any //enable resize screen
     {
-       let deviceWidth:number = window.innerWidth;
-       let deviceHeight:number = window.innerHeight;
+        window.addEventListener( "resize", this.resizeScreen() );
+    }
+    
+    resizeScreen():any
+    {
+        console.log(`entrando resize screen`)
+       let winWidth:number = window.innerWidth;
+       let winHeight:number = window.innerHeight;
 
-       let aspectRatio:number = this.currentLevel.levelWidth/this.currentLevel.levelHeight;
-       console.log("AR: ", aspectRatio)
+       let gameAspectRatio:number = this.currentLevel.levelWidth/this.currentLevel.levelHeight;
+       console.log(` wW: ${winWidth} - wH: ${winHeight} - ar: ${gameAspectRatio}` )
 
-       let newWidth:number = deviceHeight * aspectRatio;
+       let newWidth:number = winHeight * gameAspectRatio;
 
        //get new aspect ratio to scale canvas to full screen
        
-        let newXScale:number = Math.floor( newWidth/this.currentLevel.levelWidth );
-        let newYScale:number = Math.floor( deviceHeight/this.currentLevel.levelHeight );
+        let newXScale:number = newWidth/this.currentLevel.levelWidth//Math.floor( newWidth/this.currentLevel.levelWidth );
+        let newYScale:number = winHeight/this.currentLevel.levelHeight//Math.floor( winHeight/this.currentLevel.levelHeight );
 
-        console.log(`device msrs: ${deviceWidth} - ${deviceHeight}`);
-        console.log(`new msrs: ${newWidth} - ${deviceHeight}`);
+        console.log(`device msrs: ${winWidth} - ${winHeight}`);
+        console.log(`new msrs: ${newWidth} - ${winHeight}`);
+        console.log(`new scale: ${newXScale} - ${newYScale}`);
         console.log(`new scale: ${newXScale.toFixed(1)} - ${newYScale.toFixed(1)}`);
 
-        this.canvas.width=newWidth;
-        this.canvas.height=deviceHeight;
+        this.canvas.width = newWidth;
+        this.canvas.height = winHeight;
 
+        console.log(`new scale: ${newXScale} - ${newYScale}`);
         this.context2D.scale( newXScale, newYScale );
 
     }

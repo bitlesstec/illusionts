@@ -233,11 +233,33 @@ export class CollisionLevel extends BaseLevel
         let eX = event.clientX - boundingRect.left;
         let eY = event.clientY - boundingRect.top;
 
+        console.log( "parseInt: ", parseInt( GameManager.getInstance().xScale.toFixed(1) ) )
+
+        /**
+         * *********CAUTION!******
+         * IF YOU SCALE THE GAME, NORMAL COORDINATES WONT WORK CAUSE ARE MEASURED IN PIXELS
+         * FOR INSTANCE, IF YOUR GAME IS 640x480 SCALE IS 1,1
+         * BUT IS SCALED TO 2,2 THEN THE CANVAS WILL BE 1280x960
+         * SO MOUSE COORDINATES NEEDS TO BE DIVIDED BY 2 ( SCALED VALUE )
+         * TO GET THE CORRECT COORDINATE VALUES AS IT WAS 1,1
+         */
+        if( GameManager.getInstance().xScale !==1 )
+        {
+            eX = (event.clientX - boundingRect.left) / GameManager.getInstance().xScale;
+        }
+
+        if( GameManager.getInstance().yScale !==1 )
+        {
+            eY = (event.clientY - boundingRect.top) / GameManager.getInstance().yScale;
+        }
+
+
         // console.log("moving mouse")
         //#ARROR SHOOTER will be changing its angle to mouse X & Y position
         // getting pointer angle every time is moved and making the arrow face that direction
         this.arrowShooter.angle = SpriteUtil.getAngle(this.arrowShooter, eX, eY);
 
+        console.log(` xScale: ${ GameManager.getInstance().xScale }  yScale: ${ GameManager.getInstance().yScale }`)
         console.log(` x:${eX} y:${eY} - arrAngle: ${this.arrowShooter.angle}`)
     }
 

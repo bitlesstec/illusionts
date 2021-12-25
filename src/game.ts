@@ -8,7 +8,7 @@
 
 import {GameManager} from './lib/manager/GameManager.js';
 // import { SampleLevel } from './levels/SampleLevel.js';
-import { MenuLevel } from './levels/MenuLevel.js';
+// import { MenuLevel } from './levels/MenuLevel.js';
 import { SplashScreenLevel } from './levels/SplashScreenLevel.js';
 
 
@@ -22,7 +22,7 @@ let game = GameManager.getInstance("canvas", 640, 480);//canvas width and height
 //enabling mouse/touch control because some leves use those events
 game.enableMouseControl=true;
 game.enableTouchControl=true;
-game.enableResizeScreen=true;
+// game.enableResizeScreen=true;
 //game.loadLevel( new SampleLevel() );
 
 // game.loadLevel( new MenuLevel() );
@@ -30,5 +30,5 @@ game.loadLevel( new SplashScreenLevel() );
 
 //use this to set new canvas scale
 // game.scaleCanvas(2,2);
-window.addEventListener( "resize", game.resizeScreen() );
+// game.canvas.addEventListener( "resize", game.resizeScreen() );
 window.onload =function(){game.run();} 

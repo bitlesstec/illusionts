@@ -89,7 +89,13 @@ implements AssetLoadable, Initiable
     //                     0, 0, 0, 0, 2, 0, 1, 0, 3, 0, 0, 0, 0, 2, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 
     //                     1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
 
-                        
+    //settings for moving platform
+    onPlatform:boolean;
+    movingPlatform:Collider;
+    movingPlatformSPD:number = 30;
+    initPosition:number = 20;
+    endPosition:number = 640;
+
 
     constructor()
     {
@@ -124,8 +130,14 @@ implements AssetLoadable, Initiable
         this.moveLeft=false;
         this.moveRight=false;
 
-        
+        //this sets the margin to move the camera along the level
         this.setMargings();
+
+
+        //moving platforms
+        this.onPlatform=false;
+        this.movingPlatform = new Collider( 20, 150, 64, 32 );
+
 
         this.gameState = GameState.PLAYING;
     }
@@ -230,7 +242,7 @@ implements AssetLoadable, Initiable
                         this.jump=false;
                         this.cat.spdY = 0;
                         // this.gameState=GameState.BREAK_POINT;
-                        break;
+                        // break;
                     }
                     else if( colside === "" )
                     {
@@ -246,8 +258,32 @@ implements AssetLoadable, Initiable
                     this.iconRetrieved++;
                     catIcon.visible=false;
                 }
-                
             }
+
+
+            //moving platform
+            if( this.movingPlatform.getX() <= this.initPosition ||  this.movingPlatform.getX() >= this.endPosition )
+            {
+                this.movingPlatformSPD *= -1;
+            }
+
+            this.movingPlatform.setX( this.movingPlatform.getX() + ( this.movingPlatformSPD * delta ) );
+
+
+            if( this.colissionUtil.sideAndPushCollision( this.cat, this.movingPlatform ) === "bottom" )
+            {
+                this.onPlatform = true;
+            }
+
+            //adding same spd to cat if on platform
+            if( this.onPlatform )
+            {
+                this.onGround = true;
+                this.jump = false;
+                this.cat.spdY = 0;
+                this.cat.moveX( this.movingPlatformSPD * delta );
+            }
+
             
             break;
             case GameState.BREAK_POINT:
@@ -281,7 +317,7 @@ implements AssetLoadable, Initiable
             ctx.fillRect( this.camera.viewX, 0, this.levelWidth, this.levelHeight );
 
             //render tiles inside camera view
-            TileUtil.renderTiles( ctx, this.imageMap.get( "blacktileImg" ), this.tiles, this.camera, 32 );
+            TileUtil.renderTiles( ctx, this.imageMap.get( "blacktileImg" ), this.tiles, this.camera, 64 );
 
             ctx.fillStyle="white";
             ctx.fillText("icons:"+this.iconRetrieved,this.camera.viewX + 20 ,this.camera.viewY+20 );
@@ -296,6 +332,9 @@ implements AssetLoadable, Initiable
                 catIcon.render( ctx );
             }
             
+            //displaying moving platform
+            ctx.fillStyle = "#000";
+            ctx.fillRect( this.movingPlatform.getX(), this.movingPlatform.getY(), this.movingPlatform.w, this.movingPlatform.h );
 
             ctx.restore();
             break;
@@ -318,6 +357,7 @@ implements AssetLoadable, Initiable
                     // this.grav=-5;
                     this.cat.spdY = -10;
                     this.onGround=false;
+                    this.onPlatform=false;
                 }
                 break;
             case 65: //A | MOVE LEFT

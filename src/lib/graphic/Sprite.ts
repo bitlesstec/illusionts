@@ -2,6 +2,7 @@
 import { Animationable } from "../ntfc/Animationable.js";
 import { AnimationLoop } from "./AnimationLoop.js";
 import { ImageMeasures } from "./ImageMeasures.js";
+import { Point } from "./Point.js";
 import { BaseShape } from "./shape/BaseShape.js";
 import { Collider } from "./shape/Collider.js";
 
@@ -40,11 +41,6 @@ export class Sprite extends BaseShape
     dstH:number;
 
 
-    //pivots are used to draw frames when there is some change
-    //in scale or alpha
-    pivotX:number;
-    pivotY:number;
-
     /**
      * an sprite can have several colliders, which are basically
      * shapes than an sprite can have, for instance, a huge blob can
@@ -71,7 +67,10 @@ export class Sprite extends BaseShape
         this.animationLoop = AnimationLoop.FORWARD;
         this.animationStep = 0;
         this.animationStepLimit = 10;
-
+        this.colliders = new Map();
+        // this.pivot = new Point(0,0);
+        // this.anchor =new Point(0,0);
+        
         //when the image is loaded then we set measures
         // this.image = image;
         this.setNewAnimation( image, imgMeasures );//frameWidth, frameHeight );
@@ -157,8 +156,8 @@ export class Sprite extends BaseShape
             {
                 //if pivot is set, center will be pivot point, if not will
                 //be the center of the current sprite
-                let centerX:number= this.pivotX?this.pivotX:this.w/2;
-                let centerY:number= this.pivotY?this.pivotY:this.h/2;
+                let centerX:number= this.pivot !== undefined?this.pivot.x:this.w/2;
+                let centerY:number= this.pivot !== undefined?this.pivot.y:this.h/2;
 
                 ctx.translate( this.getX() + centerX, this.getY() + centerY );
                 ctx.rotate( this.angle );

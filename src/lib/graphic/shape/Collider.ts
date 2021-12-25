@@ -48,6 +48,8 @@ export class Collider extends BaseShape
         //an sprite (parent) can have multiple colliders inside, if so
         //x & y coordinates will be afected by parent.x and parent.y
         this.parent=parent?parent:undefined;
+     
     }
+
 
 }

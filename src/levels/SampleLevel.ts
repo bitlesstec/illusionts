@@ -1,7 +1,7 @@
-import { BaseLevel } from "../lib/level/BaseLevel.js";
-import { GameState } from "../lib/manager/GameState.js";
-import { Initiable } from "../lib/ntfc/Initiable.js";
 
+import { BaseLevel } from '../lib/level/BaseLevel.js';
+import { GameState } from '../lib/manager/GameState.js';
+import { Initiable } from '../lib/ntfc/Initiable.js';
 
 export class SampleLevel extends BaseLevel implements Initiable
 {

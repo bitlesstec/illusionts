@@ -476,9 +476,9 @@ pointAndCircleCollision( point:Point, x:number, y:number, radius:number )
 
 
 /**
- * this function will use tiles as colider, to check collisions
+ * this function will use tiles as coliders, to check collisions
  * tile indexes are:
- * 1 - solid tile
+ * 1 - solid (squared) tile
  * 2 - left slope
  * 3 - right slope
  * @param spr 
@@ -489,11 +489,6 @@ tileCollision(spr:Sprite | Collider, tiles:Tile[]|BaseTile[]):string
 
     let response = "";
     let counter = 0;
-
-    // let collisionSide:string;
-    // let solidTile:number = 0;
-    // let leftSlope:number = 1;
-    // let rightSlope:number = 2;
 
     for( let idx=0; idx < tiles.length; idx++ )
     {
@@ -517,7 +512,6 @@ tileCollision(spr:Sprite | Collider, tiles:Tile[]|BaseTile[]):string
                 {
                     
                     let colpos:number =  (spr.getX() + spr.anchor.x) - tile.x;// + tile.w)
-                    // console.log(":::entro colpos:", colpos)
                     if( colpos > 0 && colpos <= tile.w )
                     {
                         
@@ -535,8 +529,6 @@ tileCollision(spr:Sprite | Collider, tiles:Tile[]|BaseTile[]):string
                                 spr.setY( ( tile.y - spr.h ) + ( tile.h - yval ) );
                             }
                         
-                        // spr.setY( (tile.y + tile.h) - ( spr.anchor.y + yval ) )
-                        // spr.setY( ( tile.y - spr.h ) + ( tile.h - yval ) );
                         response += ".bottom";
                         return response;// "bottom";
                     }

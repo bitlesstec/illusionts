@@ -22,6 +22,4 @@
 - every time you start http-server you have to clean browser cache or data otherwise new changes won't be reflected
 
 ## Work in progress
-- create example of tiles that are inside the view ( in progress )
-- rotate around example
 - create scrolling platform with tileset and save data/game

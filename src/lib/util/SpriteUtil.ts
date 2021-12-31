@@ -161,25 +161,32 @@ export class SpriteUtil
     }
 
     /**
-     * DOES NOT WORK
-     * this function will make defined sprite  rotate around point X & Y, it
-     * can also work to rotate the sprite around another sprite
-     * 
-     * CAUTION, THIS FLIKERS
+     * this function will make rotate Sprite around center point
      * @param spr 
-     * @param x 
-     * @param y 
-     * @param distance 
-     * @param angle 
+     * @param center 
+     * @param angle this must be how many angles will be updating every thick e.g: angle+= 2 * delta ( update update(delta) function)
+     * @param distRad this is the radio distance between center and sprite, by default is 32
      */
-    static rotateAround( spr:Sprite, x:number, y:number, distance:number, angle:number)
+    static rotateAround( spr:Sprite, center:Point, angle:number,distRad:number = 32)
     {
-        //check for pivots in the future, to make rotate around sprite pivot
-        let rotX= x - spr.getX() + ( distance * Math.cos(angle) ) - spr.w/2;
-        let rotY= y - spr.getY() + ( distance * Math.sin(angle) ) - spr.h/2;
+        const cos = Math.cos(angle);
+        const sin = Math.sin(angle);
 
-        spr.setX( Math.floor(rotX) );
-        spr.setY( Math.floor(rotY) );
+        // const xx = spr.getX() - center.x;
+        // const yy = spr.getY() - center.y;
+
+        // // const xx = center.x - spr.getX() ;
+        // // const yy = center.y - spr.getY() ;
+
+        // spr.setX( (xx * cos) - (yy * sin)  + center.x);
+        // spr.setY( (xx * sin) + (yy * cos)  + center.y);
+
+        //check for pivots in the future, to make rotate around sprite pivot
+        let rotX= ( center.x - spr.w/2 )  + ( distRad * cos );
+        let rotY= ( center.y - spr.h/2 )  + ( distRad * sin );
+
+        spr.setX( rotX );
+        spr.setY( rotY );
     }
 
 }//

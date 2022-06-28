@@ -346,6 +346,7 @@ import {Config} from "../cfg/Config.js";
      * this will take original aspect ratio and will scale the canvas and will add
      * the appropiate widht and height for the canvas, this cannot be completly
      * full screen cause the aspect ratio may be different than the window measures
+     * @deprecated
      */
     setFullScreen():any
     {
@@ -374,5 +375,71 @@ import {Config} from "../cfg/Config.js";
         this.yScale = newYScale;
         this.context2D.scale( this.xScale, this.yScale );
     }
+
+
+    /**
+     * this is the most new and should be used function to scale the game to windows
+     * size keeping aspect ratio
+     * Thanks to Rex Van Der Spuy ( i am your fan! )
+     * @param bgColor 
+     */
+    scaleToWindow( bgColor:string )
+    {
+        let scaleX, scaleY, scale;// center;
+
+        scaleX = window.innerWidth / this.canvas.width;
+        scaleY = window.innerHeight / this.canvas.height;
+
+        // console.log("scaleX:", scaleX)
+        // console.log("scaleY:", scaleY)
+
+        scale = Math.min(scaleX, scaleY);
+        this.canvas.style.transformOrigin = "0 0";
+        this.canvas.style.transform = "scale(" + scale + ")";
+
+        // if (this.canvas.width > this.canvas.height) {
+        //     center = "vertically";
+        // }
+        // else {
+        //     center = "horizontally";
+        // }
+
+        // if (center === "horizontally") {
+            
+        //to center canvas horizontally
+            let margin = (window.innerWidth - this.canvas.width * scaleY) / 2;
+            this.canvas.style.marginLeft = margin + "px";
+            this.canvas.style.marginRight = margin + "px";
+        // }
+
+        // if (center === "vertically") {
+            //to center canvas vertically
+            margin = (window.innerHeight - this.canvas.height * scaleX) / 2;
+            console.log(`window.innerHeight: ${window.innerHeight} - this.canvas.height: ${this.canvas.height} * scaleX:${scaleX} / 2`)
+            this.canvas.style.marginTop = "0px"// margin + "px";
+            // this.canvas.style.marginBottom = margin + "px";
+        // }
+
+        this.canvas.style.paddingLeft= "0";
+        this.canvas.style.paddingRight = "0";
+        this.canvas.style.display = "block";
+
+        document.body.style.backgroundColor = bgColor;
+
+        //setting proper scale after change canvas for pointers
+        this.xScale = scale;
+        this.yScale = scale;
+        // this.pointer.scale = scale;
+        // scale = scale;
+    }
+
+
+//     //Scale and center the game
+// g.scaleToWindow();
+// //Optionally rescale the canvas if the browser window is changed
+// window.addEventListener("resize", event => {
+// g.scaleToWindow();
+// });
+
 
 }//

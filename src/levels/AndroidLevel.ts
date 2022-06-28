@@ -200,6 +200,7 @@ export class AndroidLevel extends BaseLevel
                 }
             }
 
+            //this moves the camera when player reach some invisible margins
             this.checkPlayerMargings(delta);
 
             if( this.jump || !this.onGround )

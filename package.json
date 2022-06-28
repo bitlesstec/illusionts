@@ -6,7 +6,9 @@
   "scripts": {
     "build": "tsc && cp src/game.html game/ && cp -r src/assets game/assets",
     "build.win": "tsc && Xcopy /Y src\\game.html game && Xcopy /E/I/Y src\\assets game\\assets\\",
-    "start": "cd game && http-server"
+    "start": "cd game && http-server",
+    "reset": "npm run build && npm run start",
+    "reset.win": "npm run build.win && npm run start"
   },
   "repository": {
     "type": "git",

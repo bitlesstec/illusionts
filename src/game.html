@@ -6,27 +6,31 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <style>
 
-     html, body {
+     /* html, body { */
       /* width: 100%; */
       /* height: 100%;
      
       margin-bottom: 0px;
       margin-right: auto;
       margin-left: auto; */
-      background-color: #000000;
-      margin-top: 0px;
-      border: 0;
-      overflow: hidden; /*  Disable scrollbars */
-      display: block;  /* No floating content on sides */
-    }
+      /* background-color: #000000; */
+      /* margin-top: 0px; */
+      /* border: 0; */
+      /* overflow: hidden;  Disable scrollbars */
+      /* display: block;  No floating content on sides */
+    /* } */
 
-#canvas{
+/* #canvas{
     border: 0;
     max-height: 100%;
     max-width: 100%;
     display:block;
     margin-left: auto;
     margin-right: auto;
+} */
+
+body{
+    overflow:hidden;
 }
 
 .modal {
@@ -128,7 +132,7 @@ function submitEmail(e){
         </div>
         <!-- you don't need to update this file unless you want to change 
         screen dimensions  -->
-        <canvas id="canvas" width="640" height="480" tabindex="1" > </canvas>
+        <canvas id="canvas"  tabindex="1" > </canvas>
         <!-- <script src="https://unpkg.com/axios/dist/axios.min.js"></script> -->
         <script type="module" src="game.js" > </script>
     </body>

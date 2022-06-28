@@ -2,7 +2,7 @@
 ###### Typescript 2D game library
 
 ## Before Start
-1. you need to have npm and node installed in your computer
+1. you need to have npm and node installed in your computer ( verify you have correct versions )
 2. then you can execute command ```npm install``` this will install all devDependencies and dependencies needed (including typescript)
 3. download or clone this repository from master branch
 4. open repo or add it to your workspace in visual studio code ( you need this installed also )
@@ -22,4 +22,10 @@
 - every time you start http-server you have to clean browser cache or data otherwise new changes won't be reflected
 
 ## Work in progress
-- create scrolling platform with tileset and save data/game
+more comming ...
+
+## Youtube Channel
+- Here i show how to use the library, installation, level, sprite and some game examples, here you have a list of videos: https://www.youtube.com/watch?v=txcBRog8BhM&list=PLHzmvRibTrMdAaW02Yg3kvsTLrTbjwTW5&index=1
+
+## Notes 
+- at this moment i have content only in spanish, will be creating the same content but in english soon, stay tuned! 

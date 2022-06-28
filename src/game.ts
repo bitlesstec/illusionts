@@ -25,6 +25,7 @@ game.enableTouchControl=true;
 // game.enableResizeScreen=true;
 //game.loadLevel( new SampleLevel() );
 
+game.scaleToWindow("#F00");
 // game.loadLevel( new MenuLevel() );
 game.loadLevel( new SplashScreenLevel() );
 

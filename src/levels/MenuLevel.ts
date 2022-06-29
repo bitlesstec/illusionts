@@ -146,14 +146,14 @@ export class MenuLevel extends BaseLevel
                     // we have to scale it by 2 so we can transform it to 640 x 480
                     // which is the canvas size set and used by the other levels
                     GameManager.getInstance().loadLevel( new AndroidLevel() );
-                    GameManager.getInstance().scaleCanvas(2,2);
+                    GameManager.getInstance().resizeCanvas(2,2);
                     break;
                 case 5:
                     GameManager.getInstance().loadLevel( new CollisionLevel() );
                     break; 
                 case 6:
                     GameManager.getInstance().loadLevel( new TowerDefense() );
-                    GameManager.getInstance().scaleCanvas(1,1);//scaling to adjust canvas to towerdefense level width and height
+                    GameManager.getInstance().resizeCanvas(1,1);//resize to adjust canvas to towerdefense level width and height
                     break; 
                 case 7:
                         GameManager.getInstance().loadLevel( new ControllerLevel() );
@@ -166,14 +166,14 @@ export class MenuLevel extends BaseLevel
                     break; 
                 case 10:
                     GameManager.getInstance().loadLevel( new ParallaxLevel() );
-                    GameManager.getInstance().scaleCanvas(2,2);
+                    GameManager.getInstance().resizeCanvas(2,2);//resize to adjust canvas width and height
                     break; 
                 case 11:
                     GameManager.getInstance().loadLevel( new BlackCatGamePlatformer() );
                     break;
                 case 12:
                     GameManager.getInstance().loadLevel( new BackgroundExample() );
-                    GameManager.getInstance().scaleCanvas(1,1);
+                    GameManager.getInstance().resizeCanvas(1,1);
                     break;
             }
             // GameManager.getInstance().loadLevel( levelToLoad );
@@ -184,6 +184,6 @@ export class MenuLevel extends BaseLevel
     touchEnd(e:TouchEvent)
     {
         GameManager.getInstance().loadLevel( new TowerDefense() );
-        GameManager.getInstance().scaleCanvas(1,1);//scaling to adjust canvas to towerdefense level width and height
+        GameManager.getInstance().resizeCanvas(1,1);//scaling to adjust canvas to towerdefense level width and height
     }
 }

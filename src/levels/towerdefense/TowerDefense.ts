@@ -189,6 +189,9 @@ export class TowerDefense extends BaseLevel implements Initiable, AssetLoadable
         this.spawnEnemyTask = new Task();
 
         this.gameState=GameState.PLAYING;
+
+        //resize again game to fill all window space if possible
+        GameManager.getInstance().scaleToWindow();
     }
 
     update( delta:number)
@@ -330,6 +333,7 @@ export class TowerDefense extends BaseLevel implements Initiable, AssetLoadable
     mouseUp(e:MouseEvent)
     {
         this.pointerControl.pointerReleased(e);
+        console.log("pointReleased: ", this.pointerControl.pointReleased  )
         if(this.pointerControl.isReleased)
         {
             if(this.turretSelected.visible)
@@ -365,12 +369,15 @@ export class TowerDefense extends BaseLevel implements Initiable, AssetLoadable
     mouseDown(e:MouseEvent)
     {
         this.pointerControl.pointerPressed(e);
+
+        console.log( "overSprite:",this.pointerControl.spritePressed( this.turretHUD )   )
         if( this.pointerControl.spritePressed( this.turretHUD ) )
         {
             this.turretSelected.visible=true;
             this.turretSelected.setPosition( this.pointerControl.pointPressed.x - this.turretSelected.w/2,
                 this.pointerControl.pointPressed.y - this.turretSelected.h/2);
         }
+        console.log("pointPressed: ", this.pointerControl.pointPressed  )
     }
 
     mouseMove(e:MouseEvent)
@@ -392,11 +399,13 @@ export class TowerDefense extends BaseLevel implements Initiable, AssetLoadable
             this.turretSelected.setPosition( this.pointerControl.pointPressed.x - this.turretSelected.w/2,
                 this.pointerControl.pointPressed.y - this.turretSelected.h/2);
         }
+        console.log("pointPressed: ", this.pointerControl.pointPressed  )
     }
 
     touchEnd(e:TouchEvent)
     {
         this.pointerControl.pointerReleased(e);
+        console.log("pointReleased: ", this.pointerControl.pointReleased  )
         if(this.pointerControl.isReleased)
         {
             if(this.turretSelected.visible)

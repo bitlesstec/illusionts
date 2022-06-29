@@ -45,7 +45,7 @@ import {Config} from "../cfg/Config.js";
     enableTouchControl:boolean=false;
     enableMouseControl:boolean=false;
     enableGamePadControl:boolean=false;
-    enableResizeScreen:boolean=false;
+    // enableResizeScreen:boolean=false;
 
     xScale:number;
     yScale:number;
@@ -148,17 +148,20 @@ import {Config} from "../cfg/Config.js";
     }
 
     /**
-     * this will resize context of canvas and will
-     * set new width and height of scaled size
+     * this will resize canvas width and height to the scaled values
+     * NOTE: this does not updates xScale and yScale, it is only to
+     * fix the size when a canvas is resized .
+     * if you want to resize canvas to windows size use "scaleToWindow"
+     * 
      * !!!CAUTION USING THIS FUNCTION WILL RESET canvas.context2D state!!!
      * !!!THIS IS NOT MY FAULT THAT HOW canvas WORKS =) !!!
      * @param xNewScale 
      * @param yNewScale 
      */
-    scaleCanvas( xNewScale:number, yNewScale:number)
+    resizeCanvas( xNewScale:number, yNewScale:number)
     {
-        this.xScale= xNewScale;
-        this.yScale = yNewScale;
+        // this.xScale= xNewScale;
+        // this.yScale = yNewScale;
 
         let newWidth:number = 1;
         let newHeight:number = 1;
@@ -177,14 +180,17 @@ import {Config} from "../cfg/Config.js";
         else
         {
             // there is no level loaded pageYOffset, then we take canvas width and height
-            newWidth = Math.floor( this.canvas.width * this.xScale );
-            newHeight = Math.floor( this.canvas.height * this.yScale );
+            // newWidth = Math.floor( this.canvas.width * this.xScale );
+            // newHeight = Math.floor( this.canvas.height * this.yScale );
+            newWidth = Math.floor( this.canvas.width * xNewScale );
+            newHeight = Math.floor( this.canvas.height * yNewScale );
         }
 
         
-        this.canvas.width = Math.floor(newWidth * this.xScale);
-        this.canvas.height = Math.floor(newHeight * this.yScale);
-        this.context2D.scale(this.xScale, this.yScale);
+        this.canvas.width = Math.floor(newWidth * xNewScale);
+        this.canvas.height = Math.floor(newHeight * yNewScale);
+        this.context2D.scale(xNewScale, yNewScale);
+
         
     }
 
@@ -233,14 +239,6 @@ import {Config} from "../cfg/Config.js";
             {
                 this.canvas.addEventListener("gamepadconnected", (event) => this.currentLevel.keyDown(event) );
                 this.canvas.addEventListener("gamepaddisconnected", (event) => this.currentLevel.keyDown(event) );
-            }
-
-            if( this.enableResizeScreen )
-            {
-
-                window.addEventListener( "resize", this.setFullScreen() );
-                // this.canvas.addEventListener( "resize", this.resizeScreen() );
-                // window.addEventListener( "resize", this.resizeScreen() );
             }
 
         }//firstLevelLoaded
@@ -333,14 +331,6 @@ import {Config} from "../cfg/Config.js";
     // {
     //     this.context.measureText(txt).;
     // }
-
-    /**
-     * DO NOT USE, NEEDS MORE TESTING
-     */
-    // setFullScreen():any //enable resize screen
-    // {
-    //     window.addEventListener( "resize", this.resizeScreen() );
-    // }
     
     /**
      * this will take original aspect ratio and will scale the canvas and will add
@@ -383,7 +373,7 @@ import {Config} from "../cfg/Config.js";
      * Thanks to Rex Van Der Spuy ( i am your fan! )
      * @param bgColor 
      */
-    scaleToWindow( bgColor:string )
+    scaleToWindow( bgColor:string="#000" )
     {
         let scaleX, scaleY, scale;// center;
 
@@ -429,6 +419,7 @@ import {Config} from "../cfg/Config.js";
         //setting proper scale after change canvas for pointers
         this.xScale = scale;
         this.yScale = scale;
+        console.log(`XS:${this.xScale} - YS:${ this.yScale} - scale:${scale}`);
         // this.pointer.scale = scale;
         // scale = scale;
     }
@@ -440,6 +431,18 @@ import {Config} from "../cfg/Config.js";
 // window.addEventListener("resize", event => {
 // g.scaleToWindow();
 // });
+
+/**
+ * this will scale the canvas to windows possible size every time resize event is called
+ * @param enable 
+ */
+scaleOnResize(enable:boolean=true)
+{
+    if( enable )
+        window.addEventListener( "resize", (ev) => this.scaleToWindow("#000") );
+    else    
+        window.removeEventListener("resize",(ev) => this.scaleToWindow("#000"));
+}
 
 
 }//

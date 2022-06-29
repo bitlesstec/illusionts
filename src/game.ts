@@ -25,7 +25,9 @@ game.enableTouchControl=true;
 // game.enableResizeScreen=true;
 //game.loadLevel( new SampleLevel() );
 
-game.scaleToWindow("#F00");
+//use this to scale the game screen to windows size keeping aspect ratio
+game.scaleToWindow();
+
 // game.loadLevel( new MenuLevel() );
 game.loadLevel( new SplashScreenLevel() );
 

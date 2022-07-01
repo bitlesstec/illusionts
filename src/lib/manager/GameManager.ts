@@ -288,8 +288,8 @@ import {Config} from "../cfg/Config.js";
     }
 
     /**
-     * this will take an screenshot of the game and will save this in
-     * user location
+     * this will take an screenshot of the game (most specifucally of the canvas)
+     * and will save this in user location
      */
     takeScreenshot():void
     {
@@ -332,39 +332,39 @@ import {Config} from "../cfg/Config.js";
     //     this.context.measureText(txt).;
     // }
     
-    /**
-     * this will take original aspect ratio and will scale the canvas and will add
-     * the appropiate widht and height for the canvas, this cannot be completly
-     * full screen cause the aspect ratio may be different than the window measures
-     * @deprecated
-     */
-    setFullScreen():any
-    {
-        console.log("resize screen")
-       let winWidth:number = window.innerWidth;
-       let winHeight:number = window.innerHeight;
+    // /**
+    //  * this will take original aspect ratio and will scale the canvas and will add
+    //  * the appropiate widht and height for the canvas, this cannot be completly
+    //  * full screen cause the aspect ratio may be different than the window measures
+    //  * @deprecated
+    //  */
+    // setFullScreen():any
+    // {
+    //     console.log("resize screen")
+    //    let winWidth:number = window.innerWidth;
+    //    let winHeight:number = window.innerHeight;
 
-       let gameAspectRatio:number = this.currentLevel.levelWidth/this.currentLevel.levelHeight;
-       let newWidth:number = winHeight * gameAspectRatio;
+    //    let gameAspectRatio:number = this.currentLevel.levelWidth/this.currentLevel.levelHeight;
+    //    let newWidth:number = winHeight * gameAspectRatio;
 
-       //get new aspect ratio to scale canvas to full screen
-        let newXScale:number = newWidth/this.currentLevel.levelWidth//Math.floor( newWidth/this.currentLevel.levelWidth );
-        let newYScale:number = winHeight/this.currentLevel.levelHeight//Math.floor( winHeight/this.currentLevel.levelHeight );
+    //    //get new aspect ratio to scale canvas to full screen
+    //     let newXScale:number = newWidth/this.currentLevel.levelWidth//Math.floor( newWidth/this.currentLevel.levelWidth );
+    //     let newYScale:number = winHeight/this.currentLevel.levelHeight//Math.floor( winHeight/this.currentLevel.levelHeight );
 
-        this.canvas.width = newWidth;
-        this.canvas.height = winHeight;
+    //     this.canvas.width = newWidth;
+    //     this.canvas.height = winHeight;
 
-        console.log("CW ", newWidth)
-        console.log("CH ", winHeight)
-        console.log("nX ", newXScale)
-        console.log("nY ", newYScale)
+    //     console.log("CW ", newWidth)
+    //     console.log("CH ", winHeight)
+    //     console.log("nX ", newXScale)
+    //     console.log("nY ", newYScale)
 
 
-        //setting new scales to game manager
-        this.xScale = newXScale; 
-        this.yScale = newYScale;
-        this.context2D.scale( this.xScale, this.yScale );
-    }
+    //     //setting new scales to game manager
+    //     this.xScale = newXScale; 
+    //     this.yScale = newYScale;
+    //     this.context2D.scale( this.xScale, this.yScale );
+    // }
 
 
     /**

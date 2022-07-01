@@ -106,8 +106,6 @@ static renderTiles( ctx: CanvasRenderingContext2D, img:HTMLImageElement, tiles:T
 
     }
 
-    
-
 }//
 
 

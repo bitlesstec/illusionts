@@ -8,7 +8,7 @@ import { GameManager } from "../../lib/manager/GameManager.js";
 import { GameState } from "../../lib/manager/GameState.js";
 import { AssetLoadable } from "../../lib/ntfc/AssetLoadable.js";
 import { Initiable } from "../../lib/ntfc/Initiable.js";
-import { Task } from "../../lib/task/Task.js";
+import { Timer } from "../../lib/time/Timer.js";
 import { AssetUtil } from "../../lib/util/AssetUtil.js";
 import { CollisionUtil } from "../../lib/util/CollisionUtil.js";
 import { TileUtil } from "../../lib/util/TileUtil.js";
@@ -76,7 +76,7 @@ export class TowerDefense extends BaseLevel implements Initiable, AssetLoadable
     colliderMoveRight:Collider;
     colliderMoveUp:Collider;
 
-    spawnEnemyTask:Task;
+    spawnEnemyTask:Timer;
 
 
     constructor()
@@ -186,7 +186,7 @@ export class TowerDefense extends BaseLevel implements Initiable, AssetLoadable
 
         GameManager.getInstance().setFont( 10, Config.DEFAULT_FONT_NAME);
 
-        this.spawnEnemyTask = new Task();
+        this.spawnEnemyTask = new Timer();
 
         this.gameState=GameState.PLAYING;
 

@@ -1,4 +1,5 @@
 import { Background } from "../lib/graphic/Background.js";
+import { PointerControl } from "../lib/input/PointerControl.js";
 import { BaseLevel } from "../lib/level/BaseLevel.js";
 import { GameState } from "../lib/manager/GameState.js";
 import { AssetLoadable } from "../lib/ntfc/AssetLoadable.js";
@@ -6,7 +7,14 @@ import { Initiable } from "../lib/ntfc/Initiable.js";
 import { AssetUtil } from "../lib/util/AssetUtil.js";
 
 
-
+/**
+ * in this example you can find:
+ * Background fileonX functionality
+ * camera shake effect ( when left clicking )
+ * camera flash effect ( when left clicking )
+ * 
+ * 
+ */
 export class BackgroundExample  extends BaseLevel implements Initiable, AssetLoadable
 {
 
@@ -14,6 +22,8 @@ export class BackgroundExample  extends BaseLevel implements Initiable, AssetLoa
     bg:Background;
     // bgMiddle:Background;
     // bgFront:Background;
+
+    pointerControl:PointerControl;
 
 
     constructor()
@@ -47,6 +57,8 @@ export class BackgroundExample  extends BaseLevel implements Initiable, AssetLoa
     async init(): Promise<void> 
     {
 
+        this.pointerControl = new PointerControl();
+
         await this.loadImages();
 
         // this.bgColor = new Background();
@@ -76,6 +88,11 @@ export class BackgroundExample  extends BaseLevel implements Initiable, AssetLoa
             console.log("playing")
             this.camera.moveX( 4 * delta );
 
+            this.camera.shakeEffect.updateShake(delta,5,30,60);
+            this.camera.flashEffect.updateFlash(delta, .3);//.3 second
+
+            // console.log("this.camera.isShaking:", this.camera.shakeEffect.isShaking);
+
             break;
         }
     }
@@ -103,6 +120,8 @@ export class BackgroundExample  extends BaseLevel implements Initiable, AssetLoa
                     ctx.fillStyle = "#fce0a8";
                     ctx.fillRect( this.camera.viewX, 0, this.levelWidth, this.levelHeight );
                     this.bg.render(ctx);
+
+                    this.camera.flashEffect.render( ctx );
                     
 
                 ctx.restore();
@@ -111,5 +130,16 @@ export class BackgroundExample  extends BaseLevel implements Initiable, AssetLoa
         }
     }
 
+
+
+    mouseUp(e:MouseEvent)
+    {
+        if( !this.camera.shakeEffect.isShaking )
+        {
+            this.camera.shakeEffect.activate(true);
+            this.camera.flashEffect.activate(true);
+        }
+        
+    }
 
 }

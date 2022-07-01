@@ -1,21 +1,21 @@
 import { ImageMeasures } from "../../../lib/graphic/ImageMeasures.js";
 import { Sprite } from "../../../lib/graphic/Sprite.js";
 import { GameManager } from "../../../lib/manager/GameManager.js";
-import { Task } from "../../../lib/task/Task.js";
+import { Timer } from "../../../lib/time/Timer.js";
 import { SpriteUtil } from "../../../lib/util/SpriteUtil.js";
 
 export class Turret extends Sprite
 {
 
     canshoot:boolean
-    shootTask:Task;
+    shootTask:Timer;
 
 
     constructor(image: HTMLImageElement, imgMeasures?:ImageMeasures)
     {
         super(image, imgMeasures);
         this.canshoot=true;
-        this.shootTask = new Task();
+        this.shootTask = new Timer();
     }
 
     update(delta: number, bullets:Sprite[]): void 

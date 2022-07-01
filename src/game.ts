@@ -22,8 +22,6 @@ let game = GameManager.getInstance("canvas", 640, 480);//canvas width and height
 //enabling mouse/touch control because some leves use those events
 game.enableMouseControl=true;
 game.enableTouchControl=true;
-// game.enableResizeScreen=true;
-//game.loadLevel( new SampleLevel() );
 
 //use this to scale the game screen to windows size keeping aspect ratio
 game.scaleToWindow();
@@ -31,7 +29,4 @@ game.scaleToWindow();
 // game.loadLevel( new MenuLevel() );
 game.loadLevel( new SplashScreenLevel() );
 
-//use this to set new canvas scale
-// game.scaleCanvas(2,2);
-// game.canvas.addEventListener( "resize", game.resizeScreen() );
 window.onload =function(){game.run();} 

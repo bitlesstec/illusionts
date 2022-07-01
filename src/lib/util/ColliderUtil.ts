@@ -2,7 +2,9 @@ import { Collider } from "../graphic/shape/Collider.js";
 
 
 /**
- * this class is used
+ * this class is used mostly by CollisionUtils to generate colliders 
+ * for one or several sprites, this that can be used to collision which
+ * does not necesary needs to be objects like sprites
  */
 export class ColliderUtil
 {

@@ -22,7 +22,10 @@
 - every time you start http-server you have to clean browser cache or data otherwise new changes won't be reflected
 
 ## Work in progress
-more comming ...
+Transitions
+Dialogs
+Particles ( not much convinced of this )
+
 
 ## Youtube Channel
 - Here i show how to use the library, installation, level, sprite and some game examples, here you have a list of videos: https://www.youtube.com/watch?v=txcBRog8BhM&list=PLHzmvRibTrMdAaW02Yg3kvsTLrTbjwTW5&index=1

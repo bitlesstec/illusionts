@@ -1,11 +1,11 @@
-import { Point } from "../graphic/Point.js";
+
+import { Sprite } from "../graphic/Sprite.js";
 import { Moveable } from "../ntfc/Moveable.js";
-import { MathUtil } from "../util/MathUtil.js";
 import { FlashEffect } from "./FlashEffect.js";
+import { Margin } from "./Margin.js";
 import { ShakeEffect } from "./ShakeEffect.js";
 
-export class Camera
-    implements Moveable
+export class Camera implements Moveable
 {
 
     x:number;
@@ -28,16 +28,10 @@ export class Camera
     viewX: number;
     viewY: number;
 
-    /**
-     * @todo add bounds on margins
-     */
-    private marginLeft:number;
-    private marginRight:number;
-    private marginTop:number;
-    private marginBottom:number;
-
     shakeEffect:ShakeEffect;
     flashEffect:FlashEffect;
+
+    margin:Margin;
 
     /**
      * this constructor will set the measures of a level , often a level can be bigger than
@@ -80,14 +74,13 @@ export class Camera
             this.yMax = 0;
         }
 
-        this.marginLeft=0;
-        this.marginRight=0;
-        this.marginTop=0;
-        this.marginBottom=0;
+       
 
         //effects camera can effectuate
         this.shakeEffect = new ShakeEffect( this );
         this.flashEffect = new FlashEffect( this );
+
+        this.margin = new Margin( this );
 
     }//
 
@@ -129,6 +122,7 @@ export class Camera
             this.viewX = this.xMax * -1;
         }
 
+
     }//
 
     moveY(yspd: number) 
@@ -154,6 +148,8 @@ export class Camera
 
     }//
 
+
+    
    
 
 }//

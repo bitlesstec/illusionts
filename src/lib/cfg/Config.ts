@@ -19,8 +19,18 @@ static readonly SWIPTE_DOWN:number = 0;
 static readonly SWIPTE_UP:number = 1;
 static readonly SWIPTE_LEFT:number = 2;
 static readonly SWIPTE_RIGHT:number = 3;
-
 static readonly CAMERA_MARGIN:number=32;
+
+
+//GAME SETTINGS
+static readonly GAME_NAME:string = "Bitless Game";
+static readonly GAME_ID:string = "00001";
+static readonly GAME_DESC:string = "this is an example of a game created with Illusion TypeScript Library";
+static readonly GAME_AUTHOR:string = "Pavul Zavala";
+static readonly GAME_VERSION:string = "0.0";
+
+
+
 
 
 }

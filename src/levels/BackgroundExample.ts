@@ -1,10 +1,13 @@
+import { AnimatedTile } from "../lib/graphic/AnimatedTile.js";
 import { Background } from "../lib/graphic/Background.js";
 import { PointerControl } from "../lib/input/PointerControl.js";
 import { BaseLevel } from "../lib/level/BaseLevel.js";
 import { GameState } from "../lib/manager/GameState.js";
+import { AnimatedTileConfig } from "../lib/ntfc/AnimatedTileConfig.js";
 import { AssetLoadable } from "../lib/ntfc/AssetLoadable.js";
 import { Initiable } from "../lib/ntfc/Initiable.js";
 import { AssetUtil } from "../lib/util/AssetUtil.js";
+import { TileUtil } from "../lib/util/TileUtil.js";
 
 
 /**
@@ -12,11 +15,15 @@ import { AssetUtil } from "../lib/util/AssetUtil.js";
  * Background fileonX functionality
  * camera shake effect ( when left clicking )
  * camera flash effect ( when left clicking )
- * 
+ * animated tiles
  * 
  */
 export class BackgroundExample  extends BaseLevel implements Initiable, AssetLoadable
 {
+    //rows and cols for tiles parsing
+    readonly COLS:number=32;
+    readonly ROWS:number=18;
+    
 
     bgColor:Background;
     bg:Background;
@@ -25,6 +32,36 @@ export class BackgroundExample  extends BaseLevel implements Initiable, AssetLoa
 
     pointerControl:PointerControl;
 
+    animTile:AnimatedTile;
+
+
+
+    yellowATile:AnimatedTileConfig = { index:0, lastIndex:3, srcY:16 };
+    brownATile:AnimatedTileConfig = { index:0, lastIndex:3, srcY:32 };
+
+    //array to get animated tiles, this will set the position of tiles when parsed
+    animTileMap=[ 
+        {},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},
+        {},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},
+        {},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},
+        {},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},
+        {},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},
+        {},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},
+        {},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},
+        {},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},
+        {},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},
+        {},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},
+        {},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},
+        {},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},
+        {},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},
+        {},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},
+        {},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},
+        {},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},
+        {},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},
+        {},{},this.yellowATile,{},{},{},{},{},this.yellowATile,{},{},{},{},{},{},this.brownATile,this.brownATile,{},this.brownATile,{},{},{},{},{},{},{},{},{},{},{},{},{}
+    ];
+
+    animTiles:AnimatedTile[];
 
     constructor()
     {
@@ -38,12 +75,8 @@ export class BackgroundExample  extends BaseLevel implements Initiable, AssetLoa
         let bgBackImg = await AssetUtil.getImage("/assets/BackgroundExample/fg1.png").then(img=>img);
         this.imageMap.set("bgBackImg", bgBackImg);
 
-        // let bgMiddleImg = await AssetUtil.getImage("/assets/parallax/parallax-forest-middle-trees.png").then(img=>img);
-        // this.imageMap.set("bgMiddleImg", bgMiddleImg);
-
-        // let bgFrontImg = await AssetUtil.getImage("/assets/parallax/parallax-forest-front-trees.png").then(img=>img);
-        // this.imageMap.set("bgFrontImg", bgFrontImg);
-
+        let animatedTiles = await AssetUtil.getImage("/assets/BackgroundExample/animatedTiles.png").then(img=>img);
+        this.imageMap.set("animatedTiles", animatedTiles);
     }
 
 
@@ -52,6 +85,8 @@ export class BackgroundExample  extends BaseLevel implements Initiable, AssetLoa
     }
     loadData(): void {
     }
+
+
 
 
     async init(): Promise<void> 
@@ -66,6 +101,10 @@ export class BackgroundExample  extends BaseLevel implements Initiable, AssetLoa
 
         this.bg.setFillOnX( this.levelWidth );
         this.bg.setY( this.levelHeight-this.bg.h );
+
+        //parsing array and getting animated tiles
+        this.animTiles = TileUtil.parseAnimatedTiles( this.animTileMap, this.COLS, this.ROWS, 16, 16 );
+        console.log("number of ANIM TILES: ", this.animTiles.length)
 
         //after you load all necesary set game state to playing
         //cause render methods is displaying the menu in this state
@@ -82,16 +121,11 @@ export class BackgroundExample  extends BaseLevel implements Initiable, AssetLoa
 
             case GameState.PLAYING:
             
-            // this.bg.scrollX(1, 160);
-            // this.bgMiddle.scrollX(2, 160);
-            // this.bgFront.scrollX(3, 160);
-            console.log("playing")
             this.camera.moveX( 4 * delta );
 
+            //setting config for shake and flash effects, those will be activated when left click is done 
             this.camera.shakeEffect.updateShake(delta,5,30,60);
             this.camera.flashEffect.updateFlash(delta, .3);//.3 second
-
-            // console.log("this.camera.isShaking:", this.camera.shakeEffect.isShaking);
 
             break;
         }
@@ -123,6 +157,13 @@ export class BackgroundExample  extends BaseLevel implements Initiable, AssetLoa
 
                     this.camera.flashEffect.render( ctx );
                     
+                // this.animTile.render( ctx, this.imageMap.get("animatedTiles") );    
+
+                //render animated tiles at the bottom of the screen
+                for( const tl of this.animTiles)
+                {
+                    tl.render( ctx, this.imageMap.get("animatedTiles") );
+                }
 
                 ctx.restore();
             

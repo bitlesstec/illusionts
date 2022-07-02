@@ -97,7 +97,6 @@ export class Background extends BaseShape implements Scrollable
 
             if( this.fillOnX )
             {
-                console.log("fillonX")
                 for( let idx:number = 0; idx < this.fillOnXImgs.length; idx++)
                 {
                     ctx.drawImage( this.image, this.fillOnXImgs[idx], this.points[0].y, this.w, this.h );
@@ -106,14 +105,11 @@ export class Background extends BaseShape implements Scrollable
             }
             if( !this.offsetX && !this.offsetY )
             {
-                console.log("offsetX")
                 // there is nothing to scroll, draw normal
                 ctx.drawImage( this.image, this.points[0].x, this.points[0].y, this.w, this.h );
             }
             else if( this.offsetX !== 0 && this.offsetY !== 0 )
             {
-                console.log("offsetX")
-
                 //scrolling both axis draw 4 images
                 ctx.save();
                 ctx.translate( this.offsetX, this.offsetY );

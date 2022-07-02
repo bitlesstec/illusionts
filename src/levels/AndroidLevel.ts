@@ -16,14 +16,17 @@ import { Point } from "../lib/graphic/Point.js";
 
 
 /**
- * this levels shows you how to create a tile background and the use of
- * camera views
+ * this game is a patformer using tiles
+ * there is a camera implementation that is locked to the player
+ * meaning that camera will follow player movement along the level
+ * also, there are margins in camera object which set the boundaries
+ * to know when the camera needs to move depending on player movement
  */
 export class AndroidLevel extends BaseLevel
                            implements AssetLoadable, Initiable
 {
 
-    readonly ANDOID_SPD:number=20;
+    readonly ANDOID_SPD:number=30;
 
     readonly colissionUtil:CollisionUtil= CollisionUtil.getInstance();
 
@@ -45,15 +48,6 @@ export class AndroidLevel extends BaseLevel
     tankList:Sprite[];
     tanksDestroyed:number=0;
     
-    // androidSpriteStand1:Sprite;
-    // androidSpriteStand2:Sprite;
-
-
-    //those will be invisible margins that will move the view when the player passes those
-    marginLeft:number;
-    marginRight:number;
-
-
     //jump related variables
     jump:boolean=false;
     onGround:boolean=true;
@@ -134,8 +128,6 @@ export class AndroidLevel extends BaseLevel
 
         case GameState.PLAYING:
 
-            // this.camera.moveX(1);
-
             if(this.androidMoveLeft)
             {
                 this.androidSprite.moveX(-this.ANDOID_SPD * delta );
@@ -143,7 +135,7 @@ export class AndroidLevel extends BaseLevel
 
             else if(this.androidMoveRight)
             {
-                this.androidSprite.moveX( this.ANDOID_SPD * delta);
+                this.androidSprite.moveX( this.ANDOID_SPD * delta );
             }
             
 
@@ -158,6 +150,7 @@ export class AndroidLevel extends BaseLevel
                     this.androidPunch = false;
                     this.punchCollider.setPosition(-16, 0);
                     this.androidSprite.setNewAnimation( this.imageMap.get( "androidStand" ) );
+                    this.androidSprite.animationStepLimit = 5; //making sprite frameIndex faster
                 }
                 else if( this.androidSprite.currentFrame==1)
                 {
@@ -196,12 +189,12 @@ export class AndroidLevel extends BaseLevel
             {
                 if( tank.image === this.imageMap.get("tankShattered") && tank.animationEnd )
                 {
-                    tank.setPosition(-16,-24);
+                    tank.setPosition( -16, -24 );
                 }
             }
 
             //this moves the camera when player reach some invisible margins
-            this.checkPlayerMargings(delta);
+            this.camera.margin.checkMargins( this.ANDOID_SPD * delta );
 
             if( this.jump || !this.onGround )
             {
@@ -266,7 +259,8 @@ export class AndroidLevel extends BaseLevel
         this.androidSprite.pivot = new Point( this.androidSprite.w/2, this.androidSprite.h/2);//uset to set xScale at this point for all animations
         this.androidSprite.animationStepLimit=6;
 
-        this.setMargings();
+        //make canera follow abdroidSprite/player
+        this.camera.margin.lockTo(this.androidSprite);
 
         this.tankList = [];
         for( let i=0; i < 8; i++ )
@@ -329,7 +323,7 @@ export class AndroidLevel extends BaseLevel
     loadData(): void {}
 
 
-    render( ctx:CanvasRenderingContext2D)
+    render(ctx:CanvasRenderingContext2D)
     {
         switch( this.gameState )
         {
@@ -348,10 +342,6 @@ export class AndroidLevel extends BaseLevel
             ctx.fillStyle="#000";
             ctx.fillRect(0, this.levelHeight/2 - 8, this.levelWidth, this.levelHeight/2);
 
-            // ctx.fillText( `left: ${this.androidMoveLeft} - rigth: ${this.androidMoveRight} - punch: ${this.androidPunch}`, 20,20);
-            // ctx.fillText( `Y+H: ${this.androidSprite.getY()+this.androidSprite.h} x: ${this.androidSprite.getX()}`, 20,20);
-            // ctx.fillText( `colType ${this.colType}`,20, 40);
-
             ctx.save();
             
             ctx.translate(this.camera.x, this.camera.y);
@@ -366,44 +356,11 @@ export class AndroidLevel extends BaseLevel
             }
 
             this.androidSprite.render( ctx );
-            
-            // this.androidSpriteStand1.render(ctx);
-            // this.androidSpriteStand2.render(ctx);
-
-            //uncomment below to draw bounding boxes of tiles and camera margings
-            ctx.strokeStyle="white";
-            // ctx.lineWidth=2;
-
-            //UNCOMMENT TO SHOW CAMERA MARGINS
-            // ctx.beginPath();
-            // ctx.moveTo( this.camera.viewX+this.marginLeft-1, this.camera.viewY );
-            // ctx.lineTo( this.camera.viewX+this.marginLeft-1, this.camera.viewHeight );
-            // ctx.closePath();
-            // ctx.stroke();
-
-            // ctx.beginPath();
-            // ctx.moveTo( this.camera.viewX+this.marginRight, this.camera.viewY );
-            // ctx.lineTo( this.camera.viewX+this.marginRight, this.camera.viewHeight );
-            // ctx.closePath();
-            // ctx.stroke();
-
-            // ctx.strokeRect(this.androidSpriteStand1.getX(), this.androidSpriteStand1.getY(), this.androidSpriteStand1.w,this.androidSpriteStand1.h);
-            // ctx.strokeRect(this.androidSpriteStand2.getX(), this.androidSpriteStand2.getY(), this.androidSpriteStand2.w,this.androidSpriteStand2.h);
-            //must be after we put the tiles, otherwise it wont show
-            // ctx.fillStyle ="#000";
-            // ctx.fillText("use A or D to move the view", this.camera.viewX+20, this.camera.viewY+20)
-
-            //uncomment to show tiles colliders
-            // this.colliderList.forEach( collider =>{
-            //     ctx.strokeRect( collider.getX(), collider.getY(), collider.w, collider.h );
-            // });
-
 
             ctx.fillStyle ="#FFF";
             ctx.fillText(`Tanks destroyed ${this.tanksDestroyed}/${this.tankList.length}`, this.camera.viewX+20, this.camera.viewY+20)
 
-            //uncomment to show punchCollider
-            // ctx.fillRect( this.punchCollider.getX(), this.punchCollider.getY(), this.punchCollider.w, this.punchCollider.h);
+            this.camera.margin.render(ctx);
 
             ctx.restore();
             
@@ -477,20 +434,6 @@ export class AndroidLevel extends BaseLevel
         }//
 
     }//
-
-    
-    setMargings()
-    {
-        let marginWidth = Math.ceil( this.camera.viewWidth/3 );
-        this.marginLeft = marginWidth;
-        this.marginRight = marginWidth*2; 
-    }
-
-    checkPlayerMargings(delta:number)
-    {
-        if( this.androidSprite.getX()+8 < this.camera.viewX+this.marginLeft ) this.camera.moveX( -this.ANDOID_SPD*delta );
-        if( this.androidSprite.getX()+8 > this.camera.viewX+this.marginRight ) this.camera.moveX( this.ANDOID_SPD*delta );
-    }
 
 
 }//

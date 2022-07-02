@@ -87,6 +87,9 @@ import {Config} from "../cfg/Config.js";
         this.xScale=1;
         this.yScale=1;
         this.context2D.scale(this.xScale, this.yScale);
+
+        document.getElementById("gameTitle").innerHTML=Config.GAME_NAME;
+        document.getElementById("gameDesc").setAttribute( "content", Config.GAME_DESC );
     }
 
     /**
@@ -405,7 +408,6 @@ import {Config} from "../cfg/Config.js";
         // if (center === "vertically") {
             //to center canvas vertically
             margin = (window.innerHeight - this.canvas.height * scaleX) / 2;
-            console.log(`window.innerHeight: ${window.innerHeight} - this.canvas.height: ${this.canvas.height} * scaleX:${scaleX} / 2`)
             this.canvas.style.marginTop = "0px"// margin + "px";
             // this.canvas.style.marginBottom = margin + "px";
         // }
@@ -419,7 +421,7 @@ import {Config} from "../cfg/Config.js";
         //setting proper scale after change canvas for pointers
         this.xScale = scale;
         this.yScale = scale;
-        console.log(`XS:${this.xScale} - YS:${ this.yScale} - scale:${scale}`);
+        // console.log(`XS:${this.xScale} - YS:${ this.yScale} - scale:${scale}`);
         // this.pointer.scale = scale;
         // scale = scale;
     }

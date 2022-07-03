@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "build": "tsc && cp src/game.html game/ && cp -r src/assets game/assets",
+    "build": "tsc && cp src/game.html game/ && cp -r src/assets/ game/",
     "build.win": "tsc && Xcopy /Y src\\game.html game && Xcopy /E/I/Y src\\assets game\\assets\\",
     "start": "cd game && http-server",
     "reset": "npm run build && npm run start",

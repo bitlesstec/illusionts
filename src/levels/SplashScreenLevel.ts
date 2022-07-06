@@ -4,7 +4,7 @@ import { Initiable } from '../lib/ntfc/Initiable.js';
 import { AssetLoadable } from '../lib/ntfc/AssetLoadable.js';
 import { AssetUtil } from "../lib/util/AssetUtil.js";
 import { GameState } from '../lib/manager/GameState.js';
-import { Task } from "../lib/task/Task.js";
+import { Timer } from "../lib/time/Timer.js";
 import { GameManager } from '../lib/manager/GameManager.js';
 import { SampleLevel } from './SampleLevel.js';
 
@@ -13,7 +13,7 @@ implements AssetLoadable, Initiable
 {
 
 
-    changeLevelTask:Task;
+    changeLevelTask:Timer;
     alphaVal:number;
 
 
@@ -26,7 +26,7 @@ implements AssetLoadable, Initiable
     async init(): Promise<void>  {
         await this.loadImages();
 
-        this.changeLevelTask = new Task();
+        this.changeLevelTask = new Timer();
         this.changeLevelTask.setCounter(200);
 
         this.alphaVal = 0;
@@ -36,7 +36,7 @@ implements AssetLoadable, Initiable
 
     async loadImages(): Promise<void> 
     {
-        let splashImage = await  AssetUtil.getImage("/assets/catgame/BitlessGamesLogo.png").then(img=>img);
+        let splashImage = await  AssetUtil.getImage("/assets/splash/BitlessGamesLogo.png").then(img=>img);
         this.imageMap.set( "splashImage", splashImage );
     }
 

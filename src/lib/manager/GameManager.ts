@@ -46,7 +46,7 @@ import {Config} from "../cfg/Config.js";
     enableTouchControl:boolean=false;
     enableMouseControl:boolean=false;
     enableGamePadControl:boolean=false;
-    enableResizeScreen:boolean=false;
+    // enableResizeScreen:boolean=false;
 
     xScale:number;
     yScale:number;
@@ -88,6 +88,9 @@ import {Config} from "../cfg/Config.js";
         this.xScale=1;
         this.yScale=1;
         this.context2D.scale(this.xScale, this.yScale);
+
+        document.getElementById("gameTitle").innerHTML=Config.GAME_NAME;
+        document.getElementById("gameDesc").setAttribute( "content", Config.GAME_DESC );
     }
 
     /**
@@ -148,17 +151,20 @@ import {Config} from "../cfg/Config.js";
     }
 
     /**
-     * this will resize context of canvas and will
-     * set new width and height of scaled size
+     * this will resize canvas width and height to the scaled values
+     * NOTE: this does not updates xScale and yScale, it is only to
+     * fix the size when a canvas is resized .
+     * if you want to resize canvas to windows size use "scaleToWindow"
+     * 
      * !!!CAUTION USING THIS FUNCTION WILL RESET canvas.context2D state!!!
      * !!!THIS IS NOT MY FAULT THAT HOW canvas WORKS =) !!!
      * @param xNewScale 
      * @param yNewScale 
      */
-    scaleCanvas( xNewScale:number, yNewScale:number)
+    resizeCanvas( xNewScale:number, yNewScale:number)
     {
-        this.xScale= xNewScale;
-        this.yScale = yNewScale;
+        // this.xScale= xNewScale;
+        // this.yScale = yNewScale;
 
         let newWidth:number = 1;
         let newHeight:number = 1;
@@ -177,14 +183,17 @@ import {Config} from "../cfg/Config.js";
         else
         {
             // there is no level loaded pageYOffset, then we take canvas width and height
-            newWidth = Math.floor( this.canvas.width * this.xScale );
-            newHeight = Math.floor( this.canvas.height * this.yScale );
+            // newWidth = Math.floor( this.canvas.width * this.xScale );
+            // newHeight = Math.floor( this.canvas.height * this.yScale );
+            newWidth = Math.floor( this.canvas.width * xNewScale );
+            newHeight = Math.floor( this.canvas.height * yNewScale );
         }
 
         
-        this.canvas.width = Math.floor(newWidth * this.xScale);
-        this.canvas.height = Math.floor(newHeight * this.yScale);
-        this.context2D.scale(this.xScale, this.yScale);
+        this.canvas.width = Math.floor(newWidth * xNewScale);
+        this.canvas.height = Math.floor(newHeight * yNewScale);
+        this.context2D.scale(xNewScale, yNewScale);
+
         
     }
 
@@ -235,14 +244,6 @@ import {Config} from "../cfg/Config.js";
                 this.canvas.addEventListener("gamepaddisconnected", (event) => this.currentLevel.keyDown(event) );
             }
 
-            if( this.enableResizeScreen )
-            {
-
-                window.addEventListener( "resize", this.setFullScreen() );
-                // this.canvas.addEventListener( "resize", this.resizeScreen() );
-                // window.addEventListener( "resize", this.resizeScreen() );
-            }
-
         }//firstLevelLoaded
       
         
@@ -289,21 +290,9 @@ import {Config} from "../cfg/Config.js";
         this.context2D.font = `${size}px ${ this.fontName }`;
     }
 
-    /**
-     * this will take an screenshot of the game and will save this in
-     * user location
-     */
-    takeScreenshot():void
-    {
-        let imgUrl = GameManager.getInstance().canvas
-            .toDataURL("image/png").replace("image/png", "image/octet-stream");
-        window.location.href = imgUrl;
-    }
+    
 
-    getTextWidth(txt:string)
-    {
-        this.context2D.measureText(txt).width;
-    }
+    
 
     /**
      * this will set new fps for the game and will change,
@@ -333,46 +322,117 @@ import {Config} from "../cfg/Config.js";
     // {
     //     this.context.measureText(txt).;
     // }
-
-    /**
-     * DO NOT USE, NEEDS MORE TESTING
-     */
-    // setFullScreen():any //enable resize screen
-    // {
-    //     window.addEventListener( "resize", this.resizeScreen() );
-    // }
     
+    // /**
+    //  * this will take original aspect ratio and will scale the canvas and will add
+    //  * the appropiate widht and height for the canvas, this cannot be completly
+    //  * full screen cause the aspect ratio may be different than the window measures
+    //  * @deprecated
+    //  */
+    // setFullScreen():any
+    // {
+    //     console.log("resize screen")
+    //    let winWidth:number = window.innerWidth;
+    //    let winHeight:number = window.innerHeight;
+
+    //    let gameAspectRatio:number = this.currentLevel.levelWidth/this.currentLevel.levelHeight;
+    //    let newWidth:number = winHeight * gameAspectRatio;
+
+    //    //get new aspect ratio to scale canvas to full screen
+    //     let newXScale:number = newWidth/this.currentLevel.levelWidth//Math.floor( newWidth/this.currentLevel.levelWidth );
+    //     let newYScale:number = winHeight/this.currentLevel.levelHeight//Math.floor( winHeight/this.currentLevel.levelHeight );
+
+    //     this.canvas.width = newWidth;
+    //     this.canvas.height = winHeight;
+
+    //     console.log("CW ", newWidth)
+    //     console.log("CH ", winHeight)
+    //     console.log("nX ", newXScale)
+    //     console.log("nY ", newYScale)
+
+
+    //     //setting new scales to game manager
+    //     this.xScale = newXScale; 
+    //     this.yScale = newYScale;
+    //     this.context2D.scale( this.xScale, this.yScale );
+    // }
+
+
     /**
-     * this will take original aspect ratio and will scale the canvas and will add
-     * the appropiate widht and height for the canvas, this cannot be completly
-     * full screen cause the aspect ratio may be different than the window measures
+     * this is the most new and should be used function to scale the game to windows
+     * size keeping aspect ratio
+     * Thanks to Rex Van Der Spuy ( i am your fan! )
+     * @param bgColor 
      */
-    setFullScreen():any
+    scaleToWindow( bgColor:string="#000" )
     {
-        console.log("resize screen")
-       let winWidth:number = window.innerWidth;
-       let winHeight:number = window.innerHeight;
+        let scaleX, scaleY, scale;// center;
 
-       let gameAspectRatio:number = this.currentLevel.levelWidth/this.currentLevel.levelHeight;
-       let newWidth:number = winHeight * gameAspectRatio;
+        scaleX = window.innerWidth / this.canvas.width;
+        scaleY = window.innerHeight / this.canvas.height;
 
-       //get new aspect ratio to scale canvas to full screen
-        let newXScale:number = newWidth/this.currentLevel.levelWidth//Math.floor( newWidth/this.currentLevel.levelWidth );
-        let newYScale:number = winHeight/this.currentLevel.levelHeight//Math.floor( winHeight/this.currentLevel.levelHeight );
+        // console.log("scaleX:", scaleX)
+        // console.log("scaleY:", scaleY)
 
-        this.canvas.width = newWidth;
-        this.canvas.height = winHeight;
+        scale = Math.min(scaleX, scaleY);
+        this.canvas.style.transformOrigin = "0 0";
+        this.canvas.style.transform = "scale(" + scale + ")";
 
-        console.log("CW ", newWidth)
-        console.log("CH ", winHeight)
-        console.log("nX ", newXScale)
-        console.log("nY ", newYScale)
+        // if (this.canvas.width > this.canvas.height) {
+        //     center = "vertically";
+        // }
+        // else {
+        //     center = "horizontally";
+        // }
 
+        // if (center === "horizontally") {
+            
+        //to center canvas horizontally
+            let margin = (window.innerWidth - this.canvas.width * scaleY) / 2;
+            this.canvas.style.marginLeft = margin + "px";
+            this.canvas.style.marginRight = margin + "px";
+        // }
 
-        //setting new scales to game manager
-        this.xScale = newXScale; 
-        this.yScale = newYScale;
-        this.context2D.scale( this.xScale, this.yScale );
+        // if (center === "vertically") {
+            //to center canvas vertically
+            margin = (window.innerHeight - this.canvas.height * scaleX) / 2;
+            this.canvas.style.marginTop = "0px"// margin + "px";
+            // this.canvas.style.marginBottom = margin + "px";
+        // }
+
+        this.canvas.style.paddingLeft= "0";
+        this.canvas.style.paddingRight = "0";
+        this.canvas.style.display = "block";
+
+        document.body.style.backgroundColor = bgColor;
+
+        //setting proper scale after change canvas for pointers
+        this.xScale = scale;
+        this.yScale = scale;
+        // console.log(`XS:${this.xScale} - YS:${ this.yScale} - scale:${scale}`);
+        // this.pointer.scale = scale;
+        // scale = scale;
     }
+
+
+//     //Scale and center the game
+// g.scaleToWindow();
+// //Optionally rescale the canvas if the browser window is changed
+// window.addEventListener("resize", event => {
+// g.scaleToWindow();
+// });
+
+/**
+ * this will scale the canvas to windows possible size every time resize event is called
+ * @param enable 
+ */
+scaleOnResize(enable:boolean=true)
+{
+    if( enable )
+        window.addEventListener( "resize", (ev) => this.scaleToWindow("#000") );
+    else    
+        window.removeEventListener("resize",(ev) => this.scaleToWindow("#000"));
+}
+
 
 }//

@@ -26,8 +26,14 @@ export class PointerControl
     {
         this.pointPressed = new Point();
         this.pointReleased = new Point();
+
+        console.log("constructor SCALE: ", GameManager.getInstance().xScale)
     }
 
+    /**
+     * this method used for both MOUSE\TOUCH will save x, y coordinates in pointPresed property
+     * @param e 
+     */
     pointerPressed(e:MouseEvent|TouchEvent)
     {
         this.pointPressed = this.getFixedMouseXY(e);
@@ -35,6 +41,10 @@ export class PointerControl
         this.isReleased = false;
     }
 
+    /**
+     * this method used for both MOUSE\TOUCH will save x, y coordinates in pointReleased property
+     * @param e 
+     */
     pointerReleased(e:MouseEvent|TouchEvent)
     {
         this.pointReleased = this.getFixedMouseXY(e);
@@ -71,6 +81,8 @@ export class PointerControl
             eY = e instanceof MouseEvent? e.clientY : e.touches[0].clientY; eY-=boundingRect.top;
         }
           
+        console.log("EX: ", eX)
+        console.log("getFixedMouseXY: ", GameManager.getInstance().xScale)
         //if canvas is scaled i have to divide mouse corrdinates by scale
         eX = GameManager.getInstance().xScale !== 1?eX/GameManager.getInstance().xScale : eX;
         eY = GameManager.getInstance().yScale !== 1?eY/GameManager.getInstance().yScale : eY;
@@ -222,6 +234,7 @@ export class PointerControl
      */
     spritePressed(spr:Sprite):boolean
     {
+        console.log(`x:${this.pointPressed.x}, y:${this.pointPressed.y} | sx:${spr.getX()} , sy:${spr.getY()},sw:${spr.w}`)
         return this.providedArea( this.pointPressed, spr.getX(), spr.getY(), spr.w, spr.w) && this.isPressed;
     }
 

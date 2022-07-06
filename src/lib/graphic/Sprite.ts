@@ -2,7 +2,6 @@
 import { Animationable } from "../ntfc/Animationable.js";
 import { AnimationLoop } from "./AnimationLoop.js";
 import { ImageMeasures } from "./ImageMeasures.js";
-import { Point } from "./Point.js";
 import { BaseShape } from "./shape/BaseShape.js";
 import { Collider } from "./shape/Collider.js";
 
@@ -17,6 +16,10 @@ export class Sprite extends BaseShape
     //sprite animation variables 
     animationLoop: AnimationLoop;
     animationStep: number;
+
+    /**
+     * changing this value ( by default 10 ), will make frameIndex animation faster or slower
+     */
     animationStepLimit: number;
     animationEnd:boolean;
 

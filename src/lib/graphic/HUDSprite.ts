@@ -1,4 +1,4 @@
-import { Executable } from "../ntfc/Executable.js";
+
 import { Expirable } from "../ntfc/Expirable.js";
 import { HUDDisplayType } from "./HUDDisplayType.js";
 import { Sprite } from "./Sprite.js";
@@ -119,7 +119,7 @@ export class HUDSprite extends Sprite
     expire(executer = function(){}): void {
         if(this.visible)
         {
-            console.log("ISVISIBLE: "+this.animationStep)
+            // console.log("ISVISIBLE: "+this.animationStep)
             if( ++this.animationStep >= this.animationStepLimit )
             {
                 this.animationStep=0;

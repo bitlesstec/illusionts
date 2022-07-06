@@ -6,7 +6,6 @@ import { Keyable } from "../ntfc/input/Keyable.js";
 import { GameState } from "../manager/GameState.js";
 import { Camera } from "../camera/Camera.js";
 import {AudioManager} from "../audio/AudioManager.js";
-import { BaseShape } from "../graphic/shape/BaseShape.js";
 import { Sprite } from "../graphic/Sprite.js";
 
 /**

@@ -36,7 +36,7 @@ public static getInstance()
  */
 getDistance( p1:number, w1:number, p2:number, w2:number ):number
 {
-    return( p2 + w2/2) - (p1 + w1/2);
+    return(p2 + w2/2) - (p1 + w1/2);
 }
 
 /**
@@ -80,7 +80,8 @@ isOverlaped( value1:number, value2:number ):boolean
 
 /**
  * return true if the box defined (x, y,w, h) is inside or 
- * in the margin of the box defined by (x2, y2,w2, h2)
+ * in the margin of the box defined by (x2, y2,w2, h2),
+ * box can be a point of x,y with W and H of 1 px
  * @param x 
  * @param y 
  * @param w 

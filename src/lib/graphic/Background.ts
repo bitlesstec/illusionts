@@ -1,4 +1,5 @@
 import { Scrollable } from "../ntfc/Scrollable.js";
+import { Point } from "./Point.js";
 import { BaseShape } from "./shape/BaseShape.js";
 
 
@@ -32,6 +33,12 @@ export class Background extends BaseShape implements Scrollable
     offsetY:number;
     xScrollSpd:number;
     yScrollSpd:number;
+
+
+    //FILL ON X vars
+    fillOnX:boolean=false;
+    // numberOfImgs:number;
+    fillOnXImgs:number[];//where all x points of the images will be saved
 
 
     constructor( image: HTMLImageElement )
@@ -87,6 +94,14 @@ export class Background extends BaseShape implements Scrollable
         if(this.visible)
         {
 
+            if( this.fillOnX )
+            {
+                for( let idx:number = 0; idx < this.fillOnXImgs.length; idx++)
+                {
+                    ctx.drawImage( this.image, this.fillOnXImgs[idx], this.points[0].y, this.w, this.h );
+                }
+
+            }
             if( !this.offsetX && !this.offsetY )
             {
                 // there is nothing to scroll, draw normal
@@ -150,6 +165,23 @@ export class Background extends BaseShape implements Scrollable
             ctx.fillStyle = this.fillColor;
             ctx.fillRect( this.points[0].x, this.points[0].y, this.w, this.h );
         }
+    }
+
+    /**
+     * when this function is called, will fill all the level among x axis with the same
+     * image over and over, this method can't be used at the same time with scrolling
+     * @param levelWidth 
+     */
+    setFillOnX(levelWidth:number)
+    {
+        this.fillOnX=true;
+        const images:number = Math.ceil( levelWidth/this.w );
+        this.fillOnXImgs=[];
+        for( let idx:number = 0; idx < images; idx++)
+        {
+            this.fillOnXImgs.push( idx * this.w );
+        }
+
     }
 
 }

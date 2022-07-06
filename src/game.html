@@ -2,32 +2,57 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Game Title</title>
+        <title id="gameTitle">Game Title</title>
+        <meta id="gameDesc" name = "description" content = "" />
+
         <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, maximum-scale=1, minimum-scale=1">
+        
+        <!-- user for aple devices iphone, ipod, ipad, etc -->
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <meta name="apple-mobile-web-app-status-bar-style" content="black">
+        
+        <meta name="mobile-web-app-capable" content="yes">
+        <link rel="apple-touch-icon" sizes="180x180" href="assets/favicon/apple-touch-icon.png">
+        <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="assets/favicon/favicon-16x16.png">
 <style>
 
-     html, body {
+     /* html, body { */
       /* width: 100%; */
       /* height: 100%;
      
       margin-bottom: 0px;
       margin-right: auto;
       margin-left: auto; */
-      background-color: #000000;
-      margin-top: 0px;
-      border: 0;
-      overflow: hidden; /*  Disable scrollbars */
-      display: block;  /* No floating content on sides */
-    }
+      /* background-color: #000000; */
+      /* margin-top: 0px; */
+      /* border: 0; */
+      /* overflow: hidden;  Disable scrollbars */
+      /* display: block;  No floating content on sides */
+    /* } */
 
-#canvas{
+/* #canvas{
     border: 0;
     max-height: 100%;
     max-width: 100%;
     display:block;
     margin-left: auto;
     margin-right: auto;
+} */
+
+body{
+    overflow:hidden; /* prevent bars*/
+    user-select: none; /* prevent highlight selection*/
+    -webkit-touch-callout: none !important; /*disable long touch*/
+
+    /* another way to center the game canvas */
+ /* position: absolute;
+ left: 50%;
+ top: 50%;
+ transform: translate(-50%, -50%);
+ transform-origin: center center; */
+
 }
 
 .modal {
@@ -129,7 +154,7 @@ function submitEmail(e){
         </div>
         <!-- you don't need to update this file unless you want to change 
         screen dimensions  -->
-        <canvas id="canvas" width="640" height="480" tabindex="1" > </canvas>
+        <canvas id="canvas"  tabindex="1" > </canvas>
         <!-- <script src="https://unpkg.com/axios/dist/axios.min.js"></script> -->
         <script type="module" src="game.js" > </script>
     </body>

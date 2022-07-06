@@ -4,16 +4,18 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "build": "tsc && cp src/game.html game/ && cp -r src/assets game/assets",
+    "build": "tsc && cp src/game.html game/ && cp -r src/assets/ game/",
     "build.win": "tsc && Xcopy /Y src\\game.html game && Xcopy /E/I/Y src\\assets game\\assets\\",
-    "start": "cd game && http-server"
+    "start": "cd game && http-server",
+    "reset": "npm run build && npm run start",
+    "reset.win": "npm run build.win && npm run start"
   },
   "repository": {
     "type": "git",
     "url": "git+https://gitlab.com/pavul/illusionts.git"
   },
   "keywords": [],
-  "author": "yourNameHere <yourEmailHere@a.com>",
+  "author": "pavulzavala <pavulzavala@gmail.com>",
   "license": "ISC",
   "bugs": {
     "url": "https://gitlab.com/pavul/illusionts/issues"

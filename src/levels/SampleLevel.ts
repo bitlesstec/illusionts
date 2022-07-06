@@ -1,4 +1,3 @@
-
 import { BaseLevel } from '../lib/level/BaseLevel.js';
 import { GameState } from '../lib/manager/GameState.js';
 import { Initiable } from '../lib/ntfc/Initiable.js';

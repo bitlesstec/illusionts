@@ -36,7 +36,7 @@ implements AssetLoadable, Initiable
 
     async loadImages(): Promise<void> 
     {
-        let splashImage = await  AssetUtil.getImage("/assets/catgame/BitlessGamesLogo.png").then(img=>img);
+        let splashImage = await  AssetUtil.getImage("/assets/splash/BitlessGamesLogo.png").then(img=>img);
         this.imageMap.set( "splashImage", splashImage );
     }
 

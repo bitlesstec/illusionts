@@ -21,8 +21,6 @@ static readonly SWIPTE_UP:number = 1;
 static readonly SWIPTE_LEFT:number = 2;
 static readonly SWIPTE_RIGHT:number = 3;
 static readonly CAMERA_MARGIN:number=32;
-<<<<<<< HEAD
-=======
 
 
 //GAME SETTINGS
@@ -36,5 +34,4 @@ static readonly GAME_VERSION:string = "0.0";
 
 
 
->>>>>>> examples
 }

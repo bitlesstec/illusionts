@@ -76,6 +76,17 @@ export class MathUtil
     }
 
     /**
+     * same as getRandomRange but will return an integer number
+     * @param min 
+     * @param max 
+     * @returns 
+     */
+    static getRandomRangeInt( min:number, max:number ):number
+    {
+        return Math.floor( MathUtil.getRandomRange(min, max) );
+    }
+
+    /**
      * this function help to resolve proporsional ammounts,
      * e.g. is util if you want to get hp ammount, with a fixed width 
      * healt bar
@@ -115,6 +126,11 @@ export class MathUtil
     static toRadians( angle:number ):number
     {
       return angle * ( Math.PI / 180 );
+    }
+
+    static mix(leftBound:number, rightBound:number, percentage:number)
+    {
+        return leftBound * ( 1 - percentage ) + rightBound * percentage;
     }
 
 }//

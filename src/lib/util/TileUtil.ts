@@ -1,7 +1,9 @@
 
 import { Camera } from "../camera/Camera.js";
 import { Config } from "../cfg/Config.js";
+import { AnimatedTile } from "../graphic/AnimatedTile.js";
 import { Tile } from "../graphic/Tile.js";
+import { AnimatedTileConfig } from "../ntfc/AnimatedTileConfig.js";
 
 export class TileUtil
 {
@@ -50,6 +52,43 @@ static parse( tileMap:number[], cols:number, rows:number, tileWidth:number, tile
 
         return tileList;
 }//
+
+
+
+static parseAnimatedTiles( tileMap:any[], cols:number, rows:number, tileWidth:number, tileHeight:number):AnimatedTile[]
+{
+    let tileList:AnimatedTile[] = [];
+
+    let tileIndex:number = 0;
+        
+        for( let i = 0; i < rows; i++ )
+            {
+                let tileY = i * tileHeight;
+            
+                    //for de columnas
+                    for( let j = 0; j < cols; j++ )
+                    {
+                        let tileX = j * tileWidth;
+                      
+                        //value of tileMap, can be image or solid tile
+                        let tileObject:AnimatedTileConfig = tileMap[ tileIndex ];
+                       
+                        tileIndex++;
+                         
+                        //all tiles with 0 values are ignored so they can be used to sort
+                        //other tiles used as sprite positions, etc.
+                        if(  Object.entries( tileObject ).length == 0 ) continue;
+                                
+                        let at = new AnimatedTile( tileX, tileY, tileWidth, tileHeight, 
+                                                   0, tileObject.srcY, tileObject.index, tileObject.lastIndex );
+
+                        tileList.push( at );//tile added
+                    }//j
+            } //i       
+
+        return tileList;
+}//
+
 
 
 
@@ -106,8 +145,6 @@ static renderTiles( ctx: CanvasRenderingContext2D, img:HTMLImageElement, tiles:T
         }
 
     }
-
-    
 
 }//
 

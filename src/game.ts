@@ -15,7 +15,6 @@ import { SplashScreenLevel } from './levels/SplashScreenLevel.js';
 //you can set canvas id as well as width and height
 let game = GameManager.getInstance("canvas", 640, 480);//canvas width and height by default
 
-
 // game.setFps(15); //changing fps of this game to 30
 // game.setCalculateFps(); //allow fps calculation in console
 
@@ -23,16 +22,10 @@ let game = GameManager.getInstance("canvas", 640, 480);//canvas width and height
 game.enableMouseControl=true;
 game.enableTouchControl=true;
 
-//use this to set new canvas scale
-// game.scaleCanvas(2,2);
-window.onload =function(){game.run();} 
-// game.enableResizeScreen=true;
-//game.loadLevel( new SampleLevel() );
+//use this to scale the game screen to windows size keeping aspect ratio
+game.scaleToWindow();
 
 // game.loadLevel( new MenuLevel() );
 game.loadLevel( new SplashScreenLevel() );
 
-//use this to set new canvas scale
-// game.scaleCanvas(2,2);
-// game.canvas.addEventListener( "resize", game.resizeScreen() );
-window.onload = function(){game.run();} 
+window.onload =function(){game.run();} 

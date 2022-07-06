@@ -290,21 +290,9 @@ import {Config} from "../cfg/Config.js";
         this.context2D.font = `${size}px ${ this.fontName }`;
     }
 
-    /**
-     * this will take an screenshot of the game (most specifucally of the canvas)
-     * and will save this in user location
-     */
-    takeScreenshot():void
-    {
-        let imgUrl = GameManager.getInstance().canvas
-            .toDataURL("image/png").replace("image/png", "image/octet-stream");
-        window.location.href = imgUrl;
-    }
+    
 
-    getTextWidth(txt:string)
-    {
-        this.context2D.measureText(txt).width;
-    }
+    
 
     /**
      * this will set new fps for the game and will change,

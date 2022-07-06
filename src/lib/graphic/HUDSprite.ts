@@ -119,7 +119,7 @@ export class HUDSprite extends Sprite
     expire(executer = function(){}): void {
         if(this.visible)
         {
-            console.log("ISVISIBLE: "+this.animationStep)
+            // console.log("ISVISIBLE: "+this.animationStep)
             if( ++this.animationStep >= this.animationStepLimit )
             {
                 this.animationStep=0;

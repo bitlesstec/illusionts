@@ -16,6 +16,8 @@ import { TileMap } from './TileMap.js';
 import { Tile } from '../lib/graphic/Tile.js';
 import { HUDSprite } from '../lib/graphic/HUDSprite.js';
 import { Background } from '../lib/graphic/Background.js';
+import { CanvasUtil } from '../lib/util/CanvasUtil.js';
+import { Dialog } from '../lib/graphic/Dialog.js';
 
 
 /**
@@ -51,6 +53,10 @@ export class SampleLevel extends BaseLevel
 
     userName:string;
 
+
+    dialog:Dialog;
+    dialogText:string = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. assadsad#sad";
+
     constructor()
     {
         //setting level width and height
@@ -63,6 +69,8 @@ export class SampleLevel extends BaseLevel
         this.userName = "";
         await this.loadImages();
         this.loadSounds();
+
+        this.dialog = new Dialog();
        
         //create circle sprite instance
         this.circle =  new Sprite( this.imageMap.get( "circleImage" ) );
@@ -124,9 +132,10 @@ export class SampleLevel extends BaseLevel
             case GameState.LOADING:
                 this.init();
             break;
+            // case GameState.DIALOGUING:
+                
+            //     break;
             case GameState.PLAYING:
-                // let cnt = Math.floor( ++this.angleCounter*delta);
-                // console.log( "game is in PLAYING state: " );
 
             this.bg.scrollX( 2, 640 );    
             this.bg.scrollY( 3, 480 ); 
@@ -148,14 +157,14 @@ export class SampleLevel extends BaseLevel
                 //if there is a collision this will print text in console
                 if(this.collisionUtil.lineCollision(this.lineShape, this.lineShape2))
                 {
-                    console.log("::: collision true at: "+this.lineShape2.points[0].y)
+                    // console.log("::: collision true at: "+this.lineShape2.points[0].y)
                 }
             }
 
             //pushing damageText Up then it dissapears
             this.damageTxt.expire(()=>{ this.damageTxt.moveY(-1); });
 
-            console.log(`userName ${this.userName}`);
+            // console.log(`userName ${this.userName}`);
 
             break;
         }
@@ -178,6 +187,29 @@ export class SampleLevel extends BaseLevel
                 ctx.fillStyle = "#FFF";
                 ctx.fillText( "loading" ,this.levelWidth/2,20);
             break;
+
+            case GameState.DIALOGUING:
+                ctx.fillStyle = "#000";
+                ctx.fillRect( 0, 0, this.levelWidth, this.levelHeight );
+
+                ctx.fillStyle = "#FFF";
+                ctx.fillText( "Release D until dialog finish, C to quit" ,20,20);
+
+                //blue background for dialog to display text by one line
+                // ctx.fillStyle = "#00F";
+                // ctx.fillRect( 100, 100, 500, 30 );
+                // this.dialog.showDialog(ctx, "this is a text example for dialog fn!", 100, 100, 500);
+
+
+
+                 //blue background for dialog for 2 text line height
+                 ctx.fillStyle = "#00F";
+                 ctx.fillRect( 100, 100, 500, 60 );
+                 this.dialog.showDialog(ctx, this.dialogText, 100, 100, 500, 2);
+
+
+                break;
+
             case GameState.PLAYING:
                  //set background to black color
                 ctx.fillStyle = "#000";
@@ -190,6 +222,8 @@ export class SampleLevel extends BaseLevel
                 //set white color and print hello word in screen at 20, 20
                 ctx.fillStyle = "#FFF";
                 ctx.fillText( "Hello World" ,20,20);
+
+                ctx.fillText( "Release D to open Dialog" ,80,20);
 
                 //this will render the sprice in the screen
                 this.circle.render(ctx);
@@ -208,6 +242,10 @@ export class SampleLevel extends BaseLevel
                 this.score.render(ctx);
 
                 this.damageTxt.render(ctx);
+
+
+                
+
             break;
         }
 
@@ -235,41 +273,11 @@ export class SampleLevel extends BaseLevel
 
     loadSounds(): void {
         
-       var soundList = new Map<string,HTMLAudioElement>();
-
-       var bgmusic = new Audio();
-       bgmusic.src = "/assets/music/tomorrow.mp3";
-
-       var sfxSound = new Audio();
-       sfxSound.src = "/assets/music/snd_gun.wav";
-
-       soundList.set( "bgmusic", bgmusic );
-       soundList.set( "sfxsound", sfxSound );
-
-    //    this.audioManager.loadSounds( soundList );
     }
 
     loadData(): void {
     }
-
-    // isLoadComplete(): boolean {
-    //     let loadedImgs = 0;
-    //     let loadedSounds = 0;
-
-    //     for ( let img of this.imageMap.values() ) 
-    //     {
-    //         if( img.complete ) loadedImgs++;
-    //     }
-
-    //     for( let snd of this.audioManager.audioList.values() )
-    //     {
-    //         if( snd.readyState )loadedSounds++;
-    //     }   
-
-    //     return this.imageMap.size === loadedImgs && this.audioManager.audioList.size === loadedSounds;
-    // }
-
-
+    
     keyUp( event:KeyboardEvent )
     {
         switch( event.keyCode )
@@ -279,8 +287,34 @@ export class SampleLevel extends BaseLevel
             break;
             case 32: //SPACE
             // this.audioManager.playSfx( "sfxsound" );
-            GameManager.getInstance().takeScreenshot();
+            CanvasUtil.takeScreenshot();
             break;
+            case 68: //D
+
+            if( !this.dialog.active )
+            {
+                console.log("show dialog")
+                this.dialog.active=true;
+                this.gameState = GameState.DIALOGUING;
+            }
+            else{
+
+                //when its done the dialog, change to playing state
+                 if( this.dialog.nextLine() )
+                 {
+                     this.gameState = GameState.PLAYING;
+                 }
+                
+            }
+
+            break;
+
+            case 67: //C
+            this.dialog.closeDialog();
+            this.gameState = GameState.PLAYING;
+            break;
+
+
         }//
     }
 

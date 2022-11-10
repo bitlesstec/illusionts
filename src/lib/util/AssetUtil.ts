@@ -1,4 +1,5 @@
 import { AudioManager } from "../audio/AudioManager.js";
+import { Sprite } from "../graphic/Sprite.js";
 import { GameManager } from "../manager/GameManager.js";
 
 
@@ -71,6 +72,33 @@ export class AssetUtil
             if(isArrayBuffer)asyncRequest.responseType="arraybuffer";//used for audio
             asyncRequest.send();
         } );
+    }
+
+
+    /**
+     * this will create/load images and sprites from atlas.png and atlas.json 
+     * and returns a map of sprites created
+     * @param atlasImg 
+     * @param jsonPath 
+     */
+    static async createSpritesFromAtlas( atlasImg:HTMLImageElement, jsonContent:any ):Promise<Map<string, Sprite >>
+    {
+        //these objects will be populated
+        const spriteMap: Map<string, Sprite > = new Map<string, Sprite>();
+
+        // const jsonContent = await AssetUtil.makeAsyncRequest( "GET", jsonPath, false );
+
+        for(let json of jsonContent)
+        {
+            console.log(json)
+
+            spriteMap.set( json.name, 
+                    new Sprite( atlasImg, {srcX: json.x, srcY:json.y, w:json.frameWidth, h:json.h, frames:json.frames} ) );
+        }
+
+        console.log("FROM ATLAS")
+        console.log(spriteMap)
+    return spriteMap;
     }
 
 

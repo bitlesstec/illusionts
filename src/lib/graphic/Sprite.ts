@@ -172,7 +172,7 @@ export class Sprite extends BaseShape
             ctx.drawImage
             (
                 this.image,
-                this.srcX, this.srcY, //srcX changes inside updateAnimation()
+                this.srcX + ( this.currentFrame * this.w), this.srcY, //srcX changes inside updateAnimation()
                 this.w, this.h,
                 Math.floor( this.getX() ), Math.floor( this.getY() ),
                 this.dstW, this.dstH
@@ -201,7 +201,7 @@ export class Sprite extends BaseShape
             switch( this.animationLoop )
             {
                 case AnimationLoop.FORWARD:
-                    this.srcX = this.currentFrame * this.w;
+                    // this.srcX = this.srcX + ( this.currentFrame * this.w );
                     this.currentFrame++;
                     if( this.currentFrame > this.lastFrame )
                     {
@@ -212,7 +212,7 @@ export class Sprite extends BaseShape
                 
                 case AnimationLoop.BACKWARD:
                     this.currentFrame--;
-                    this.srcX = this.currentFrame * this.w;
+                    // this.srcX = this.currentFrame * this.w;
                     if( this.currentFrame < 0 )
                     {
                         this.currentFrame = this.lastFrame;
@@ -221,7 +221,7 @@ export class Sprite extends BaseShape
                 break;
                 
                 case AnimationLoop.STOPATEND:
-                    this.srcX = this.currentFrame * this.w;
+                    // this.srcX = this.currentFrame * this.w;
                     this.currentFrame++;
                     if( this.currentFrame >= this.lastFrame )
                     { 
@@ -230,7 +230,7 @@ export class Sprite extends BaseShape
                     }
                 break;
                 case AnimationLoop.CUSTOM:
-                    this.srcX = this.currentFrame * this.w;
+                    // this.srcX = this.currentFrame * this.w;
 
                     this.currentFrame++;
                     if( this.currentFrame > this.lastFrame)

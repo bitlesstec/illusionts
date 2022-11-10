@@ -16,6 +16,7 @@ import { TouchLevel } from './TouchLevel.js';
 import { ParallaxLevel } from './ParallaxLevel.js';
 import { BlackCatGamePlatformer } from './catgame/BlackCatGamePlatformer.js';
 import { BackgroundExample } from './BackgroundExample.js';
+import { AtlasExampleLevel } from './AtlasExampleLevel.js';
 
 /**
  * this is a level that creates a menu to load other levels
@@ -80,6 +81,7 @@ export class MenuLevel extends BaseLevel
                 ctx.fillText( "Parallax Level" ,40, 230);
                 ctx.fillText( "Black Cat platformer" ,40, 250);
                 ctx.fillText( "Background example" ,40, 270);
+                ctx.fillText( "Load Atlas example" ,40, 290);
 
                 this.menuSelector.render(ctx);
                 
@@ -117,10 +119,10 @@ export class MenuLevel extends BaseLevel
             case 40: //arrow down
             this.gameSelected +=1;
             this.menuSelector.moveY(20);
-            if( this.menuSelector.points[0].y > 270)
+            if( this.menuSelector.points[0].y > 290)
             {
-                this.menuSelector.points[0].y = 270;
-                this.gameSelected=12;
+                this.menuSelector.points[0].y = 290;
+                this.gameSelected=13;
             }
             break;
 
@@ -173,6 +175,10 @@ export class MenuLevel extends BaseLevel
                     break;
                 case 12:
                     GameManager.getInstance().loadLevel( new BackgroundExample() );
+                    GameManager.getInstance().resizeCanvas(1,1);
+                    break;
+                case 13:
+                    GameManager.getInstance().loadLevel( new AtlasExampleLevel() );
                     GameManager.getInstance().resizeCanvas(1,1);
                     break;
             }

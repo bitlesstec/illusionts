@@ -1,0 +1,5 @@
+[
+    {"id":1,"name":"ene1","x":61,"y":11,"w":64,"h":16,"frames":4,"frameWidth":16,"frameHeight":16,"img":{}},
+{"id":2,"name":"ene2","x":9,"y":40,"w":64,"h":16,"frames":4,"frameWidth":16,"frameHeight":16,"img":{}},
+{"id":3,"name":"ene3","x":100,"y":38,"w":80,"h":16,"frames":5,"frameWidth":16,"frameHeight":16,"img":{}},
+{"id":4,"name":"ship","x":13,"y":90,"w":63,"h":12,"frames":3,"frameWidth":21,"frameHeight":12,"img":{}},{"id":5,"name":"shipbullet","x":0,"y":77,"w":6,"h":3,"frames":0,"frameWidth":6,"frameHeight":3,"img":{}}]

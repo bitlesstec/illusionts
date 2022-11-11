@@ -21,7 +21,7 @@ export class Turret extends Sprite
     update(delta: number, bullets:Sprite[]): void 
     {
 
-        let enemy = SpriteUtil.getSpriteGroup("enemy")[0];
+        let enemy = SpriteUtil.getSpritesByLabel("enemy")[0];
         this.shootTask.process(()=>
         {
             //if task completer then can shoot again

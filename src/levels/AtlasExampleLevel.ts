@@ -30,21 +30,21 @@ implements AssetLoadable, Initiable
         await this.loadImages();
 
         const jsonContent = await 
-                AssetUtil.makeAsyncRequest("GET", "/assets/atlas/atlas2.json", false).then(data=>data);
+                AssetUtil.makeAsyncRequest("GET", "/assets/atlas/atlas.json", false).then(data=>data);
 
         this.sprites = 
-                await AssetUtil.createSpritesFromAtlas( this.imageMap.get("atlasImg"), JSON.parse( jsonContent) );
+                await AssetUtil.createSpritesFromAtlas( this.imageMap.get("atlasImg"), JSON.parse(jsonContent) );
 
         console.log("ATLAS LEVEL sprs")
         console.log(this.sprites.get("ship"));
 
         this.sprites.get("ship").setPosition(100,100);
         this.sprites.get("ship").animationLoop = AnimationLoop.NONE;
+        this.sprites.get("ship").currentFrame = 1;
 
 
-        this.sprites.get("ene1").setPosition(200,100);
-        this.sprites.get("ene2").setPosition(200,200);
-        this.sprites.get("ene3").setPosition(200,300);
+        this.sprites.get("enemigo1").setPosition(200,100);
+        this.sprites.get("enemigo2").setPosition(200,200);
         
         this.sprites.get("shipbullet").visible = false;
 
@@ -54,7 +54,7 @@ implements AssetLoadable, Initiable
 
     async loadImages(): Promise<void> 
     {
-        let atlasImg = await  AssetUtil.getImage("/assets/atlas/atlas2.png").then(img=>img);
+        let atlasImg = await  AssetUtil.getImage("/assets/atlas/atlas.png").then(img=>img);
         this.imageMap.set( "atlasImg", atlasImg );
     }
 
@@ -96,15 +96,15 @@ implements AssetLoadable, Initiable
             case GameState.PLAYING:
 
 
-                for (const [key, value] of this.sprites ) { 
+                for (const [name, sprite] of this.sprites ) { 
                    
-                    value.render(ctx)
+                    sprite.render(ctx)
                     
                     // const spr:any = this.spriteMap.get(key);
                     // spr.render( ctx );
                 }
-                console.log(this.sprites.get("ene1"));
-                console.log("-----------");
+                // console.log(this.sprites.get("ene1"));
+                // console.log("-----------");
                
             break;
         }

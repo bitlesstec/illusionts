@@ -28,7 +28,7 @@ imageMap: Map<string, HTMLImageElement>;
 // spriteList: Sprite[];
 
 //this will allow to separate in group several screens like player, enemies, bosses, items, etc.
-spriteMap: Map<string, Sprite[] >;
+spriteMap: Map<string, Sprite >;
 
 camera: Camera;
 
@@ -51,7 +51,7 @@ constructor( levelWidht:number, levelHeight:number, viewWidth?:number, viewHeigh
     this.gameState = GameState.LOADING;
     this.audioManager = new AudioManager();
     this.imageMap = new Map<string, HTMLImageElement>();
-    this.spriteMap = new Map<string, Sprite[]>();
+    this.spriteMap = new Map<string, Sprite>();
     this.levelWidth = levelWidht; 
     this.levelHeight = levelHeight;
 

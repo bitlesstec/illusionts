@@ -150,7 +150,7 @@ export class TowerDefense extends BaseLevel implements Initiable, AssetLoadable
         this.enemy.setPosition( 64, 0 );
         this.enemy.spdY=1;
         this.enemy.label="enemy";
-        this.spriteMap.set("enemy", [this.enemy] );
+        this.spriteMap.set("enemy", this.enemy );
         
 
         for( let i = 0; i < this.MAX_TURRETS ;i++ )
@@ -158,16 +158,18 @@ export class TowerDefense extends BaseLevel implements Initiable, AssetLoadable
             this.turrets[i] = new Turret( this.imageMap.get("turret") );   
             this.turrets[i].visible = false; 
             this.turrets[i].label="turret";
+            this.spriteMap.set("turret"+i, this.turrets[i]);
         }
-        this.spriteMap.set("turrets", this.turrets);
+        
 
         for( let i = 0; i < 30 ;i++ )
         {
             this.bullets[i] = new Sprite( this.imageMap.get("bullet") );
             this.bullets[i].visible=false;
             this.bullets[i].label="bullet";
+            this.spriteMap.set("bullet"+i, this.bullets[i]);
         }
-        this.spriteMap.set("bullets", this.bullets);
+        
 
 
         this.turretHUD = new Sprite( this.imageMap.get("turret") );
@@ -286,15 +288,19 @@ export class TowerDefense extends BaseLevel implements Initiable, AssetLoadable
             TileUtil.renderTiles( ctx, this.imageMap.get( "bgtiles" ), this.tiles );
 
 
-            for( let spr of this.spriteMap.get("turrets") )
+            for( const [key, sprite] of this.spriteMap)
             {
-                spr.render(ctx);
+                sprite.render(ctx);
             }
+            // for( let spr of this.spriteMap.get("turrets") )
+            // {
+            //     spr.render(ctx);
+            // }
 
-            for( let spr of this.spriteMap.get("bullets") )
-            {
-                spr.render(ctx);
-            }
+            // for( let spr of this.spriteMap.get("bullets") )
+            // {
+            //     spr.render(ctx);
+            // }
 
             this.enemy.render(ctx);
 

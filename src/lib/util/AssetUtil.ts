@@ -90,10 +90,10 @@ export class AssetUtil
 
         for(let json of jsonContent)
         {
-            console.log(json)
-
-            spriteMap.set( json.name, 
-                    new Sprite( atlasImg, {srcX: json.x, srcY:json.y, w:json.frameWidth, h:json.h, frames:json.frames} ) );
+            // console.log(json)
+            const spr = new Sprite( atlasImg, {srcX: json.x, srcY:json.y, w:json.frameWidth, h:json.h, frames:json.frames} )
+            spr.label = json.label;
+            spriteMap.set( json.name, spr );
         }
 
         // console.log("FROM ATLAS")

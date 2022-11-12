@@ -152,12 +152,24 @@ export class SpriteUtil
     /**
      * this will return a group of sprites that are contained in
      * currentLevel.spriteMap defined by groupName
+     * this will return an array of sprites wich contains
+     * current label, this will kind of return your sprites
+     * grouped by labels
      * @param groupName 
      * @returns 
      */
-    static getSpriteGroup( groupName:string ):Sprite[]
+    static getSpritesByLabel( label:string ):Sprite[]
     {
-        return GameManager.getInstance().currentLevel.spriteMap.get( groupName );
+        const sprites:Sprite[] = [];
+        for( const [name,sprite] of GameManager.getInstance().currentLevel.spriteMap )
+        {
+            // const s:Sprite = value;
+            if(sprite.label.includes( label ) )
+               sprites.push(sprite);
+        } 
+
+        return sprites;
+        // return GameManager.getInstance().currentLevel.spriteMap.get( groupName );
     }
 
     /**

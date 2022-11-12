@@ -96,8 +96,8 @@ export class AssetUtil
                     new Sprite( atlasImg, {srcX: json.x, srcY:json.y, w:json.frameWidth, h:json.h, frames:json.frames} ) );
         }
 
-        console.log("FROM ATLAS")
-        console.log(spriteMap)
+        // console.log("FROM ATLAS")
+        // console.log(spriteMap)
     return spriteMap;
     }
 

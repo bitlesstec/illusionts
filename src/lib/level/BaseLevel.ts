@@ -26,9 +26,8 @@ imageMap: Map<string, HTMLImageElement>;
 //used to maintain all the sprites in a single place, 
 //so we can iterate this map and use render method of each sprite for example
 // spriteList: Sprite[];
-
-//this will allow to separate sprites in several groups like: player, enemies, bosses, items, etc.
-spriteMap: Map<string, Sprite[] >;
+//this will allow to separate in group several screens like player, enemies, bosses, items, etc.
+spriteMap: Map<string, Sprite >;
 
 camera: Camera;
 
@@ -51,7 +50,7 @@ constructor( levelWidht:number, levelHeight:number, viewWidth?:number, viewHeigh
     this.gameState = GameState.LOADING;
     this.audioManager = new AudioManager();
     this.imageMap = new Map<string, HTMLImageElement>();
-    this.spriteMap = new Map<string, Sprite[]>();
+    this.spriteMap = new Map<string, Sprite>();
     this.levelWidth = levelWidht; 
     this.levelHeight = levelHeight;
 

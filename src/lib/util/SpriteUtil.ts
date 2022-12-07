@@ -12,10 +12,12 @@ export class SpriteUtil
 {
 
     /**
-     * this is going to set the speed on X e Y coordinates pointing to
+     * this is going to set the speed on spdX and spdY sprite pointing to
      * coords toX & toY
-     * @note to make this work moveXSpd and moveYSpd needs to be called in update method due
-     * this function only set the new speed in X & Y coordinates
+     * @note to make this work call:
+     * move() or moveX() or moveY()
+     * cause this method only sets the new speed to specified properties above
+     * , does not move the sprite, 
      * @param spr 
      * @param toX 
      * @param toY 
@@ -55,7 +57,7 @@ export class SpriteUtil
     }//
 
     /**
-     * this function will set the new angle of the sprite pointing to X & Y coordinates
+     * gets the angle of the sprite pointing to X & Y coordinates
      * @param spr 
      * @param x 
      * @param y 

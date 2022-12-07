@@ -1,1 +1,12 @@
-[{"id":1,"name":"enemigo1","x":80,"y":2,"w":64,"h":16,"frames":4,"frameWidth":16,"frameHeight":16,"img":{}},{"id":2,"name":"enemigo2","x":25,"y":40,"w":64,"h":16,"frames":4,"frameWidth":16,"frameHeight":16,"img":{}},{"id":3,"name":"ship","x":10,"y":5,"w":63,"h":12,"frames":3,"frameWidth":21,"frameHeight":12,"img":{}},{"id":4,"name":"shipbullet","x":4,"y":33,"w":6,"h":3,"frames":1,"frameWidth":6,"frameHeight":3,"img":{}}]
+[{"id":1,"name":"enemigo11","x":80,"y":2,"w":64,"h":16,"frames":4,"frameWidth":16,"frameHeight":16,"img":{},"label":"enemy"},
+{"id":1,"name":"enemigo12","x":80,"y":2,"w":64,"h":16,"frames":4,"frameWidth":16,"frameHeight":16,"img":{},"label":"enemy"},
+{"id":1,"name":"enemigo13","x":80,"y":2,"w":64,"h":16,"frames":4,"frameWidth":16,"frameHeight":16,"img":{},"label":"enemy"},
+{"id":1,"name":"enemigo14","x":80,"y":2,"w":64,"h":16,"frames":4,"frameWidth":16,"frameHeight":16,"img":{},"label":"enemy"},
+{"id":1,"name":"enemigo15","x":80,"y":2,"w":64,"h":16,"frames":4,"frameWidth":16,"frameHeight":16,"img":{},"label":"enemy"},
+{"id":1,"name":"enemigo16","x":80,"y":2,"w":64,"h":16,"frames":4,"frameWidth":16,"frameHeight":16,"img":{},"label":"enemy"},
+
+{"id":2,"name":"enemigo2","x":25,"y":40,"w":64,"h":16,"frames":4,"frameWidth":16,"frameHeight":16,"img":{},"label":"enemy"},
+{"id":3,"name":"enemigo3","x":25,"y":40,"w":64,"h":16,"frames":4,"frameWidth":16,"frameHeight":16,"img":{},"label":"enemy"},
+{"id":4,"name":"enemigo4","x":25,"y":40,"w":64,"h":16,"frames":4,"frameWidth":16,"frameHeight":16,"img":{},"label":"enemy"},
+{"id":8,"name":"ship","x":10,"y":5,"w":63,"h":12,"frames":3,"frameWidth":21,"frameHeight":12,"img":{},"label":"player"},
+{"id":9,"name":"shipbullet","x":4,"y":33,"w":6,"h":3,"frames":1,"frameWidth":6,"frameHeight":3,"img":{},"label":"bullet"}]

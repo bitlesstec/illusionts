@@ -129,11 +129,7 @@ import {Config} from "../cfg/Config.js";
         // this.delta = now - this.lastUpdate;
         this.delta = ( now - this.lastUpdate ) / 1000; //this will give like 0.016 which is ok for delta
         
-        if( this.calculateFps )
-        {
-            this.fpsCounter = Math.ceil(  1/this.delta ); //29411764
-            console.log(`FPS: ${this.fpsCounter}`);
-        }
+        this.updateFpsCounter();
 
         if( this.delta >= this.millisPerFrame )
         {
@@ -148,6 +144,19 @@ import {Config} from "../cfg/Config.js";
 
         // if(this.currentLevel)this.currentLevel.render( this.context2D );
         requestAnimationFrame( this.run.bind(this) );
+    }
+
+    /**
+     * this function will update "fpsCounter" if calculateFps is true
+     * or enabled
+     * @param delta 
+     */
+    updateFpsCounter()
+    {
+        if( this.calculateFps )
+            this.fpsCounter = Math.ceil( 1/this.delta ); 
+            //console.log(`FPS: ${this.fpsCounter}`);
+        
     }
 
     /**
@@ -290,9 +299,6 @@ import {Config} from "../cfg/Config.js";
         this.context2D.font = `${size}px ${ this.fontName }`;
     }
 
-    
-
-    
 
     /**
      * this will set new fps for the game and will change,
@@ -415,24 +421,24 @@ import {Config} from "../cfg/Config.js";
     }
 
 
-//     //Scale and center the game
-// g.scaleToWindow();
-// //Optionally rescale the canvas if the browser window is changed
-// window.addEventListener("resize", event => {
-// g.scaleToWindow();
-// });
+    //     //Scale and center the game
+    // g.scaleToWindow();
+    // //Optionally rescale the canvas if the browser window is changed
+    // window.addEventListener("resize", event => {
+    // g.scaleToWindow();
+    // });
 
-/**
- * this will scale the canvas to windows possible size every time resize event is called
- * @param enable 
- */
-scaleOnResize(enable:boolean=true)
-{
-    if( enable )
-        window.addEventListener( "resize", (ev) => this.scaleToWindow("#000") );
-    else    
-        window.removeEventListener("resize",(ev) => this.scaleToWindow("#000"));
-}
+    /**
+     * this will scale the canvas to windows possible size every time resize event is called
+     * @param enable 
+     */
+    scaleOnResize(enable:boolean=true)
+    {
+        if( enable )
+            window.addEventListener( "resize", (ev) => this.scaleToWindow("#000") );
+        else    
+            window.removeEventListener("resize",(ev) => this.scaleToWindow("#000"));
+    }
 
 
 }//

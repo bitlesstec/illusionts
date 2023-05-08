@@ -13,6 +13,22 @@ import { SpriteUtil } from '../lib/util/SpriteUtil.js';
 import { Point } from '../lib/graphic/Point.js';
 import { MathUtil } from '../lib/util/MathUtil.js';
 
+
+/**
+ * this level will teach you how to create sprites from
+ * atlasses images and json files, this is helpful to load
+ * spritesheets instead a buch of images, to do so, you need
+ * to create the texture in Textured application wich will create
+ * a png containing all the images grouped and a json which have all
+ * the sprite measures al well other parameters.
+ * 
+ * the function used to create the sprites from spritesheets is:
+ * AssetUtil.createSpritesFromAtlas
+ * 
+ * this example also creates another enemy consisting of two images that
+ * follow the player but in the traditional way, these are separate images
+ * and do not belong to the spritesheep i mention above.
+ */
 export class AtlasExampleLevel extends BaseLevel
 implements AssetLoadable, Initiable
 {

@@ -85,4 +85,15 @@ GamePadConnected( event: Event ){}
 GamePadDisconnected( event: Event ){}
 GamePadButtonPressed( event: Event ){}
 GamePadAxisMovement( event: Event ){}
+
+/**
+ * this will merge new sprList into spriteMap of this level, 
+ * in the case when we have a bunch of sprites in diferent atlasses images
+ * @param sprList 
+ */
+protected addSpriteMap( sprMap:Map<string, Sprite>):void
+{
+    this.spriteMap = new Map<string, Sprite>([...this.spriteMap,...sprMap]);
+}
+
 }//

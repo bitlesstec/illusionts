@@ -81,16 +81,15 @@ export class AssetUtil
      * @param atlasImg 
      * @param jsonPath 
      */
-    static async createSpritesFromAtlas( atlasImg:HTMLImageElement, jsonContent:any ):Promise<Map<string, Sprite >>
+    static async createSpritesFromAtlas( atlasImg:HTMLImageElement, atlasJson:any ):Promise<Map<string, Sprite >>
     {
         //these objects will be populated
         const spriteMap: Map<string, Sprite > = new Map<string, Sprite>();
 
         // const jsonContent = await AssetUtil.makeAsyncRequest( "GET", jsonPath, false );
 
-        for(let json of jsonContent)
+        for(let json of atlasJson)
         {
-            // console.log(json)
             const spr = new Sprite( atlasImg, {srcX: json.x, srcY:json.y, w:json.frameWidth, h:json.h, frames:json.frames} )
             spr.label = json.label;
             spriteMap.set( json.name, spr );

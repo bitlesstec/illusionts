@@ -239,7 +239,7 @@ export class TowerDefense extends BaseLevel implements Initiable, AssetLoadable
             for( let tur of this.turrets)
             {
                 //inside this method on its class is the logic for the update
-                tur.update(delta,this.bullets);
+                tur.updateTurret(delta,this.bullets);
             }
 
 

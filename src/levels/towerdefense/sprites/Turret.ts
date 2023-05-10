@@ -18,7 +18,7 @@ export class Turret extends Sprite
         this.shootTask = new Timer();
     }
 
-    update(delta: number, bullets:Sprite[]): void 
+    updateTurret(delta: number, bullets:Sprite[]): void 
     {
 
         let enemy = SpriteUtil.getSpritesByLabel("enemy")[0];

@@ -1,5 +1,6 @@
 
 import { Animationable } from "../ntfc/Animationable.js";
+import { Updatable } from "../ntfc/Updatable";
 import { AnimationLoop } from "./AnimationLoop.js";
 import { ImageMeasures } from "./ImageMeasures.js";
 import { BaseShape } from "./shape/BaseShape.js";
@@ -7,7 +8,7 @@ import { Collider } from "./shape/Collider.js";
 
 
 export class Sprite extends BaseShape
-                    implements Animationable
+                    implements Animationable, Updatable
 {
     //width & height
     w:number;
@@ -79,6 +80,11 @@ export class Sprite extends BaseShape
         this.setNewAnimation( image, imgMeasures );//frameWidth, frameHeight );
     
     }//
+
+
+    
+    update(delta: number): void {
+    }
 
     /**
      * you can indicate initial and final frame of an strip sprite, it

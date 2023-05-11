@@ -13,4 +13,5 @@ export interface ImageMeasures
     // dstX:number;
     // dstY:number;
     frames:number;
+    label:string;
 }

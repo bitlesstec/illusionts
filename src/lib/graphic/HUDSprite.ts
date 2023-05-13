@@ -1,6 +1,8 @@
 
 import { Expirable } from "../ntfc/Expirable.js";
 import { HUDDisplayType } from "./HUDDisplayType.js";
+import { ImageMeasures } from "./ImageMeasures.js";
+import { Point } from "./Point.js";
 import { Sprite } from "./Sprite.js";
 
 /**
@@ -22,7 +24,7 @@ export class HUDSprite extends Sprite
     hudDisplayType:HUDDisplayType;
 
 
-    constructor( text:string, value?:number )
+    constructor(image:HTMLImageElement, imgMeasures:ImageMeasures, type?:HUDDisplayType, text?:string, value?:number )
     {
         super(undefined, undefined);
         this.text = text?text:"";
@@ -37,7 +39,7 @@ export class HUDSprite extends Sprite
     
 
 
-    render(ctx: CanvasRenderingContext2D): void 
+    render(ctx: CanvasRenderingContext2D,frame?:number, position?:Point): void 
     {
         if( this.visible )
         {
@@ -55,7 +57,21 @@ export class HUDSprite extends Sprite
             }
 
             /// @TODO here check some effect updates 
-            this.drawHUD(ctx);
+            //if this was instantiated with an image then it is possible to draw at certain frame
+            if( this.hudDisplayType === HUDDisplayType.IMAGE && frame !== undefined)
+            {
+                const xx:number = position?position.x: Math.floor( this.getX() );
+                const yy:number = position?position.y: Math.floor( this.getY() );
+
+                ctx.drawImage(
+                this.image,
+                this.srcX + ( frame * this.w), this.srcY, //srcX changes inside updateAnimation()
+                this.w, this.h,
+                xx, yy,
+                this.dstW, this.dstH);
+            }
+            else
+                this.drawHUD(ctx);
 
             ctx.restore();
 

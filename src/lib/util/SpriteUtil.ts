@@ -203,4 +203,41 @@ export class SpriteUtil
         spr.setY( rotY );
     }
 
+     /**
+     * this will create copied of the passed sprite by the number of copies defined
+     * and you can name each sprite instance with the optional namePrefix argument
+     * for instance if name is "enemy" and you will have 10 instances then names can be like
+     * enemy0, enemy1, enemy2 and so on.
+     * finally clazz argument defined the type of object to instantiate, in the case
+     * you have Enemy extends Sprite, then you will want to create Enemy instances instead of Sprites
+     * @param spr 
+     * @param numberOfCopies 
+     * @param clazz type of class to instantiate
+     * @param namePrefix 
+     * @returns 
+     */
+     static getCopies<T extends Sprite>(spr:T, numberOfCopies:number, clazz:any,namePrefix?:string ):Map<string,T>
+     {
+         const spriteMap:Map<string,T> = new Map();
+         for( let i=0; i<numberOfCopies ;i++)
+         {
+             const name=namePrefix?`${namePrefix}${i}`:`${i}`;
+             spriteMap.set(name, new clazz(spr.image, spr.getImgMeasures()) );
+         }
+         return spriteMap;
+     }
+
+
+     /**
+     * this will merge newMap (of sprites) into currentMap  
+     * in the case when we have a bunch of sprites in diferent atlasses images,
+     * this will return a single map containng all sprites that we can set in
+     * BaseLevel.spriteMap
+     * @param sprList 
+     */
+    static mergeSpriteMap<T extends Sprite>(currentMap:Map<string, T>, newMap:Map<string, T>):Map<string, Sprite>
+    {
+        return new Map<string, T>([...currentMap,...newMap]);
+    }
+
 }//

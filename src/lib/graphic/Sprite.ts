@@ -196,7 +196,7 @@ export class Sprite extends BaseShape
     {
 
         //if animation is 1 frame there is no point to update frames
-        if( this.lastFrame <= 1 ) return;
+        if( this.lastFrame < 1 ) return;
 
         this.animationStep ++;
 
@@ -265,4 +265,18 @@ export class Sprite extends BaseShape
            this.srcX = this.currentFrame * this.w;
     }
 
+    getImgMeasures()
+    {
+
+        return {
+            srcX: this.srcX,
+            srcY: this.srcY,
+            w: this.w,
+            h: this.h,
+            frames: this.lastFrame+1,
+            label: this.label
+        }
+    }
+
+    
 }//

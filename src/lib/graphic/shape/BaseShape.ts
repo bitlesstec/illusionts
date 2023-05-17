@@ -27,7 +27,21 @@ export abstract class BaseShape
 
     label:string;
 
+    /**
+     * pivot is used to decide the center of the sprite
+     * by default if you change angle of the sprite, center will
+     * be w/2 and h/2, but if pivot is set then the center will be defined
+     * x+pivot.x and y+pivot.y
+     */
     pivot:Point;
+
+    /**
+     * anchor point works for collision tiles where we have slope tiles,
+     * so if you gonna use CollisionUtils.tileCollision there may be 
+     * solid tiles as 1
+     * and slope tiles markes as 2 or 3 for left and/or right slope
+     * if you don't have slope tiles you may not use this property 
+     */
     anchor:Point;
     
     constructor(basePoint?:Point)

@@ -55,7 +55,7 @@ export class CollisionLevel extends BaseLevel
         this.redSprite =  new Sprite( this.imageMap.get( "sqrImage" ) )
         this.redSprite.setPosition( 50, 100 );
 
-        this.blueSprite =  new Sprite( this.imageMap.get( "sqrImage" ), {srcX:0, srcY:0, w:32, h:32, frames:2} )
+        this.blueSprite =  new Sprite( this.imageMap.get( "sqrImage" ), {srcX:0, srcY:0, w:32, h:32, frames:2,label:""} )
         this.blueSprite.animationLoop = AnimationLoop.NONE;
         this.blueSprite.setCurrentFrame(1);
         this.blueSprite.setPosition( 200, 100 );

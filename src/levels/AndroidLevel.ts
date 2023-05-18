@@ -175,7 +175,7 @@ export class AndroidLevel extends BaseLevel
                         if(tank.image === this.imageMap.get("tank") )
                         {
                             this.punchCollider.setPosition(-16, 0);
-                            tank.setNewAnimation(this.imageMap.get("tankShattered"),{srcX:0, srcY:0, w:16, h:24, frames:9});
+                            tank.setNewAnimation(this.imageMap.get("tankShattered"),{srcX:0, srcY:0, w:16, h:24, frames:9, label:""});
                             this.tanksDestroyed+=1;
                         }
                         
@@ -216,7 +216,7 @@ export class AndroidLevel extends BaseLevel
 
                     if( (this.androidMoveLeft || this.androidMoveRight) && this.androidSprite.image !== this.imageMap.get("androidWalking") )
                     {
-                        this.androidSprite.setNewAnimation( this.imageMap.get("androidWalking"),{srcX:0, srcY:0, w:16, h:30, frames:6});
+                        this.androidSprite.setNewAnimation( this.imageMap.get("androidWalking"),{srcX:0, srcY:0, w:16, h:30, frames:6,label:""});
                     }
                     else if( this.androidSprite.image === this.imageMap.get("androidJump") )
                     {
@@ -388,7 +388,7 @@ export class AndroidLevel extends BaseLevel
                 if(!this.androidMoveLeft && !this.androidPunch)
                 {
                     this.androidMoveLeft=true;
-                    this.androidSprite.setNewAnimation( this.imageMap.get("androidWalking"),{srcX:0, srcY:0, w:16, h:30, frames:6});
+                    this.androidSprite.setNewAnimation( this.imageMap.get("androidWalking"),{srcX:0, srcY:0, w:16, h:30, frames:6,label:""});
                     this.androidSprite.xScale = -1;
                 }
             break;
@@ -398,7 +398,7 @@ export class AndroidLevel extends BaseLevel
                 if(!this.androidMoveRight && !this.androidPunch )
                 {
                     this.androidMoveRight=true;
-                    this.androidSprite.setNewAnimation( this.imageMap.get("androidWalking"),{srcX:0, srcY:0, w:16, h:30, frames:6});
+                    this.androidSprite.setNewAnimation( this.imageMap.get("androidWalking"),{srcX:0, srcY:0, w:16, h:30, frames:6,label:""});
                     this.androidSprite.xScale = 1;
                 }
             break;
@@ -409,7 +409,7 @@ export class AndroidLevel extends BaseLevel
                     this.androidPunch = true;
                     this.androidMoveLeft=false;
                     this.androidMoveRight=false;
-                    this.androidSprite.setNewAnimation(this.imageMap.get("androidpunch"),{srcX:0, srcY:0, w:25, h:30, frames:4})
+                    this.androidSprite.setNewAnimation(this.imageMap.get("androidpunch"),{srcX:0, srcY:0, w:25, h:30, frames:4,label:""})
                 }
             break;
         }//

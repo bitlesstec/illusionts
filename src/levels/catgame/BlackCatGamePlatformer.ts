@@ -22,7 +22,7 @@ implements AssetLoadable, Initiable
     
     moveRight:boolean;
     moveLeft:boolean;
-    readonly CAT_SPD:number=35;
+    readonly CAT_SPD:number=50;
 
     //jump related variables
     jump:boolean=true;
@@ -115,10 +115,13 @@ implements AssetLoadable, Initiable
         this.tiles = TileUtil.parse(this.tileMap, 40, 15, 32, 32 );
 
 
-        this.cat = new Sprite( this.imageMap.get("catImg"), { srcX:0 , srcY:0 , w:38, h:40, frames: 3 } );
+        this.cat = new Sprite( this.imageMap.get("catImg"), { srcX:0 , srcY:0 , w:38, h:40, frames: 3, label:"" } );
         this.cat.setPosition( 20, 200 );//this will put cat in middle air
          
         this.cat.animationLoop = AnimationLoop.NONE;
+
+        //setting the anchor which is a point in the middle bottom of the sprite
+        //that will be used for tile collision
         this.cat.anchor = new Point( this.cat.w/2, this.cat.h );
         this.cat.animationStepLimit = 5;
         this.cat.spdY=0;
@@ -134,7 +137,9 @@ implements AssetLoadable, Initiable
         this.setMargings();
 
 
-        //moving platforms
+        //moving platforms, in this case is a collier, not an sprite
+        //but collider measures will be used on render method
+        //to display a rect of the floating platform
         this.onPlatform=false;
         this.movingPlatform = new Collider( 20, 150, 64, 32 );
 
@@ -237,7 +242,7 @@ implements AssetLoadable, Initiable
                     console.log(`colside: ${colside}`)
                     
                     if( colside.includes("bottom")  ) {
-                        console.log("entro bottom")
+                        console.log("bottom collision detected...")
                         this.onGround=true;
                         this.jump=false;
                         this.cat.spdY = 0;

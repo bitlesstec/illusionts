@@ -91,7 +91,7 @@ export class AssetUtil
         for(let json of jsonContent)
         {
             // console.log(json)
-            const spr = new Sprite( atlasImg, {srcX: json.x, srcY:json.y, w:json.frameWidth, h:json.h, frames:json.frames} )
+            const spr = new Sprite( atlasImg, {srcX: json.x, srcY:json.y, w:json.frameWidth, h:json.h, frames:json.frames, label:""} )
             spr.label = json.label;
             spriteMap.set( json.name, spr );
         }

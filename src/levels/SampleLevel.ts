@@ -91,10 +91,10 @@ export class SampleLevel extends BaseLevel
         this.triangle.strokeLineWidth=3;
         this.triangle.displayOutline=true;
 
-        this.knightSprite = new Sprite(this.imageMap.get( "tileImage" ),{srcX:0, srcY:0, w:16, h:16, frames:3});
+        this.knightSprite = new Sprite(this.imageMap.get( "tileImage" ),{srcX:0, srcY:0, w:16, h:16, frames:3,label:""});
         this.knightSprite.setPosition( 20, 200 );
 
-        this.animKnight = new Sprite(this.imageMap.get( "tileImage" ),{srcX:0, srcY:0, w:16, h:16, frames:3});
+        this.animKnight = new Sprite(this.imageMap.get( "tileImage" ),{srcX:0, srcY:0, w:16, h:16, frames:3,label:""});
         this.animKnight.setPosition(20, 150);
         this.animKnight.setAnimationFrames(4,6);
 
@@ -102,10 +102,10 @@ export class SampleLevel extends BaseLevel
 
         this.tiles = TileUtil.parse( TileMap.getSampleLevelMap(), 40,22, 16,16,16 );
 
-        this.score = new HUDSprite("Lives x", 3);
+        this.score = new HUDSprite(undefined, undefined,undefined,"Lives x", 3);
         this.score.setPosition(this.levelWidth - 100, 20);
 
-        this.damageTxt = new HUDSprite("",0);
+        this.damageTxt = new HUDSprite(undefined, undefined,undefined,"",0);
         this.damageTxt.setPosition(this.levelWidth/2, this.levelHeight/2);
         this.damageTxt.setExpiration(100);
 

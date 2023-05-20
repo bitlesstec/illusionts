@@ -99,6 +99,7 @@ export class AssetUtil
                     frames:json.imageMeasures.frames,
                     label:json.label
                 } )
+
             spr.label = json.label;
             spriteMap.set( json.name, spr );
         }

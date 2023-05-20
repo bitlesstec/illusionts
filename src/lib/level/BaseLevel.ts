@@ -28,7 +28,7 @@ imageMap: Map<string, HTMLImageElement>;
 // spriteList: Sprite[];
 
 //this will allow to separate in group several screens like player, enemies, bosses, items, etc.
-spriteMap: Map<string, Sprite >;
+spriteMap: Map<string, any >;
 
 camera: Camera;
 

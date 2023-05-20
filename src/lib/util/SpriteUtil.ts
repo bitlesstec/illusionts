@@ -23,7 +23,7 @@ export class SpriteUtil
      * @param toY 
      * @param spd 
      */
-    static moveTo( spr: Sprite, toX:number, toY:number, spd:number)
+    static moveTo<T extends Sprite>( spr: T, toX:number, toY:number, spd:number)
     {
         if( spd <= 0 )return;
 
@@ -44,7 +44,7 @@ export class SpriteUtil
      * @param spd 
      * @param setAngle if this is set to true, spr:Sprite angle will be set
      */
-    static moveToAngle( spr:Sprite, angle:number, spd:number, setAngle:boolean=false )
+    static moveToAngle<T extends Sprite>( spr:T, angle:number, spd:number, setAngle:boolean=false )
     {
         if( setAngle )
             spr.angle = angle;
@@ -62,7 +62,7 @@ export class SpriteUtil
      * @param x 
      * @param y 
      */
-    static getAngle( spr:Sprite, x:number, y:number ):number
+    static getAngle<T extends Sprite>( spr:T, x:number, y:number ):number
     {
         let vx:number = x -( spr.points[0].x + spr.w / 2 );
         let vy:number = y -( spr.points[0].y + spr.h / 2 );
@@ -78,11 +78,8 @@ export class SpriteUtil
      * @param x 
      * @param y 
      */
-    static pointDistance( spr:Sprite, x:number, y:number):number
+    static pointDistance<T extends Sprite>( spr:T, x:number, y:number):number
     {
-        // let vx:number = CollisionUtil.getInstance().getDistance( spr.x, spr.w, x, 0 );
-        // let vy:number = CollisionUtil.getInstance().getDistance( spr.y, spr.h, y, 0 );
-
         return CollisionUtil.getInstance()
             .getMagnitude( spr.points[0].x, spr.w, spr.points[0].y, spr.h, x, 0, y, 0 );
 
@@ -95,17 +92,18 @@ export class SpriteUtil
      * @param spr2 
      * @returns 
      */
-    static spritesDistance( spr:Sprite, spr2:Sprite) :number
+    static spritesDistance<T extends Sprite, U extends Sprite>( spr:T, spr2:U) :number
     {
         return this.pointDistance( spr, spr2.points[0].x+spr2.w/2, spr2.points[0].y+spr2.h/2 );
     }
 
     /**
-     * this function will look for the nearest sprite from the list
+     * this function will look what is the nearest sprite from the list related to
+     * the sprite
      * @param sprFrom 
      * @param sprList 
      */
-    static spriteNearest( spr:Sprite, sprList:Sprite[] ):Sprite | undefined
+    static spriteNearest<T extends Sprite, U extends Sprite>( spr:T, sprList:U[] ):U | undefined
     {
         if( sprList.length === 0 )return;
 
@@ -142,9 +140,9 @@ export class SpriteUtil
      * @param labelToLook 
      * @param spriteGroup 
      */
-    static getSpriteGroupByLabel( labelToLook:string, spriteGroup:Sprite[] ): Sprite[]
+    static getSpriteGroupByLabel<T extends Sprite>( labelToLook:string, spriteGroup:T[] ): T[]
     {
-        let sprites: Sprite[] =
+        let sprites: T[] =
             spriteGroup.filter( spr => spr.label === labelToLook );
 
         return sprites;
@@ -160,9 +158,9 @@ export class SpriteUtil
      * @param groupName 
      * @returns 
      */
-    static getSpritesByLabel( label:string ):Sprite[]
+    static getSpritesByLabel<T extends Sprite>( label:string ):T[]
     {
-        const sprites:Sprite[] = [];
+        const sprites:T[] = [];
         for( const [name,sprite] of GameManager.getInstance().currentLevel.spriteMap )
         {
             // const s:Sprite = value;
@@ -181,7 +179,7 @@ export class SpriteUtil
      * @param angle this must be how many angles will be updating every thick e.g: angle+= 2 * delta ( update update(delta) function)
      * @param distRad this is the radio distance between center and sprite, by default is 32
      */
-    static rotateAround( spr:Sprite, center:Point, angle:number,distRad:number = 32)
+    static rotateAround<T extends Sprite>( spr:T, center:Point, angle:number,distRad:number = 32)
     {
         const cos = Math.cos(angle);
         const sin = Math.sin(angle);
@@ -235,9 +233,9 @@ export class SpriteUtil
      * BaseLevel.spriteMap
      * @param sprList 
      */
-    static mergeSpriteMap<T extends Sprite>(currentMap:Map<string, T>, newMap:Map<string, T>):Map<string, Sprite>
+    static mergeSpriteMap(currentMap:Map<string, any>, newMap:Map<string, any>):Map<string, any>
     {
-        return new Map<string, T>([...currentMap,...newMap]);
+        return new Map<string, any>([...currentMap,...newMap]);
     }
 
 }//

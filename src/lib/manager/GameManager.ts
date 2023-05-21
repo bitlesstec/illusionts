@@ -37,9 +37,6 @@ import {Config} from "../cfg/Config.js";
     context2D: CanvasRenderingContext2D;
     fontName:string;
 
-    //map to save persistent data along levels
-    gameData:Map<string, string>;
-
     //below vars are for enable needed controls
     //by default keyboard is enabled
     enableKeyboardControl:boolean=true;
@@ -69,7 +66,6 @@ import {Config} from "../cfg/Config.js";
         this.fpsCounter = 0;
         this.calculateFps = false;
 
-        this.gameData= new Map<string, string>();
         this.firstLevelLoaded=false;
 
         //this will set @font-face style element
@@ -365,8 +361,13 @@ import {Config} from "../cfg/Config.js";
 
 
     /**
-     * this is the most new and should be used function to scale the game to windows
-     * size keeping aspect ratio
+     * IMPORTANT! this is the most new and should be used,
+     * function to scale the game to windows size keeping aspect ratio
+     * note: tihs will scalate the game screen to window size but will be rounded
+     * to integer values, if the screen can be scaled  4.5 times, then will
+     * be scaled to 4, because if is scaled to decimal numbers, the HTML5 canvas
+     * behaves oddly and soes not render properly let say, because there is no
+     * half pixel to display
      * Thanks to Rex Van Der Spuy ( i am your fan! )
      * @param bgColor 
      */
@@ -377,27 +378,18 @@ import {Config} from "../cfg/Config.js";
         scaleX = window.innerWidth / this.canvas.width;
         scaleY = window.innerHeight / this.canvas.height;
 
-        // console.log("scaleX:", scaleX)
-        // console.log("scaleY:", scaleY)
+        scaleX = Math.trunc(scaleX)
+        scaleY = Math.trunc(scaleY)
 
         scale = Math.min(scaleX, scaleY);
         this.canvas.style.transformOrigin = "0 0";
         this.canvas.style.transform = "scale(" + scale + ")";
 
-        // if (this.canvas.width > this.canvas.height) {
-        //     center = "vertically";
-        // }
-        // else {
-        //     center = "horizontally";
-        // }
-
-        // if (center === "horizontally") {
-            
         //to center canvas horizontally
             let margin = (window.innerWidth - this.canvas.width * scaleY) / 2;
             this.canvas.style.marginLeft = margin + "px";
             this.canvas.style.marginRight = margin + "px";
-        // }
+       
 
         // if (center === "vertically") {
             //to center canvas vertically

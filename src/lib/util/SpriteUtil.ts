@@ -1,12 +1,12 @@
+import { Camera } from "../camera/Camera.js";
 import { Point } from "../graphic/Point.js";
-import { BaseShape } from "../graphic/shape/BaseShape.js";
 import { Sprite } from "../graphic/Sprite.js";
 import { GameManager } from "../manager/GameManager.js";
 import { CollisionUtil } from "./CollisionUtil.js";
 
 /**
  * this class provides some generic functions
- * applicable to sprites
+ * applicable to sprites, read every function description carefully
  */
 export class SpriteUtil
 {
@@ -113,7 +113,7 @@ export class SpriteUtil
         for( let x = 0; x < sprList.length ; x++ )
         {
 
-            let s:Sprite = sprList[ x ];
+            let s:U = sprList[ x ];
 
             let vx:number = (s.points[0].x+s.w / 2 ) - (spr.points[0].x + spr.w / 2 );
             let vy:number = (s.points[0].y+s.w / 2 ) - (spr.points[0].y + spr.h / 2 );
@@ -237,5 +237,32 @@ export class SpriteUtil
     {
         return new Map<string, any>([...currentMap,...newMap]);
     }
+
+
+     /**
+     * this will look of all those sprites that are visible = true
+     * and are inside camera viewX, viewY, viewWidth, viewHeight
+     * @param sprites 
+     * @returns 
+     */
+     static getSpritesInsideView<T extends Sprite>( sprites:T[], cam:Camera ):T[]
+     {
+         const arr:T[]=[];
+         for( const id in sprites)
+         {
+             const spr = sprites[id];
+ 
+             if(spr.visible)
+             {
+                 const isInside = CollisionUtil.getInstance()
+                 .isInside( spr.getX(), spr.getY(), spr.w, spr.h,
+                 cam.viewX, cam.viewY, cam.viewWidth, cam.viewHeight ); 
+                 if( isInside ) arr.push(spr);
+             }
+         }
+         return arr;
+         
+     }
+
 
 }//

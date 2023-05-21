@@ -134,4 +134,17 @@ export class MathUtil
         return leftBound * ( 1 - percentage ) + rightBound * percentage;
     }
 
+
+    /**
+     * this selects randomly 1 item at returns it
+     * if 10 arguments are passed the will return 1 of those 10
+     * @param args 
+     * @returns 
+     */
+    static choose(args:number[])
+    {
+        const randChoose = Math.floor(Math.random() * args.length);
+        return args[randChoose];
+    }
+    
 }//

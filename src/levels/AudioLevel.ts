@@ -111,7 +111,7 @@ export class AudioLevel extends BaseLevel
 
             case 88:
                 console.log("starting bgmusic")
-                AudioManager.play("bgsound", 10);
+                AudioManager.play("bgsound");
             break;
             case 67:
                 console.log("stoping bgmusic")

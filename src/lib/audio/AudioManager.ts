@@ -13,38 +13,41 @@ export class AudioManager// implements Audioable
 {
 
     //this is the Audio Context where all buffers will be created and pointed to destination
-    static audioCtx:AudioContext;
-    static playingList:Map<String, AudioBufferSourceNode>;//to keep track of current playing aduios
+    static audioCtx:AudioContext = new AudioContext();
+    
+    //this list is temporal and has all the audio audioCtx is playing
+    static playingList:Map<String, AudioBufferSourceNode> = new Map<string, AudioBufferSourceNode>();//to keep track of current playing aduios
 
     //this will keep al Audio files where the source nodes are created
     //audio files created ( in play() ) will be added to "playingList"
     //but will be removed from that list after finishing...
-    audioList:Map<string, Audio>; 
+    static audioList:Map<string, Audio> = new Map(); 
     
-    private volume:number;
-    private lastVolume:number;
-    private gainNode:GainNode;
-    private isPaused:boolean;
-    private isMuted:boolean;
+    private static volume:number = 0.1;
+    private static lastVolume:number = 0.1;
+    private static gainNode:GainNode = AudioManager.audioCtx.createGain();;
+    private static isPaused:boolean = false;
+    private static isMuted:boolean = false;
 
     // sound source nodes for sfx and background music
     // private sfxSourceNode:AudioBufferSourceNode;
     // private musicSourceNode:AudioBufferSourceNode;
 
-    constructor()
-    {
-        //this is needed to start audio context api
-        AudioManager.audioCtx = new AudioContext();
-        this.gainNode = AudioManager.audioCtx.createGain();
-        this.volume = 0.1//1;
-        this.gainNode.gain.value = this.volume;
-        this.audioList = new Map<string, Audio>();
-        AudioManager.playingList = new Map<string, AudioBufferSourceNode>();
-        this.isPaused=false;
-        this.isMuted=false;
-        // this.sfxSourceNode = this.audioCtx.createBufferSource();
-        // this.musicSourceNode = this.audioCtx.createBufferSource();
-    }
+    // constructor()
+    // {
+    //     // AudioManager.audioCtx.state.
+    //     //this is needed to start audio context api
+    //     AudioManager.audioCtx = new AudioContext();
+    //     this.gainNode = AudioManager.audioCtx.createGain();
+    //     this.volume = 0.1//1;
+    //     this.gainNode.gain.value = this.volume;
+    //     this.audioList = new Map<string, Audio>();
+    //     AudioManager.playingList = new Map<string, AudioBufferSourceNode>();
+    //     this.isPaused=false;
+    //     this.isMuted=false;
+    //     // this.sfxSourceNode = this.audioCtx.createBufferSource();
+    //     // this.musicSourceNode = this.audioCtx.createBufferSource();
+    // }
 
 
     /**
@@ -52,20 +55,39 @@ export class AudioManager// implements Audioable
      * present this will play current played file
      * @param mscName 
      */
-    play(name: string, millis?:number):void
+    static play(name: string, millis?:number):void
     {
         let starTime =  millis?millis:0;
         this.isPaused = false;
         let sourceNode = this.audioList.get( name ).getSourceNode();
-        console.log(`playing ${name} at ${starTime}`)
+        console.log(`playing ${name} at ${starTime} - ${sourceNode.buffer.duration} `)
         sourceNode.start( starTime );
+
+        //overwrite onended if you want an special treat to the must when is done
+        // sourceNode.onended = ()=>{
+        //     // sourceNode.buffer.duration para saber la duracion total del audio
+        //     console.log(`${name} finalizing playing at ${sourceNode.context.currentTime}`);
+        // }
     }
-  
+
+    /**
+     * returns true if speicied sound is playing and false if not
+     * @param name 
+     * @returns 
+     */
+    static isPlaying( name:string ):boolean
+    {
+        return this.audioList.get( name ).isPlaying;
+        // let sourceNode = this.audioList.get( name ).getSourceNode();
+        //console.log(`is ${name} playing? `+ this.audioList.get( name ).isPlaying )
+        // console.log(`playing ${name} at ${sourceNode.  context.currentTime} - state: ${sourceNode.context.state}`)
+        // sourceNode.onended //   start( starTime );
+    }
 
     /**
      * this will pause current audioContext that are playing
      */
-    pause(): void {
+    static pause(): void {
         this.isPaused=true;
         AudioManager.audioCtx.suspend();
     }
@@ -73,7 +95,7 @@ export class AudioManager// implements Audioable
     /**
      * this will resume (unpause) current audioContext
      */
-    resume(): void {
+    static resume(): void {
         this.isPaused=false;
         AudioManager.audioCtx.resume();
     }
@@ -81,7 +103,7 @@ export class AudioManager// implements Audioable
     /**
      * @param this will mute all sounds (current AudioContext)
      */
-    mute(): void {
+    static mute(): void {
         this.isMuted = true;
             this.gainNode.gain.value = 0;
             this.lastVolume = this.volume;
@@ -90,7 +112,7 @@ export class AudioManager// implements Audioable
     /**
      * this will unmute all sounds (current AudioContext)
      */
-    unmute(){
+    static unmute(){
         this.isMuted = false;
         this.volume = this.lastVolume;
         this.gainNode.gain.value = this.volume;
@@ -101,13 +123,14 @@ export class AudioManager// implements Audioable
      * 
      * @param name 
      */
-    stop(name:string){
+    static stop(name:string){
         for(let key of AudioManager.playingList.keys() )
         {
             if( key.includes( name )  )
             {
                 AudioManager.playingList.get( key ).stop();
                 AudioManager.playingList.delete( name );
+                break;//get out of the loop
             }
 
         }
@@ -117,7 +140,7 @@ export class AudioManager// implements Audioable
      * this will stop all sounds playing, and will clear
      * playinglist
      */
-    stopAll()
+    static stopAll()
     {   
         console.log(`before stopall ${AudioManager.playingList.size}`)
         for(let key of AudioManager.playingList.keys() )
@@ -128,7 +151,7 @@ export class AudioManager// implements Audioable
     }
 
     
-    addSound( name:string, buffer:AudioBuffer, loop:boolean = false )
+    static addSound( name:string, buffer:AudioBuffer, loop:boolean = false )
     {
         let audio:Audio = new Audio( name, buffer, loop );
         this.audioList.set( name, audio );
@@ -139,7 +162,7 @@ export class AudioManager// implements Audioable
      * only accepts numbers between 0 to 1
      * @param gain 
      */
-    setVolume(gain:number)
+    static setVolume(gain:number)
     {
         let gainValue = gain>=1?1:gain;
         this.gainNode.gain.value = gainValue;

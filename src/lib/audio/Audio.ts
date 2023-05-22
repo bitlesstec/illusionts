@@ -16,6 +16,7 @@ export class Audio
     loop:boolean;
     audioCtx:AudioContext;
     isPlaying:boolean;
+    duration:number
     // start:number;
 
 
@@ -24,13 +25,27 @@ export class Audio
         this.name = name
         this.loop = loop;
         this.audioBuffer = buffer;
+        this.duration = buffer.duration
         this.audioCtx = AudioManager.audioCtx;
         this.sourceNode =  this.audioCtx.createBufferSource();
         this.sourceNode.buffer = buffer;
-        this.sourceNode.connect( this.audioCtx.destination );
+        // this.sourceNode.connect( this.audioCtx.destination );
         this.sourceNode.loop = this.loop;
-        console.log("loaded sound: ", name);
+        // console.log("loaded sound: ", name);
         this.isPlaying = false;
+
+        //if loop = true usually is a bg music
+        //hence will be put in music gain node
+        // if(loop)
+        // {
+        //     console.log(`audio creado ${name} music`)
+        //     this.sourceNode.connect( AudioManager.musicGainNode )
+        // }
+        // else
+        // {   console.log(`audio creado ${name} sfx`)
+        //     //but if is not looped is an sfx, and will put on its sfx node
+        //     this.sourceNode.connect( AudioManager.sfxGainNode )
+        // }
     }
 
     /**
@@ -40,30 +55,39 @@ export class Audio
      * @returns 
      */
     getSourceNode():AudioBufferSourceNode{
-        let tempSourceNode:any = this.audioCtx.createBufferSource();
+        
+        const tempSourceNode:any = this.audioCtx.createBufferSource();
+        
         tempSourceNode.buffer = this.audioBuffer
-        tempSourceNode.connect( this.audioCtx.destination );
+
+        if(this.loop)
+            tempSourceNode.connect( AudioManager.musicGainNode );
+        else
+            tempSourceNode.connect(  AudioManager.sfxGainNode );
+        
         tempSourceNode.loop = this.loop;
+
         tempSourceNode.id=this.name+"_"+(++Config.AUDIO_PLAYING_ID_COUNTER); 
+        
         this.isPlaying=true;//does not matter under this approach TODO: improve this
 
-        console.log(`before playing sound: ${AudioManager.playingList.size} : ${tempSourceNode.id}`)
+        // console.log(`before playing sound: ${AudioManager.playingList.size} : ${tempSourceNode.id}`)
         AudioManager.playingList.set( tempSourceNode.id, tempSourceNode );
-        console.log(`after playing sound: ${AudioManager.playingList.size}`)
+        // console.log(`after playing sound: ${AudioManager.playingList.size}`)
 
         //when sound finish playing it will be removed from playingList
         tempSourceNode.onended = ()=>{
-            console.log(`${this.name} - has ended`);
+            // console.log(`${this.name} - has ended`);
             this.isPlaying = false;
-            console.log(`before stop onended: ${AudioManager.playingList.size}`)
+            // console.log(`before stop onended: ${AudioManager.playingList.size}`)
             if( AudioManager.playingList.has( tempSourceNode.id ) )
             {
-                console.log(`trying delete ${tempSourceNode.id}`)
+                // console.log(`trying delete ${tempSourceNode.id}`)
                 AudioManager.playingList.delete( tempSourceNode.id );
             }
-            else console.log(":::NOT ENTER")
+            // else console.log(":::NOT ENTER")
                 
-            console.log(`after stop onended: ${AudioManager.playingList.size}`)
+            // console.log(`after stop onended: ${AudioManager.playingList.size}`)
         }
 
         return tempSourceNode;

@@ -13,54 +13,86 @@ export class AudioManager// implements Audioable
 {
 
     //this is the Audio Context where all buffers will be created and pointed to destination
-    static audioCtx:AudioContext = new AudioContext();
+    static audioCtx:AudioContext;
     
     //this list is temporal and has all the audio audioCtx is playing
-    static playingList:Map<String, AudioBufferSourceNode> = new Map<string, AudioBufferSourceNode>();//to keep track of current playing aduios
+    static playingList:Map<String, AudioBufferSourceNode>;//to keep track of current playing aduios
 
     //this will keep al Audio files where the source nodes are created
     //audio files created ( in play() ) will be added to "playingList"
     //but will be removed from that list after finishing...
-    static audioList:Map<string, Audio> = new Map(); 
+    static audioList:Map<string, Audio>; 
     
-    private static volume:number = 0.1;
-    private static lastVolume:number = 0.1;
-    private static gainNode:GainNode = AudioManager.audioCtx.createGain();;
-    private static isPaused:boolean = false;
-    private static isMuted:boolean = false;
+    private static musicVolume:number;
+    private static sfxVolume:number;
+    
+
+    private static lastMusicVolume:number;
+    private static lastSfxMusicVolume:number;
+    
+
+    static musicGainNode:GainNode;
+    static sfxGainNode:GainNode;
+    
+    private static isPaused:boolean;
+    private static isMuted:boolean;
+
+    private static instance: AudioManager;
 
     // sound source nodes for sfx and background music
     // private sfxSourceNode:AudioBufferSourceNode;
     // private musicSourceNode:AudioBufferSourceNode;
 
-    // constructor()
-    // {
-    //     // AudioManager.audioCtx.state.
-    //     //this is needed to start audio context api
-    //     AudioManager.audioCtx = new AudioContext();
-    //     this.gainNode = AudioManager.audioCtx.createGain();
-    //     this.volume = 0.1//1;
-    //     this.gainNode.gain.value = this.volume;
-    //     this.audioList = new Map<string, Audio>();
-    //     AudioManager.playingList = new Map<string, AudioBufferSourceNode>();
-    //     this.isPaused=false;
-    //     this.isMuted=false;
-    //     // this.sfxSourceNode = this.audioCtx.createBufferSource();
-    //     // this.musicSourceNode = this.audioCtx.createBufferSource();
-    // }
+    private constructor()
+    {
+        // AudioManager.audioCtx.state.
+        //this is needed to start audio context api
+        AudioManager.audioCtx = new AudioContext();
+        AudioManager.playingList = new Map<string, AudioBufferSourceNode>();
+        AudioManager.audioList = new Map(); 
+
+        AudioManager.musicGainNode = AudioManager.audioCtx.createGain();
+        AudioManager.sfxGainNode = AudioManager.audioCtx.createGain();
+
+        AudioManager.musicGainNode.connect( AudioManager.audioCtx.destination );
+        AudioManager.sfxGainNode.connect( AudioManager.audioCtx.destination );
+
+        AudioManager.musicVolume = 0.5;
+        AudioManager.sfxVolume = 0.5;
+
+        AudioManager.lastMusicVolume = 0.5;
+        AudioManager.lastSfxMusicVolume = 0.5;
+
+        AudioManager.isPaused=false;
+        AudioManager.isMuted=false;
+    }//
+
+
+    public static getInstance(): AudioManager {
+        if (!AudioManager.instance) {
+          AudioManager.instance = new AudioManager();
+        }
+        return AudioManager.instance;
+      }
 
 
     /**
      * play audio file specified by mscName, if no argument is 
      * present this will play current played file
      * @param mscName 
+     * @param ifIsPlaying if set to false, it will only play the soound if is not playing
      */
-    static play(name: string, millis?:number):void
+    static play(name: string, ifIsPlaying:boolean=true, millis?:number):void
     {
-        let starTime =  millis?millis:0;
-        this.isPaused = false;
-        let sourceNode = this.audioList.get( name ).getSourceNode();
-        console.log(`playing ${name} at ${starTime} - ${sourceNode.buffer.duration} `)
+
+        if(!AudioManager.isPlaying)
+            if(AudioManager.audioList.get( name ).isPlaying)
+                return
+ 
+        const starTime =  millis?millis:0;
+        AudioManager.isPaused = false;
+        const sourceNode = this.audioList.get( name ).getSourceNode();
+        // console.log(`playing ${name} at ${starTime} - ${sourceNode.buffer.duration} `)
         sourceNode.start( starTime );
 
         //overwrite onended if you want an special treat to the must when is done
@@ -77,7 +109,7 @@ export class AudioManager// implements Audioable
      */
     static isPlaying( name:string ):boolean
     {
-        return this.audioList.get( name ).isPlaying;
+        return AudioManager.audioList.get( name ).isPlaying;
         // let sourceNode = this.audioList.get( name ).getSourceNode();
         //console.log(`is ${name} playing? `+ this.audioList.get( name ).isPlaying )
         // console.log(`playing ${name} at ${sourceNode.  context.currentTime} - state: ${sourceNode.context.state}`)
@@ -88,7 +120,7 @@ export class AudioManager// implements Audioable
      * this will pause current audioContext that are playing
      */
     static pause(): void {
-        this.isPaused=true;
+        AudioManager.isPaused=true;
         AudioManager.audioCtx.suspend();
     }
 
@@ -96,7 +128,7 @@ export class AudioManager// implements Audioable
      * this will resume (unpause) current audioContext
      */
     static resume(): void {
-        this.isPaused=false;
+        AudioManager.isPaused=false;
         AudioManager.audioCtx.resume();
     }
 
@@ -104,18 +136,26 @@ export class AudioManager// implements Audioable
      * @param this will mute all sounds (current AudioContext)
      */
     static mute(): void {
-        this.isMuted = true;
-            this.gainNode.gain.value = 0;
-            this.lastVolume = this.volume;
+        AudioManager.isMuted = true;
+
+        AudioManager.musicGainNode.gain.value=0
+        AudioManager.sfxGainNode.gain.value=0;
+
+        AudioManager.lastMusicVolume = this.musicVolume;
+        AudioManager.lastSfxMusicVolume = this.sfxVolume;
     }
 
     /**
      * this will unmute all sounds (current AudioContext)
      */
     static unmute(){
-        this.isMuted = false;
-        this.volume = this.lastVolume;
-        this.gainNode.gain.value = this.volume;
+        AudioManager.isMuted = false;
+        AudioManager.musicVolume = this.lastMusicVolume;
+        AudioManager.sfxVolume = this.lastSfxMusicVolume;
+
+        AudioManager.musicGainNode.gain.value = this.musicVolume;
+        AudioManager.sfxGainNode.gain.value = this.sfxVolume;
+
     }
 
     /**
@@ -142,19 +182,19 @@ export class AudioManager// implements Audioable
      */
     static stopAll()
     {   
-        console.log(`before stopall ${AudioManager.playingList.size}`)
+        // console.log(`before stopall ${AudioManager.playingList.size}`)
         for(let key of AudioManager.playingList.keys() )
             AudioManager.playingList.get( key ).stop();
 
             AudioManager.playingList.clear();
-            console.log(`after stopall ${AudioManager.playingList.size}`)
+            // console.log(`after stopall ${AudioManager.playingList.size}`)
     }
 
     
     static addSound( name:string, buffer:AudioBuffer, loop:boolean = false )
     {
-        let audio:Audio = new Audio( name, buffer, loop );
-        this.audioList.set( name, audio );
+        const audio:Audio = new Audio( name, buffer, loop );
+        AudioManager.audioList.set( name, audio );
     }
 
     /**
@@ -162,10 +202,18 @@ export class AudioManager// implements Audioable
      * only accepts numbers between 0 to 1
      * @param gain 
      */
-    static setVolume(gain:number)
+    static setMusicVolume(gain:number)
     {
-        let gainValue = gain>=1?1:gain;
-        this.gainNode.gain.value = gainValue;
+        const gainValue = gain>=1?1:gain;
+        console.log(`val set musicGain ${gainValue}`)
+        AudioManager.musicGainNode.gain.value = gainValue;
+    }
+
+    static setSfxVolume(gain:number)
+    {
+        const gainValue = gain>=1?1:gain;
+        console.log(`val set sfxGain ${gainValue}`)
+        AudioManager.sfxGainNode.gain.value = gainValue;
     }
 
 }

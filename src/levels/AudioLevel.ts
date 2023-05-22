@@ -7,6 +7,7 @@ import { TextSprite } from "../lib/graphic/TextSprite.js";
 import { AssetUtil } from "../lib/util/AssetUtil.js";
 import { Initiable } from "../lib/ntfc/Initiable.js";
 import { Mousable } from "../lib/ntfc/input/Mousable.js";
+import { AudioManager } from "../lib/audio/AudioManager.js";
 
 
 
@@ -28,7 +29,7 @@ export class AudioLevel extends BaseLevel
        
         await this.loadSounds();
 
-        this.audioManager.play("bgsound");
+        AudioManager.play("bgsound");
 
         this.HUD =  new TextSprite( "Audio Xample" );
         this.HUD.setPosition( 262, 30 );
@@ -83,16 +84,16 @@ export class AudioLevel extends BaseLevel
     async loadSounds(): Promise<void> 
     {
         let bgsound = await AssetUtil.getAudioBuffer( "/assets/music/Boss-Time-David-Ruenda.mp3" );
-        this.audioManager.addSound( "bgsound", bgsound, true );
+        AudioManager.addSound( "bgsound", bgsound, true );
 
         let gunSfx = await AssetUtil.getAudioBuffer( "/assets/sfx/snd_gun.wav" );
-        this.audioManager.addSound("gunSfx", gunSfx);  
+        AudioManager.addSound("gunSfx", gunSfx);  
 
         let barkSfx = await AssetUtil.getAudioBuffer( "/assets/sfx/dog.wav" );
-        this.audioManager.addSound("barkSfx", barkSfx);  
+        AudioManager.addSound("barkSfx", barkSfx);  
 
         let meowSfx = await AssetUtil.getAudioBuffer( "/assets/sfx/cat.wav" );
-        this.audioManager.addSound("meowSfx", meowSfx);  
+        AudioManager.addSound("meowSfx", meowSfx);  
 
 
     }
@@ -110,37 +111,37 @@ export class AudioLevel extends BaseLevel
 
             case 88:
                 console.log("starting bgmusic")
-                this.audioManager.play("bgsound", 10);
+                AudioManager.play("bgsound", 10);
             break;
             case 67:
                 console.log("stoping bgmusic")
-                this.audioManager.stop("bgsound");
+                AudioManager.stop("bgsound");
             break;
 
             case 65: //A
-            this.audioManager.play("gunSfx");
+            AudioManager.play("gunSfx");
             break;
             
             case 68: //D
             
             try{
-                this.audioManager.resume(); 
+                AudioManager.resume(); 
             }catch(e)
                 {console.log("error",e)}            
             // this.audioManager.audioCtx.resume();
             break;
             
             case 83: //S
-            this.audioManager.play("barkSfx");
+            AudioManager.play("barkSfx");
             break;
             
             case 87: //W
-            this.audioManager.play("meowSfx");
+            AudioManager.play("meowSfx");
             break;
 
             case 32: //SPACE
             console.log("calling stop all sounds" )
-            this.audioManager.stopAll();
+            AudioManager.stopAll();
             // if(!this.audioManager.pause)
             //     this.audioManager.resume();
             // else

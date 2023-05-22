@@ -15,6 +15,7 @@ import { Initiable } from "../lib/ntfc/Initiable.js";
 import { Mousable } from "../lib/ntfc/input/Mousable.js";
 import { SpriteUtil } from "../lib/util/SpriteUtil.js";
 import { GameManager } from "../lib/manager/GameManager.js";
+import { AudioManager } from "../lib/audio/AudioManager.js";
 
 
 
@@ -211,10 +212,10 @@ export class CollisionLevel extends BaseLevel
             break;
 
             case 32: //SPACE
-            if(!this.audioManager.pause)
-                this.audioManager.resume();
+            if(!AudioManager.pause)
+                AudioManager.resume();
             else
-                this.audioManager.pause();
+                AudioManager.pause();
 
             //#SHOOT BULLET
             this.bulletSprite.visible=true;

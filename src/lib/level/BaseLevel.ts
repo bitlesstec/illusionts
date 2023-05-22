@@ -17,7 +17,6 @@ export abstract class BaseLevel
        implements Renderable, Updatable, Touchable, Mousable, Keyable
 {
 
-audioManager:AudioManager;
 
 //used to load all images that can be used to create sprites or
 //set new animations for sprites 
@@ -49,7 +48,6 @@ levelHeight:number;
 constructor( levelWidht:number, levelHeight:number, viewWidth?:number, viewHeight?:number )
 { 
     this.gameState = GameState.LOADING;
-    this.audioManager = new AudioManager();
     this.imageMap = new Map<string, HTMLImageElement>();
     this.spriteMap = new Map<string, Sprite>();
     this.levelWidth = levelWidht; 

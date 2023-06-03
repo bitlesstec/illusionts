@@ -11,10 +11,17 @@ export class Timer
     private counter: number;
 
 
-    constructor()
+    constructor(counter?:number)
     {
-        this.active = false;
-        this.counter = 0;
+        if(counter)
+        {
+            this.active = true;
+            this.counter = counter;
+        }
+        else{
+            this.active = false;
+            this.counter = 0;    
+        }
     }
 
     /**

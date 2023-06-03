@@ -15,11 +15,12 @@ implements AssetLoadable, Initiable
 
     changeLevelTask:Timer;
     alphaVal:number;
-
+    imageMap: Map<string, HTMLImageElement>;
 
     constructor()
     {
         super(640,480);
+        this.imageMap = new Map<string, HTMLImageElement>();
         this.init();
     }
 

@@ -38,6 +38,7 @@ implements AssetLoadable, Initiable
 
     iconRetrieved:number=0;
 
+    imageMap: Map<string, HTMLImageElement>;
 
     tileMap:number[]=[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
                       0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
@@ -100,6 +101,7 @@ implements AssetLoadable, Initiable
     constructor()
     {
         super( 1280, 480, 640, 480 );
+        this.imageMap = new Map<string, HTMLImageElement>();
         this.init();
     }
 

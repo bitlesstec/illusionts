@@ -33,6 +33,8 @@ export class TowerDefense extends BaseLevel implements Initiable, AssetLoadable
     readonly MAX_TURRETS=20;
     readonly TURRET_COST=100;
 
+    imageMap: Map<string, HTMLImageElement>;
+
     currentTurrets:number;
     curretnMoney:number;
 
@@ -82,6 +84,7 @@ export class TowerDefense extends BaseLevel implements Initiable, AssetLoadable
     constructor()
     {
         super(512,288);
+        this.imageMap = new Map<string, HTMLImageElement>();
         this.init();
     }
 

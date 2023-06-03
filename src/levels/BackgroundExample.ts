@@ -25,6 +25,8 @@ export class BackgroundExample  extends BaseLevel implements Initiable, AssetLoa
     readonly ROWS:number=18;
     
 
+    imageMap: Map<string, HTMLImageElement>;
+
     bgColor:Background;
     bg:Background;
     // bgMiddle:Background;
@@ -66,6 +68,7 @@ export class BackgroundExample  extends BaseLevel implements Initiable, AssetLoa
     constructor()
     {
         super(2048,288,512,288);
+        this.imageMap = new Map<string, HTMLImageElement>();
         this.init();
     }
 

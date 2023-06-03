@@ -31,6 +31,8 @@ export class PlatformLevel extends BaseLevel
     readonly ang:number = 45 * this.DEG2RAD;
     launchForce:number = 9;
 
+    imageMap: Map<string, HTMLImageElement>;
+
     tilesRows:number = 15;
     tilesCols:number = 40;
     tileSize:number = 32;
@@ -77,6 +79,8 @@ export class PlatformLevel extends BaseLevel
     {
         //this will instantiate the camera
         super( 1280, 480, 640, 480 );
+        this.imageMap = new Map<string, HTMLImageElement>();
+        
         this.init();
     }
 

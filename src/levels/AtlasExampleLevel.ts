@@ -39,6 +39,7 @@ implements AssetLoadable, Initiable
 
     sprites:Map< string, Sprite>;
 
+    imageMap: Map<string, HTMLImageElement>;
 
     moveLeft=false;
     moveRight=false;
@@ -66,6 +67,7 @@ implements AssetLoadable, Initiable
     constructor()
     {
         super(320,180); //16:9 screen
+        this.imageMap = new Map<string, HTMLImageElement>();
         this.init();
     }
 

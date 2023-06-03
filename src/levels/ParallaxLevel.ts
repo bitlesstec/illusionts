@@ -17,10 +17,13 @@ export class ParallaxLevel extends BaseLevel implements Initiable, AssetLoadable
     bgMiddle:Background;
     bgFront:Background;
 
+    imageMap: Map<string, HTMLImageElement>;
 
     constructor()
     {
         super(272, 160);
+        this.imageMap = new Map<string, HTMLImageElement>();
+        
         this.init();
     }
 

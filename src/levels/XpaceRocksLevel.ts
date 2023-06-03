@@ -34,6 +34,7 @@ import { Tile } from '../lib/graphic/Tile.js';
     planetoidSpanCounter:number = 0;
     tiles:Tile[];
 
+    imageMap: Map<string, HTMLImageElement>;
 
  constructor()
 {
@@ -44,6 +45,8 @@ import { Tile } from '../lib/graphic/Tile.js';
     
 async init() 
 {
+    this.imageMap = new Map<string, HTMLImageElement>();
+    
     console.log("initttts")
     await this.loadImages();
 

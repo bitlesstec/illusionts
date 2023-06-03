@@ -36,6 +36,7 @@ export class AndroidLevel extends BaseLevel
     tiles:Tile[];
     colisionTiles:Tile[];
     
+    imageMap: Map<string, HTMLImageElement>;
 
     //android/PLAYER specific variables
     androidSprite:Sprite;
@@ -115,6 +116,7 @@ export class AndroidLevel extends BaseLevel
         //this will instantiate the camera
         //level is 3 times bigger than view
         super( 960, 240, 320, 240 );
+        this.imageMap = new Map<string, HTMLImageElement>();
         this.init();
     }
 

@@ -1,12 +1,24 @@
 import { Gamepadable } from "../ntfc/input/Gamepadable.js";
+import { ControllerState } from "./ControllerState.js";
 
 
+/**
+ * this class contains functionality to use gamepads for a game, 
+ * the gamepad need to be retrieved and with those this class 
+ * can be instantiated.
+ * NOTE: if no gamepad is set, the functions won't work
+ * NOTE2: you have to use GameState.GAMEPAD_CONNECTING and all those 
+ * game states so you can handle properly if gamepads are connected or disconected
+ */
 export class Controller implements Gamepadable
 {
-    //other gamepads tested
-    // DragonRise Inc.   Generic   USB  Joystick   (STANDARD GAMEPAD Vendor: 0079 Product: 0006)
+    //Gamepads Tested:
+    // - DragonRise Inc.   Generic   USB  Joystick   (STANDARD GAMEPAD Vendor: 0079 Product: 0006)
+    // - XBOX360 - Xbox 360 Controller (XInput STANDARD GAMEPAD 
+    // - PS4 controller (via USB)
 
 
+    //below are generic data for most of gamepads
     static readonly DEAD_THRESHOLD:number = 0.2;
     static readonly XAXIS_DEAD_THRESHOLD:number = Controller.DEAD_THRESHOLD;
     static readonly YAXIS_DEAD_THRESHOLD:number = Controller.DEAD_THRESHOLD;
@@ -31,15 +43,13 @@ export class Controller implements Gamepadable
     static readonly GEN_BTN_15:number = 15;
     static readonly GEN_BTN_16:number = 16;
     static readonly GEN_BTN_17:number = 17;
+
     static readonly GEN_LEFTSTICK_XAXIS:number = 0; //analog values from -1 to 1
     static readonly GEN_LEFTSTICK_YAXIS:number = 1; //analog values from -1 to 1
     static readonly GEN_RIGTHSTICK_XAXIS:number = 2; //analog values from -1 to 1
     static readonly GEN_RIGTHSTICK_YAXIS:number = 3; //analog values from -1 to 1
 
-
-
     //XBOX ONE MAPPING
-    //XBOX360 - Xbox 360 Controller (XInput STANDARD GAMEPAD 
     static readonly XBOXONE_BTN_A:number = Controller.GEN_BTN_0;
     static readonly XBOXONE_BTN_B:number = Controller.GEN_BTN_1;
     static readonly XBOXONE_BTN_X:number = Controller.GEN_BTN_2;
@@ -61,8 +71,6 @@ export class Controller implements Gamepadable
     static readonly XBOXONE_LEFTSTICK_YAXIS:number = Controller.GEN_LEFTSTICK_YAXIS;
     static readonly XBOXONE_RIGTHSTICK_XAXIS:number = Controller.GEN_RIGTHSTICK_XAXIS;
     static readonly XBOXONE_RIGTHSTICK_YAXIS:number = Controller.GEN_RIGTHSTICK_YAXIS;
-
-
 
     // XBOX 360 MAPPING
 
@@ -90,8 +98,6 @@ export class Controller implements Gamepadable
     static readonly PS4_RIGTHSTICK_XAXIS:number = Controller.GEN_RIGTHSTICK_XAXIS;
     static readonly PS4_RIGTHSTICK_YAXIS:number = Controller.GEN_RIGTHSTICK_YAXIS;
 
-
-
     // ps3 MAPPING
 
 
@@ -107,33 +113,52 @@ export class Controller implements Gamepadable
     lastButtonPressed:Boolean[] = [];
     lastAxisPressed:Boolean[] = [];
 
-    constructor(gamepad:Gamepad){
-        this.index = gamepad.index;
-        this.id = gamepad.id;
-        this.gamePad = gamepad;
-        this.xAxisDeadThreshold = Controller.XAXIS_DEAD_THRESHOLD;
-        this.yAxisDeadThreshold = Controller.YAXIS_DEAD_THRESHOLD;
+    constructor(gamepad:Gamepad)
+    {
 
-        //all indexes for buttons and axis are false
-        for(let ind in gamepad.buttons)
+        if(gamepad)
         {
-            this.lastButtonPressed[ind]=false;
+            this.index = gamepad.index;
+            this.id = gamepad.id;
+            this.gamePad = gamepad;
+            this.xAxisDeadThreshold = Controller.XAXIS_DEAD_THRESHOLD;
+            this.yAxisDeadThreshold = Controller.YAXIS_DEAD_THRESHOLD;
+    
+            //all indexes for buttons and axis are false
+            for(let ind in gamepad.buttons)
+            {
+                this.lastButtonPressed[ind]=false;
+            }
+    
+            for( let ind in gamepad.axes)
+            {
+                this.lastAxisPressed[ind]=false;
+            }
         }
-
-        for( let ind in gamepad.axes)
-        {
-            this.lastAxisPressed[ind]=false;
-        }
+        
     }
    
 
     /**
-     * 
+     * this function needs to be called un update method like:
+     * gpad.poll(navigator.getGamepads()) , without this we can't
+     * receive the gamepad events 
      * @param gamepads dont forget to call this function in update method,
-     * this will retrieve gamepad new state.
+     * this will retrieve gamepad new state, ( with pressed values, etc ).
      */
-    poll(gamepads:Gamepad[]){
+    poll(gamepads:Gamepad[]):number{
+
+        //if there is no gamepad, but was available before, make disconect
+        if( (gamepads[this.index] === null || gamepads[this.index] === undefined) && this.gamePad )
+        {
+            return ControllerState.DISCONNECTED;//means controller disconected
+        }
+        //if there is no gamepad connected return
+        else if( gamepads[this.index] === null || gamepads[this.index] === undefined ) return ControllerState.NONE;
+
+
         this.gamePad = gamepads[this.index];
+        return ControllerState.CONNECTED;
     }
 
     /**
@@ -143,7 +168,11 @@ export class Controller implements Gamepadable
      */
     isButtonPressed(buttonIndex: number): boolean {
         // if( !this.lastButtonPressed[buttonIndex] ){this.lastButtonPressed[buttonIndex]=true;}
-        return this.gamePad.buttons[ buttonIndex ].pressed;
+
+        if( this.gamePad )
+            return this.gamePad.buttons[ buttonIndex ].pressed;
+        else
+            return undefined;
     }
 
     /**
@@ -153,16 +182,22 @@ export class Controller implements Gamepadable
      */
     isButtonReleased(buttonIndex: number): boolean {
 
-        if( this.gamePad.buttons[ buttonIndex ].pressed )
-                             this.lastButtonPressed[buttonIndex]=true;
+        if(this.gamePad)
+        {
+            if( this.gamePad.buttons[ buttonIndex ].pressed )
+            this.lastButtonPressed[buttonIndex]=true;
 
-        if( !this.gamePad.buttons[ buttonIndex ].pressed && this.lastButtonPressed[buttonIndex] )
-        { 
+            if( !this.gamePad.buttons[ buttonIndex ].pressed && this.lastButtonPressed[buttonIndex] )
+            { 
             this.lastButtonPressed[buttonIndex]=false;
             return true; 
-        }
+            }
 
-        return false;
+            return false;
+        }
+        else
+            return undefined;
+        
     }
 
     /**
@@ -171,17 +206,25 @@ export class Controller implements Gamepadable
      * @param axisIndex 
      * @returns 
      */
-    getAxisValue(axisIndex: number): number {
-        let value = this.gamePad.axes[ axisIndex ];
-        let axis:string = axisIndex===0 || axisIndex===2?"xAxis":"yAxis";
-        if( axis === "xAxis")
+    getAxisValue(axisIndex: number): number 
+    {
+
+        if( this.gamePad )
         {
-            return value < -this.xAxisDeadThreshold || value > this.xAxisDeadThreshold? value : 0 ;
+            let value = this.gamePad.axes[ axisIndex ];
+            let axis:string = axisIndex===0 || axisIndex===2?"xAxis":"yAxis";
+            if( axis === "xAxis")
+            {
+                return value < -this.xAxisDeadThreshold || value > this.xAxisDeadThreshold? value : 0 ;
+            }
+            else
+            {
+                return value < -this.yAxisDeadThreshold || value > this.yAxisDeadThreshold? value : 0 ;
+            }
         }
         else
-        {
-            return value < -this.yAxisDeadThreshold || value > this.yAxisDeadThreshold? value : 0 ;
-        }
+            return undefined;
+        
     }
 
 
@@ -190,28 +233,35 @@ export class Controller implements Gamepadable
      * @param axisIndex 
      * @returns 
      */
-    isAxisReleased(axisIndex: number): boolean {
-
-        let value = this.gamePad.axes[ axisIndex ];
-
-        let axis:string = axisIndex===0 || axisIndex===2?"xAxis":"yAxis";
-        if( axis === "xAxis")
+    isAxisReleased(axisIndex: number): boolean 
+    {
+        if(this.gamePad)
         {
-            value = value < -this.xAxisDeadThreshold || value > this.xAxisDeadThreshold? value : 0 ;
+            let value = this.gamePad.axes[ axisIndex ];
+
+            let axis:string = axisIndex===0 || axisIndex===2?"xAxis":"yAxis";
+            if( axis === "xAxis")
+            {
+                value = value < -this.xAxisDeadThreshold || value > this.xAxisDeadThreshold? value : 0 ;
+            }
+            else
+            {
+                value = value < -this.yAxisDeadThreshold || value > this.yAxisDeadThreshold? value : 0 ;
+            }
+    
+            // value = value < -this.xAxisDeadThreshold || value > this.xAxisDeadThreshold? value : 0;
+            if( value )this.lastAxisPressed[axisIndex]=true;
+            
+            if( !value && this.lastAxisPressed[axisIndex] ){
+                this.lastAxisPressed[axisIndex]=false;
+                return true;
+            }
+            return false;
         }
         else
-        {
-            value = value < -this.yAxisDeadThreshold || value > this.yAxisDeadThreshold? value : 0 ;
-        }
+            return undefined;
 
-        // value = value < -this.xAxisDeadThreshold || value > this.xAxisDeadThreshold? value : 0;
-        if( value )this.lastAxisPressed[axisIndex]=true;
         
-        if( !value && this.lastAxisPressed[axisIndex] ){
-            this.lastAxisPressed[axisIndex]=false;
-            return true;
-        }
-        return false;
     }
 
 
@@ -220,8 +270,14 @@ export class Controller implements Gamepadable
      * @param buttonIndex 
      * @returns 
      */
-    getAnalogButtonValue(buttonIndex: number): number {
-        return this.gamePad.buttons[ buttonIndex ].value;
+    getAnalogButtonValue(buttonIndex: number): number 
+    {
+        if(this.gamePad)
+        {
+            return this.gamePad.buttons[ buttonIndex ].value;
+        }
+        else
+            return undefined;
     }
 
 

@@ -20,7 +20,7 @@ export abstract class BaseLevel
 
 //used to load all images that can be used to create sprites or
 //set new animations for sprites 
-imageMap: Map<string, HTMLImageElement>;
+// imageMap: Map<string, HTMLImageElement>;
 
 //used to maintain all the sprites in a single place, 
 //so we can iterate this map and use render method of each sprite for example
@@ -48,7 +48,7 @@ levelHeight:number;
 constructor( levelWidht:number, levelHeight:number, viewWidth?:number, viewHeight?:number )
 { 
     this.gameState = GameState.LOADING;
-    this.imageMap = new Map<string, HTMLImageElement>();
+    // this.imageMap = new Map<string, HTMLImageElement>();
     this.spriteMap = new Map<string, Sprite>();
     this.levelWidth = levelWidht; 
     this.levelHeight = levelHeight;

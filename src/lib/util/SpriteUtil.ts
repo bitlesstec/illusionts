@@ -2,6 +2,7 @@ import { Camera } from "../camera/Camera.js";
 import { Point } from "../graphic/Point.js";
 import { Sprite } from "../graphic/Sprite.js";
 import { GameManager } from "../manager/GameManager.js";
+import { Bidim } from "../ntfc/Bidim.js";
 import { CollisionUtil } from "./CollisionUtil.js";
 
 /**
@@ -263,6 +264,32 @@ export class SpriteUtil
          return arr;
          
      }
+
+     /**
+     * this will return the center of an sprite
+     * @param spr 
+     */
+    static getCenter<T extends Sprite>(spr:T):Point
+    {
+        const xw = spr.getX()+spr.w/2;
+        const yh = spr.getY()+spr.h/2;
+        return new Point( xw, yh );
+    }
+
+
+    /**
+     * this will positionate the sprite in a new position relative to its center
+     * this is useful when you will set a new image animation that has different
+     * measures than the original sprite ( image )
+     * @param from 
+     * @param to 
+     */
+    static setAtSpriteCenter<T extends Sprite>(spr:T, bidim:Bidim):void
+    {
+        const point = SpriteUtil.getCenter(spr);
+        spr.setPosition( point.x-bidim.w/2, point.y-bidim.h/2 );
+    }
+
 
 
 }//

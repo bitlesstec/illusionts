@@ -205,14 +205,14 @@ export class AudioManager// implements Audioable
     static setMusicVolume(gain:number)
     {
         const gainValue = gain>=1?1:gain;
-        console.log(`val set musicGain ${gainValue}`)
+        AudioManager.musicVolume=gainValue;
         AudioManager.musicGainNode.gain.value = gainValue;
     }
 
     static setSfxVolume(gain:number)
     {
         const gainValue = gain>=1?1:gain;
-        console.log(`val set sfxGain ${gainValue}`)
+        AudioManager.sfxVolume=gainValue;
         AudioManager.sfxGainNode.gain.value = gainValue;
     }
 

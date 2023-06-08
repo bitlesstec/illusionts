@@ -2,7 +2,6 @@
 import {Image} from "./Image.js";
 import { ImageMeasures } from "./ImageMeasures.js";
 
-
 /**
  * this class will keep all the loaded images in the game,
  * those images can be atlases with a lot of image meausres on it

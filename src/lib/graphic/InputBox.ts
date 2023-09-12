@@ -1,6 +1,6 @@
 
-import { Point } from "./Point.js";
-import {BaseShape} from "./shape/BaseShape.js";
+import { Point } from "./Point";
+import {BaseShape} from "./shape/BaseShape";
 
 
 /**

@@ -1,6 +1,6 @@
 
-import { GameManager } from "../manager/GameManager.js";
-import { BaseShape } from "./shape/BaseShape.js";
+import { GameManager } from "../manager/GameManager";
+import { BaseShape } from "./shape/BaseShape";
 
 /**
  * this class creates text that can be displayed as HUD

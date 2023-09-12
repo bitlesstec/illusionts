@@ -1,5 +1,5 @@
-import { Sprite } from "../graphic/Sprite.js";
-import { Camera } from "./Camera.js";
+import { Sprite } from "../graphic/Sprite";
+import { Camera } from "./Camera";
 
 
 /**

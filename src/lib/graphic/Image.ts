@@ -1,5 +1,5 @@
 
-import { ImageData } from "../ntfc/ImageData.js";
+import { ImageData } from "../ntfc/ImageData";
 
 /**
  * this class will contain an image html element and all imame measures
@@ -25,7 +25,7 @@ export class Image
 
     /**
      * will return specific ImageData object from specified key
-     * that key is the name of the entry in atlas.json
+     * that key is the name of the entry in atlason
      * @param key 
      */
     getImageData(key: string): ImageData {

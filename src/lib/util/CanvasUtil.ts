@@ -1,4 +1,4 @@
-import { GameManager } from "../manager/GameManager.js";
+import { GameManager } from "../manager/GameManager";
 
 
 

@@ -1,4 +1,4 @@
-import { BaseTile } from "./BaseTile.js";
+import { BaseTile } from "./BaseTile";
 
 
 export class AnimatedTile extends BaseTile

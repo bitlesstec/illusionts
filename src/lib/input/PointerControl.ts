@@ -1,7 +1,7 @@
-import { Config } from "../cfg/Config.js";
-import { Point } from "../graphic/Point.js";
-import { Sprite } from "../graphic/Sprite.js";
-import { GameManager } from "../manager/GameManager.js";
+import { Config } from "../cfg/Config";
+import { Point } from "../graphic/Point";
+import { Sprite } from "../graphic/Sprite";
+import { GameManager } from "../manager/GameManager";
 
 /**
  * this class is an utility class to use in mouse or touch events, to know

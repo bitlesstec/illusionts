@@ -1,9 +1,9 @@
-import { Camera } from "../camera/Camera.js";
-import { Point } from "../graphic/Point.js";
-import { Sprite } from "../graphic/Sprite.js";
-import { GameManager } from "../manager/GameManager.js";
-import { Bidim } from "../ntfc/Bidim.js";
-import { CollisionUtil } from "./CollisionUtil.js";
+import { Camera } from "../camera/Camera";
+import { Point } from "../graphic/Point";
+import { Sprite } from "../graphic/Sprite";
+import { GameManager } from "../manager/GameManager";
+import { Bidim } from "../ntfc/Bidim";
+import { CollisionUtil } from "./CollisionUtil";
 
 /**
  * this class provides some generic functions

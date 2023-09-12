@@ -6,11 +6,11 @@
 // 3 run the game 
 
 
-import {GameManager} from './lib/manager/GameManager.js';
+import {GameManager} from './lib/manager/GameManager';
 
 // import { SampleLevel } from './levels/SampleLevel.js';
 // import { MenuLevel } from './levels/MenuLevel.js';
-import { SplashScreenLevel } from './levels/SplashScreenLevel.js';
+import { SplashScreenLevel } from './levels/SplashScreenLevel';
 
 //you can set canvas id as well as width and height
 let game = GameManager.getInstance("canvas", 640, 480);//canvas width and height by default

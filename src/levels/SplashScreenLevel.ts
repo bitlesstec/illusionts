@@ -1,12 +1,12 @@
 
-import { BaseLevel } from '../lib/level/BaseLevel.js';
-import { Initiable } from '../lib/ntfc/Initiable.js';
-import { AssetLoadable } from '../lib/ntfc/AssetLoadable.js';
-import { AssetUtil } from "../lib/util/AssetUtil.js";
-import { GameState } from '../lib/manager/GameState.js';
-import { Timer } from "../lib/time/Timer.js";
-import { GameManager } from '../lib/manager/GameManager.js';
-import { SampleLevel } from './SampleLevel.js';
+import { BaseLevel } from '../lib/level/BaseLevel';
+import { Initiable } from '../lib/ntfc/Initiable';
+import { AssetLoadable } from '../lib/ntfc/AssetLoadable';
+import { AssetUtil } from "../lib/util/AssetUtil";
+import { GameState } from '../lib/manager/GameState';
+import { Timer } from "../lib/time/Timer";
+import { GameManager } from '../lib/manager/GameManager';
+import { SampleLevel } from './SampleLevel';
 
 export class SplashScreenLevel extends BaseLevel
 implements AssetLoadable, Initiable

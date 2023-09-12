@@ -1,8 +1,8 @@
-import { Config } from "../../cfg/Config.js";
-import { Moveable } from "../../ntfc/Moveable.js";
-import { Positionable } from "../../ntfc/Positionable.js";
-import { Renderable } from "../../ntfc/Renderable.js";
-import { Point } from "../Point.js";
+import { Config } from "../../cfg/Config";
+import { Moveable } from "../../ntfc/Moveable";
+import { Positionable } from "../../ntfc/Positionable";
+import { Renderable } from "../../ntfc/Renderable";
+import { Point } from "../Point";
 
 
 export abstract class BaseShape

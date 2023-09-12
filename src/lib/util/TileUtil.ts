@@ -1,9 +1,9 @@
 
-import { Camera } from "../camera/Camera.js";
-import { Config } from "../cfg/Config.js";
-import { AnimatedTile } from "../graphic/AnimatedTile.js";
-import { Tile } from "../graphic/Tile.js";
-import { AnimatedTileConfig } from "../ntfc/AnimatedTileConfig.js";
+import { Camera } from "../camera/Camera";
+import { Config } from "../cfg/Config";
+import { AnimatedTile } from "../graphic/AnimatedTile";
+import { Tile } from "../graphic/Tile";
+import { AnimatedTileConfig } from "../ntfc/AnimatedTileConfig";
 
 export class TileUtil
 {

@@ -1,6 +1,6 @@
-import { Config } from "../../cfg/Config.js";
-import { Point } from "../Point.js";
-import { BaseShape } from "./BaseShape.js";
+import { Config } from "../../cfg/Config";
+import { Point } from "../Point";
+import { BaseShape } from "./BaseShape";
 
 /**
  * this can be used to display a simple circle 

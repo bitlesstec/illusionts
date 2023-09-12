@@ -1,9 +1,9 @@
 
-import { Sprite } from "../graphic/Sprite.js";
-import { Moveable } from "../ntfc/Moveable.js";
-import { FlashEffect } from "./FlashEffect.js";
-import { Margin } from "./Margin.js";
-import { ShakeEffect } from "./ShakeEffect.js";
+import { Sprite } from "../graphic/Sprite";
+import { Moveable } from "../ntfc/Moveable";
+import { FlashEffect } from "./FlashEffect";
+import { Margin } from "./Margin";
+import { ShakeEffect } from "./ShakeEffect";
 
 export class Camera implements Moveable
 {

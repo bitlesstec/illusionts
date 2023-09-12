@@ -1,10 +1,10 @@
-import { BaseTile } from "../graphic/BaseTile.js";
-import { Point } from "../graphic/Point.js";
-import { Collider } from "../graphic/shape/Collider.js";
-import { LineShape } from "../graphic/shape/LineShape.js";
-import { PolygonShape } from "../graphic/shape/PolygonShape.js";
-import { Sprite } from "../graphic/Sprite.js";
-import { Tile } from "../graphic/Tile.js";
+import { BaseTile } from "../graphic/BaseTile";
+import { Point } from "../graphic/Point";
+import { Collider } from "../graphic/shape/Collider";
+import { LineShape } from "../graphic/shape/LineShape";
+import { PolygonShape } from "../graphic/shape/PolygonShape";
+import { Sprite } from "../graphic/Sprite";
+import { Tile } from "../graphic/Tile";
 
 
 /**

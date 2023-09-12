@@ -1,5 +1,5 @@
-import { Gamepadable } from "../ntfc/input/Gamepadable.js";
-import { ControllerState } from "./ControllerState.js";
+import { Gamepadable } from "../ntfc/input/Gamepadable";
+import { ControllerState } from "./ControllerState";
 
 /**
  * this class contains functionality to use gamepads for a game, 

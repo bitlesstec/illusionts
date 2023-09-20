@@ -1,6 +1,6 @@
 
 import { BaseLevel } from '../lib/level/BaseLevel';
-import { GameState } from '../lib/manager/GameState';
+import { GameState } from '../lib/game/GameState';
 import { Initiable } from '../lib/ntfc/Initiable';
 
 export class SampleLevel extends BaseLevel implements Initiable

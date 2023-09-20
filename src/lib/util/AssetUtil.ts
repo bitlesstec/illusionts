@@ -1,6 +1,6 @@
 import { AudioManager } from "../audio/AudioManager";
 import { Sprite } from "../graphic/Sprite";
-import { GameManager } from "../manager/GameManager";
+import { Game } from "../game/Game";
 
 
 export class AssetUtil

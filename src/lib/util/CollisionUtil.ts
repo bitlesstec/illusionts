@@ -1,3 +1,4 @@
+import { Camera } from "../camera/Camera";
 import { BaseTile } from "../graphic/BaseTile";
 import { Point } from "../graphic/Point";
 import { Collider } from "../graphic/shape/Collider";
@@ -5,6 +6,7 @@ import { LineShape } from "../graphic/shape/LineShape";
 import { PolygonShape } from "../graphic/shape/PolygonShape";
 import { Sprite } from "../graphic/Sprite";
 import { Tile } from "../graphic/Tile";
+import { Game } from "../game/Game";
 
 
 /**
@@ -485,17 +487,46 @@ pointAndCircleCollision( point:Point, x:number, y:number, radius:number )
  * @param spr 
  * @param tiles 
  */
-tileCollision(spr:Sprite | Collider, tiles:Tile[]|BaseTile[]):string
+tileCollision(spr:Sprite | Collider, tiles:Tile[]|BaseTile[], camera?:Camera):string
 {
 
     let response = "";
     let counter = 0;
+
+    let viewX:number = 0;
+    let viewY:number = 0;
+    let viewW:number = 0;
+    let viewH:number = 0;
+    
+
+    if( camera )
+    {
+        viewX = camera.viewX - camera.offset.left;
+        viewY = camera.viewY - camera.offset.top;
+        viewW = camera.viewWidth + camera.offset.right;
+        viewH = camera.viewHeight + camera.offset.bottom;
+    }
+    else
+    {
+        viewX = 0 - camera.offset.left;
+        viewY = 0 - camera.offset.top;
+        viewW = Game.getInstance().currentLevel.levelWidth + camera.offset.right;
+        viewH = Game.getInstance().currentLevel.levelHeight + camera.offset.bottom;
+    }
 
     for( let idx=0; idx < tiles.length; idx++ )
     {
         // console.log(`iterating tile: ${idx}`)
         let tile:Tile | BaseTile = tiles[idx];
         let tileIndex = tile.index;
+
+        //if tile is not inside view, continue with the next
+        const isInside:boolean = (tile.x + tile.w >= viewX && tile.x <= viewX + viewW 
+        && tile.y + tile.h >= viewY && tile.y <= viewY + viewH); 
+        if ( !isInside )
+        { continue; }
+
+
 
         switch(tileIndex)
         {
@@ -552,9 +583,11 @@ tileCollision(spr:Sprite | Collider, tiles:Tile[]|BaseTile[]):string
         
 
     }//for
-    if( response )
+
+    if( response )//remove this after
     console.log( "returning response:", response )
-return response;
+
+    return response;
 }
 
 

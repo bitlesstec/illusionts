@@ -3,9 +3,9 @@ import { BaseLevel } from '../lib/level/BaseLevel';
 import { Initiable } from '../lib/ntfc/Initiable';
 import { AssetLoadable } from '../lib/ntfc/AssetLoadable';
 import { AssetUtil } from "../lib/util/AssetUtil";
-import { GameState } from '../lib/manager/GameState';
+import { GameState } from '../lib/game/GameState';
 import { Timer } from "../lib/time/Timer";
-import { GameManager } from '../lib/manager/GameManager';
+import { Game } from '../lib/game/Game';
 import { SampleLevel } from './SampleLevel';
 
 export class SplashScreenLevel extends BaseLevel
@@ -59,7 +59,7 @@ implements AssetLoadable, Initiable
             case GameState.PLAYING:
                 this.changeLevelTask.process( ()=>
                 {
-                    GameManager.getInstance().loadLevel( new SampleLevel() );
+                    Game.getInstance().loadLevel( new SampleLevel() );
                 });
             break;
         }

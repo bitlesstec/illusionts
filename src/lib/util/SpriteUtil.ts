@@ -1,7 +1,7 @@
 import { Camera } from "../camera/Camera";
 import { Point } from "../graphic/Point";
 import { Sprite } from "../graphic/Sprite";
-import { GameManager } from "../manager/GameManager";
+import { Game } from "../game/Game";
 import { Bidim } from "../ntfc/Bidim";
 import { CollisionUtil } from "./CollisionUtil";
 
@@ -162,7 +162,7 @@ export class SpriteUtil
     static getSpritesByLabel<T extends Sprite>( label:string ):T[]
     {
         const sprites:T[] = [];
-        for( const [name,sprite] of GameManager.getInstance().currentLevel.spriteMap )
+        for( const [name,sprite] of Game.getInstance().currentLevel.spriteMap )
         {
             // const s:Sprite = value;
             if(sprite.label.includes( label ) )

@@ -3,7 +3,7 @@ import {Updatable} from "../ntfc/Updatable";
 import { Touchable } from "../ntfc/input/Touchable";
 import { Mousable } from "../ntfc/input/Mousable";
 import { Keyable } from "../ntfc/input/Keyable";
-import { GameState } from "../manager/GameState";
+import { GameState } from "../game/GameState";
 import { Camera } from "../camera/Camera";
 import {AudioManager} from "../audio/AudioManager";
 import { Sprite } from "../graphic/Sprite";

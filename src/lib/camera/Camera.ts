@@ -1,8 +1,8 @@
 
-import { Sprite } from "../graphic/Sprite";
 import { Moveable } from "../ntfc/Moveable";
 import { FlashEffect } from "./FlashEffect";
 import { Margin } from "./Margin";
+import { Offset } from "./Offset";
 import { ShakeEffect } from "./ShakeEffect";
 
 export class Camera implements Moveable
@@ -32,6 +32,7 @@ export class Camera implements Moveable
     flashEffect:FlashEffect;
 
     margin:Margin;
+    offset:Offset;
 
     /**
      * this constructor will set the measures of a level , often a level can be bigger than
@@ -81,6 +82,7 @@ export class Camera implements Moveable
         this.flashEffect = new FlashEffect( this );
 
         this.margin = new Margin( this );
+        this.offset = new Offset();
 
     }//
 

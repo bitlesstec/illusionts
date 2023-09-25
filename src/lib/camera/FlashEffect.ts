@@ -1,6 +1,6 @@
-import { Point } from "../graphic/Point.js";
-import { MathUtil } from "../util/MathUtil.js";
-import { Camera } from "./Camera.js";
+import { Point } from "../graphic/Point";
+import { MathUtil } from "../util/MathUtil";
+import { Camera } from "./Camera";
 
 
 

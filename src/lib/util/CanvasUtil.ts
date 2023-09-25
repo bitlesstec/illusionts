@@ -1,4 +1,4 @@
-import { GameManager } from "../manager/GameManager.js";
+import { Game } from "../game/Game";
 
 
 
@@ -15,7 +15,7 @@ export class CanvasUtil
      */
     static takeScreenshot():void
     {
-         let imgUrl = GameManager.getInstance().canvas
+         let imgUrl = Game.getInstance().canvas
              .toDataURL("image/png").replace("image/png", "image/octet-stream");
          window.location.href = imgUrl;
     }
@@ -23,7 +23,7 @@ export class CanvasUtil
 
     static getTextWidth(txt:string):number
     {
-       return GameManager.getInstance().context2D.measureText(txt).width;
+       return Game.getInstance().context2D.measureText(txt).width;
     }
      
 

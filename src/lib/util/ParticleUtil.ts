@@ -1,5 +1,5 @@
-import { Point } from "../graphic/Point.js";
-import { Sprite } from "../graphic/Sprite.js";
+import { Point } from "../graphic/Point";
+import { Sprite } from "../graphic/Sprite";
 
 
 /**

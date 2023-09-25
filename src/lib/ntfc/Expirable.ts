@@ -1,4 +1,4 @@
-import { Executable } from "./Executable.js";
+import { Executable } from "./Executable";
 
 /**
  * this interface is used to make an object expire

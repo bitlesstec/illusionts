@@ -1,9 +1,9 @@
 
-import { Camera } from "../camera/Camera.js";
-import { Config } from "../cfg/Config.js";
-import { AnimatedTile } from "../graphic/AnimatedTile.js";
-import { Tile } from "../graphic/Tile.js";
-import { AnimatedTileConfig } from "../ntfc/AnimatedTileConfig.js";
+import { Camera } from "../camera/Camera";
+import { Config } from "../cfg/Config";
+import { AnimatedTile } from "../graphic/AnimatedTile";
+import { Tile } from "../graphic/Tile";
+import { AnimatedTileConfig } from "../ntfc/AnimatedTileConfig";
 
 export class TileUtil
 {
@@ -90,6 +90,28 @@ static parseAnimatedTiles( tileMap:any[], cols:number, rows:number, tileWidth:nu
 }//
 
 
+/**
+ * this function is used to parse tiles from Tilered app
+ * map means is the complete map with the null values on it
+ * cleanmap is the tilemap without nulls
+ * @param tilemap 
+ * @returns 
+ */
+static parseTileMap(tilemap:any)
+{
+    const tiles:Tile[]=[];   
+    for( const idx in tilemap )
+    {
+
+        const t = tilemap[idx];
+        if( t !== null )
+        {
+            tiles.push( new Tile( t.dstX, t.dstY, t.tileW, t.tileH, t.srcX, t.srcY, t.index ))
+        }
+
+    }
+    return tiles;
+}
 
 
 /**
@@ -112,11 +134,11 @@ static renderTiles( ctx: CanvasRenderingContext2D, img:HTMLImageElement, tiles:T
     {
         // console.log("entering camera rendering")
         //setting parameters for view where tiles will be displayed
-        let mar = margin?margin:Config.CAMERA_MARGIN;
-        let x2 = camera.viewX - mar;
-        let w2 = camera.viewX + camera.viewWidth + mar;
-        let y2 = camera.viewY - mar;
-        let h2 = camera.viewY + camera.viewHeight + mar;
+        // let mar = margin?margin:Config.CAMERA_MARGIN;
+        let x2 = camera.viewX - camera.offset.left;
+        let w2 = camera.viewX + camera.viewWidth + camera.offset.right;
+        let y2 = camera.viewY - camera.offset.top;
+        let h2 = camera.viewY + camera.viewHeight + camera.offset.bottom;
 
         // console.log(`x2:${x2} w2:${w2}, y2:${y2}, h2:${h2}`);
         // console.log(`VX: ${camera.viewX} VY: ${camera.viewY} | ${camera.x},${camera.y}`);

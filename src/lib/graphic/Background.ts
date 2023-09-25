@@ -1,6 +1,6 @@
-import { Scrollable } from "../ntfc/Scrollable.js";
-import { Point } from "./Point.js";
-import { BaseShape } from "./shape/BaseShape.js";
+import { Scrollable } from "../ntfc/Scrollable";
+import { Point } from "./Point";
+import { BaseShape } from "./shape/BaseShape";
 
 
 /**

@@ -1,5 +1,5 @@
-import { Point } from "../Point.js";
-import { BaseShape } from "./BaseShape.js";
+import { Point } from "../Point";
+import { BaseShape } from "./BaseShape";
 
 
 /**

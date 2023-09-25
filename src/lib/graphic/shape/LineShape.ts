@@ -1,6 +1,6 @@
 
-import { Point } from "../Point.js";
-import { BaseShape } from "./BaseShape.js";
+import { Point } from "../Point";
+import { BaseShape } from "./BaseShape";
 
 /**
  * this will create a line that can be displayed if used in render(ctx) method, 

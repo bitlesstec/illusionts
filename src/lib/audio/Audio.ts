@@ -1,5 +1,5 @@
-import { Config } from "../cfg/Config.js";
-import { AudioManager } from "./AudioManager.js";
+import { Config } from "../cfg/Config";
+import { AudioManager } from "./AudioManager";
 
 /**
  * this is a wrapper for Audio file which contains a name and a buffer, as well as

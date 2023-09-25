@@ -1,10 +1,10 @@
 
-import { Animationable } from "../ntfc/Animationable.js";
+import { Animationable } from "../ntfc/Animationable";
 import { Updatable } from "../ntfc/Updatable";
-import { AnimationLoop } from "./AnimationLoop.js";
-import { ImageMeasures } from "./ImageMeasures.js";
-import { BaseShape } from "./shape/BaseShape.js";
-import { Collider } from "./shape/Collider.js";
+import { AnimationLoop } from "./AnimationLoop";
+import { ImageMeasures } from "./ImageMeasures";
+import { BaseShape } from "./shape/BaseShape";
+import { Collider } from "./shape/Collider";
 
 
 export class Sprite extends BaseShape

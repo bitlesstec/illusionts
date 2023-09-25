@@ -1,6 +1,6 @@
 
-import {Image} from "./Image.js";
-import { ImageMeasures } from "./ImageMeasures.js";
+import {Image} from "./Image";
+import { ImageMeasures } from "./ImageMeasures";
 
 /**
  * this class will keep all the loaded images in the game,

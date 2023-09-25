@@ -1,5 +1,5 @@
 
-import { Collider } from "../graphic/shape/Collider.js";
+import { Collider } from "../graphic/shape/Collider";
 
 
 /**

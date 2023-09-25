@@ -1,7 +1,7 @@
-import { Config } from "../cfg/Config.js";
-import { Point } from "../graphic/Point.js";
-import { Sprite } from "../graphic/Sprite.js";
-import { GameManager } from "../manager/GameManager.js";
+import { Config } from "../cfg/Config";
+import { Point } from "../graphic/Point";
+import { Sprite } from "../graphic/Sprite";
+import { Game } from "../game/Game";
 
 /**
  * this class is an utility class to use in mouse or touch events, to know
@@ -27,7 +27,7 @@ export class PointerControl
         this.pointPressed = new Point();
         this.pointReleased = new Point();
 
-        console.log("constructor SCALE: ", GameManager.getInstance().xScale)
+        console.log("constructor SCALE: ", Game.getInstance().xScale)
     }
 
     /**
@@ -66,7 +66,7 @@ export class PointerControl
      */
     private getFixedMouseXY(e:MouseEvent|TouchEvent):Point
     {
-        let boundingRect = GameManager.getInstance().canvas.getBoundingClientRect();
+        let boundingRect = Game.getInstance().canvas.getBoundingClientRect();
         let eX=0;
         let eY=0;
         if(e.type ==="touchend" && e instanceof TouchEvent)
@@ -82,10 +82,10 @@ export class PointerControl
         }
           
         console.log("EX: ", eX)
-        console.log("getFixedMouseXY: ", GameManager.getInstance().xScale)
+        console.log("getFixedMouseXY: ", Game.getInstance().xScale)
         //if canvas is scaled i have to divide mouse corrdinates by scale
-        eX = GameManager.getInstance().xScale !== 1?eX/GameManager.getInstance().xScale : eX;
-        eY = GameManager.getInstance().yScale !== 1?eY/GameManager.getInstance().yScale : eY;
+        eX = Game.getInstance().xScale !== 1?eX/Game.getInstance().xScale : eX;
+        eY = Game.getInstance().yScale !== 1?eY/Game.getInstance().yScale : eY;
 
         return new Point(eX, eY);
     }

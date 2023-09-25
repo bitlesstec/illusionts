@@ -1,4 +1,4 @@
-import { ImageMeasures } from "../graphic/ImageMeasures.js";
+import { ImageMeasures } from "../graphic/ImageMeasures";
 
 
 

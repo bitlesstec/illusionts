@@ -1,5 +1,5 @@
-import { BaseShape } from "../../graphic/shape/BaseShape.js";
-import { Sprite } from "../../graphic/Sprite.js";
+import { BaseShape } from "../../graphic/shape/BaseShape";
+import { Sprite } from "../../graphic/Sprite";
 
 /**
  * this interface provides methods to make a class

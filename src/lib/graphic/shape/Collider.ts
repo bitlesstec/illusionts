@@ -23,12 +23,12 @@ export class Collider extends BaseShape
     }
 
     getX():number{
-        let xx = this.parent?this.parent.getX():0;
+        const xx = this.parent?this.parent.getX():0;
         return xx+this.points[0].x;
     }
 
     getY():number{
-        let yy = this.parent?this.parent.getY():0;
+        const yy = this.parent?this.parent.getY():0;
         return yy+this.points[0].y;
     }
 

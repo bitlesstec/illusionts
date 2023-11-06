@@ -9,8 +9,8 @@
     "start": "cd game && http-server",
     "reset": "npm run build && npm run start",
     "reset.win": "npm run build.win && npm run start",
-    "resetwp": "webpack --stats-error-details",
-    "launch":" npm run buildwp && npm run start",
+    "buildwp": "webpack --stats-error-details",
+    "resetwp":" npm run buildwp && npm run start",
     "develop": "webpack-dev-server --mode development"
   },
   "repository": {

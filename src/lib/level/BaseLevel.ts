@@ -39,23 +39,23 @@ levelHeight:number;
 /**
  * this constructors set level width and height which is not the same as viewWidth and viewHeight.
  * viewWidth/viewHeight are measures used by camera.
- * @param levelWidht 
+ * @param levelWidth 
  * @param levelHeight 
  * @param viewWidth 
  * @param viewHeight 
  */
-constructor( levelWidht:number, levelHeight:number, viewWidth?:number, viewHeight?:number )
+constructor( levelWidth:number, levelHeight:number, viewWidth?:number, viewHeight?:number )
 { 
     this.gameState = GameState.LOADING;
     // this.imageMap = new Map<string, HTMLImageElement>();
     this.spriteMap = new Map<string, Sprite>();
-    this.levelWidth = levelWidht; 
+    this.levelWidth = levelWidth; 
     this.levelHeight = levelHeight;
 
     if( viewWidth !== undefined && viewHeight !== undefined )
-        this.camera = new Camera( levelWidht, levelHeight, viewWidth, viewHeight );
+        this.camera = new Camera( levelWidth, levelHeight, viewWidth, viewHeight );
     else
-        this.camera = new Camera( levelWidht, levelHeight );
+        this.camera = new Camera( levelWidth, levelHeight );
 }//
 
 

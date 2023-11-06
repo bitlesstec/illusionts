@@ -70,4 +70,33 @@ export class LineShape extends BaseShape
         ctx.stroke();
     }//
 
+
+    move(spdX?: number, spdY?: number) 
+    {
+
+        if( spdX !== undefined && spdY !== undefined)
+        {
+            this.moveX( spdX );
+            this.moveY( spdY );     
+        }
+        else
+        {
+            this.moveX( this.spdX );
+            this.moveY( this.spdY );
+        }
+       
+    }
+    
+    moveX( spdX: number ) 
+    {
+        this.points[0].x += spdX;
+        this.points[1].x += spdX;
+    }
+
+    moveY( spdY: number ) 
+    {
+        this.points[0].y += spdY;
+        this.points[1].y += spdY;
+    }
+    
 }//

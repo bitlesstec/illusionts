@@ -9,8 +9,10 @@ import { Camera } from "../camera/Camera";
 export class CameraUtil  //Moveable
 {
 
-    canXMove:number = 0;
-    canYMove:number = 0;
+    canRightMove:number = 0;
+    canTopMove:number = 0;
+    canLeftMove:number = 0;
+    canBottomMove:number = 0;
     cam:Camera;
 
     constructor( cam:Camera )
@@ -19,12 +21,12 @@ export class CameraUtil  //Moveable
     }
 
 
-    moveOnX( camSpd:number, move:number=1 ): number 
+    moveRight( camSpd:number, move:number = 1 ): number 
     {
-        this.canXMove += camSpd;
-        if( this.canXMove >= 1 )
+        this.canRightMove += camSpd;
+        if( this.canRightMove >= 1 )
         {
-            this.canXMove = 0;
+            this.canRightMove = 0;
             this.cam.moveX( move ) ;
             return move;
         }
@@ -32,16 +34,50 @@ export class CameraUtil  //Moveable
     }
     
 
-    moveOnY( camSpd:number, move:number=1): number 
+    moveTop( camSpd:number, move:number=1): number 
     {
-        this.canYMove += camSpd;
-        if( this.canYMove >= 1 )
+        this.canTopMove += camSpd;
+        if( this.canTopMove >= 1 )
         {
-            this.canYMove = 0;
+            this.canTopMove = 0;
+            this.cam.moveY( -move ) ;
+            return move;
+        }
+        return 0;
+    }
+
+    moveLeft( camSpd:number, move:number=1 ): number 
+    {
+        this.canRightMove += camSpd;
+        if( this.canRightMove >= 1 )
+        {
+            this.canRightMove = 0;
+            this.cam.moveX( -move ) ;
+            return move;
+        }
+        return 0;
+    }
+    
+
+    moveBottom( camSpd:number, move:number=1): number 
+    {
+        this.canTopMove += camSpd;
+        if( this.canTopMove >= 1 )
+        {
+            this.canTopMove = 0;
             this.cam.moveY( move ) ;
             return move;
         }
         return 0;
     }
+
+
+    slideOnX(spd:number, friction:number)
+    {
+
+    }
+
+    slideOnY()
+    {}
 
 }

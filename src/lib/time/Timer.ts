@@ -6,7 +6,9 @@
  */
 export class Timer
 {
-
+     /**
+     * to know whether the timer is active or not
+     */
     private active: boolean;
     private counter: number;
 

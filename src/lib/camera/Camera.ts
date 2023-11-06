@@ -14,8 +14,8 @@ export class Camera implements Moveable
     private yMin:number;
     private xMax:number; //maximun x where the view can be moved
     private yMax:number;
-    private levelWidth:number;
-    private levelHeight:number;
+     levelWidth:number;
+     levelHeight:number;
     viewWidth:number;
     viewHeight:number;
 

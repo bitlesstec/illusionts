@@ -10,7 +10,7 @@
     "reset": "npm run build && npm run start",
     "reset.win": "npm run build.win && npm run start",
     "buildwp": "webpack --stats-error-details",
-    "resetwp":" npm run buildwp && npm run start",
+    "resetwp": " npm run buildwp && npm run start",
     "develop": "webpack-dev-server --mode development"
   },
   "repository": {
@@ -26,13 +26,13 @@
   "homepage": "https://gitlab.com/pavul/illusionts#readme",
   "devDependencies": {
     "@types/node": "^20.6.0",
-    "@types/webpack": "^5.28.2",
+    "@types/webpack": "^5.28.5",
     "clean-webpack-plugin": "^4.0.0",
     "copy-webpack-plugin": "^11.0.0",
     "declaration-bundler-webpack-plugin": "^1.0.3",
     "ts-loader": "^9.4.4",
     "typescript": "^5.2.2",
-    "webpack": "^5.88.2",
+    "webpack": "^5.94.0",
     "webpack-cli": "^5.1.4"
   },
   "dependencies": {

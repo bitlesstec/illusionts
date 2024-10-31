@@ -9,7 +9,7 @@ module.exports = {
     devServer:{
     static: path.join(__dirname, "game"),
     compress: true,
-    port: 4040,
+    port: 6996,
     },
     output: {
         filename: 'game.js',

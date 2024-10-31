@@ -30,6 +30,11 @@ implements AssetLoadable, Initiable
         this.changeLevelTask = new Timer();
         this.changeLevelTask.setCounter(200);
 
+        this.changeLevelTask.callback = ()=>
+            {
+                Game.getInstance().loadLevel( new SampleLevel() );
+            }
+
         this.alphaVal = 0;
 
         this.gameState = GameState.PLAYING;
@@ -57,10 +62,7 @@ implements AssetLoadable, Initiable
                  this.init();
             break;
             case GameState.PLAYING:
-                this.changeLevelTask.process( ()=>
-                {
-                    Game.getInstance().loadLevel( new SampleLevel() );
-                });
+                this.changeLevelTask.process( );
             break;
         }
 

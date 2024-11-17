@@ -107,8 +107,11 @@ import { AssetUtil } from "../util/AssetUtil";
         this.yScale=1;
         this.context2D.scale(this.xScale, this.yScale);
 
-        document.getElementById("gameTitle").innerHTML=Config.GAME_NAME;
-        document.getElementById("gameDesc").setAttribute( "content", Config.GAME_DESC );
+        const gameTitle = document.getElementById("gameTitle");
+        if( gameTitle ) gameTitle.innerHTML=Config.GAME_NAME;
+
+        const gameDesc = document.getElementById("gameDesc");
+        if( gameDesc ) gameDesc.setAttribute( "content", Config.GAME_DESC );
     }
 
     /**

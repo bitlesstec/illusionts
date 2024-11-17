@@ -1,16 +1,19 @@
 {
   "name": "illusionts",
-  "version": "1.0.0",
+  "version": "0.0.2",
   "description": "",
   "main": "game/game.js",
   "scripts": {
-    "build": "webpack ",
+    "build": "tsc && webpack ",
     "start": "npx webpack serve"
   },
   "repository": {
     "type": "git",
     "url": "git+https://gitlab.com/pavul/illusionts.git"
   },
+  "files": [
+    "game/lib"
+  ],
   "keywords": [],
   "author": "pavulzavala <pavulzavala@gmail.com>",
   "license": "ISC",

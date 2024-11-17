@@ -6,14 +6,14 @@
 // 3 run the game 
 
 
-import {GameManager} from './lib/manager/GameManager.js';
+import {Game} from './lib/game/Game';
 
 // import { SampleLevel } from './levels/SampleLevel.js';
 // import { MenuLevel } from './levels/MenuLevel.js';
-import { SplashScreenLevel } from './levels/SplashScreenLevel.js';
+import { SplashScreenLevel } from './levels/SplashScreenLevel';
 
 //you can set canvas id as well as width and height
-let game = GameManager.getInstance("canvas", 640, 480);//canvas width and height by default
+let game = Game.getInstance("canvas", 640, 480);//canvas width and height by default
 
 // game.setFps(15); //changing fps of this game to 30
 // game.setCalculateFps(); //allow fps calculation in console
@@ -26,6 +26,8 @@ game.enableTouchControl=true;
 game.scaleToWindow();
 
 // game.loadLevel( new MenuLevel() );
+game.calculateFps = true;
+game.targetFPS=75;
 game.loadLevel( new SplashScreenLevel() );
 
 window.onload =function(){game.run();} 

@@ -1,9 +1,9 @@
 
-import { Expirable } from "../ntfc/Expirable.js";
-import { HUDDisplayType } from "./HUDDisplayType.js";
-import { ImageMeasures } from "./ImageMeasures.js";
-import { Point } from "./Point.js";
-import { Sprite } from "./Sprite.js";
+import { Expirable } from "../ntfc/Expirable";
+import { HUDDisplayType } from "./HUDDisplayType";
+import { ImageMeasures } from "./ImageMeasures";
+import { Point } from "./Point";
+import { Sprite } from "./Sprite";
 
 /**
  * this class represent a HUD object to display

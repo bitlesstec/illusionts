@@ -1,6 +1,6 @@
-import { BaseShape } from "../graphic/shape/BaseShape.js";
-import { Sprite } from "../graphic/Sprite.js";
-import { Controllable } from "../ntfc/input/Controllable.js";
+import { BaseShape } from "../graphic/shape/BaseShape";
+import { Sprite } from "../graphic/Sprite";
+import { Controllable } from "../ntfc/input/Controllable";
 
 
 /**

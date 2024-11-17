@@ -30,7 +30,11 @@ static readonly GAME_DESC:string = "this is an example of a game created with Il
 static readonly GAME_AUTHOR:string = "Pavul Zavala";
 static readonly GAME_VERSION:string = "0.0";
 
-
+//to know some camera sides
+static readonly SIDE_TOP:string="TOP";
+static readonly SIDE_BOTTOM:string="BOTTOM";
+static readonly SIDE_LEFT:string="LEFT";
+static readonly SIDE_RIGHT:string="RIGHT";
 
 
 

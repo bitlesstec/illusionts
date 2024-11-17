@@ -1,9 +1,9 @@
-import { Camera } from "../camera/Camera.js";
-import { Point } from "../graphic/Point.js";
-import { Sprite } from "../graphic/Sprite.js";
-import { GameManager } from "../manager/GameManager.js";
-import { Bidim } from "../ntfc/Bidim.js";
-import { CollisionUtil } from "./CollisionUtil.js";
+import { Camera } from "../camera/Camera";
+import { Point } from "../graphic/Point";
+import { Sprite } from "../graphic/Sprite";
+import { Game } from "../game/Game";
+import { Bidim } from "../ntfc/Bidim";
+import { CollisionUtil } from "./CollisionUtil";
 
 /**
  * this class provides some generic functions
@@ -68,7 +68,8 @@ export class SpriteUtil
         let vx:number = x -( spr.points[0].x + spr.w / 2 );
         let vy:number = y -( spr.points[0].y + spr.h / 2 );
         let angle = Math.atan2( vy, vx );// * (180 / Math.PI);
-        return angle;
+        // return angle; //if we want the value in radians
+        return (angle * 180 / Math.PI + 360) % 360;
     }//
 
 
@@ -162,7 +163,7 @@ export class SpriteUtil
     static getSpritesByLabel<T extends Sprite>( label:string ):T[]
     {
         const sprites:T[] = [];
-        for( const [name,sprite] of GameManager.getInstance().currentLevel.spriteMap )
+        for( const [name,sprite] of Game.getInstance().currentLevel.spriteMap )
         {
             // const s:Sprite = value;
             if(sprite.label.includes( label ) )

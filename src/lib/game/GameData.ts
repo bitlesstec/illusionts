@@ -1,4 +1,4 @@
-import { GameManager } from "./GameManager.js";
+import { Game } from "./Game";
 
 
 
@@ -47,12 +47,12 @@ export class GameData
     {
         if( key )
         {
-            GameManager.getInstance().localStorage.setItem( key, JSON.stringify(this.data.get(key) ) )
+            Game.getInstance().localStorage.setItem( key, JSON.stringify(this.data.get(key) ) )
         }
         else
         {
             //if keynot provided save all gameData
-            GameManager.getInstance().localStorage.setItem( GameData.gameDataName, JSON.stringify(this.data))
+            Game.getInstance().localStorage.setItem( GameData.gameDataName, JSON.stringify(this.data))
         }
         
     }
@@ -72,11 +72,11 @@ export class GameData
         try{
             if( key )
             {
-                return GameManager.getInstance().localStorage.getItem( key ); 
+                return Game.getInstance().localStorage.getItem( key ); 
             }
             else
             {
-                const gData = GameManager.getInstance().localStorage.getItem( GameData.gameDataName );
+                const gData = Game.getInstance().localStorage.getItem( GameData.gameDataName );
                 if(gData)
                 {
                     GameData.data = new Map<string, any>(Object.entries(gData));

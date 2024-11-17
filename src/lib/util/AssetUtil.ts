@@ -1,6 +1,6 @@
-import { AudioManager } from "../audio/AudioManager.js";
-import { Sprite } from "../graphic/Sprite.js";
-import { GameManager } from "../manager/GameManager.js";
+import { AudioManager } from "../audio/AudioManager";
+import { Sprite } from "../graphic/Sprite";
+import { Game } from "../game/Game";
 
 
 export class AssetUtil
@@ -76,7 +76,7 @@ export class AssetUtil
 
 
     /**
-     * this will create/load images and sprites from atlas.png and atlas.json 
+     * this will create/load images and sprites from atlas.png and atlason 
      * and returns a map of sprites created
      * @param atlasImg 
      * @param jsonPath 

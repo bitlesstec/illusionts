@@ -1,4 +1,4 @@
-import { CanvasUtil } from "../util/CanvasUtil.js";
+import { CanvasUtil } from "../util/CanvasUtil";
 
 
 /**

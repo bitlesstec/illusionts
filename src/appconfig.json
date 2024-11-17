@@ -1,0 +1,11 @@
+
+{
+    "appid":"1000",
+    "name":"game_name",
+    "desc":"this is the game description",
+    "version":"1.0.0",
+    "thumb":"thumb.png",
+    "email":"a@a.com",
+    "site":"bitless.com",
+    "author":"pavul zavala"
+}

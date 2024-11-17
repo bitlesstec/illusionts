@@ -1,6 +1,6 @@
-import { Point } from "../Point.js";
-import { Sprite } from "../Sprite.js";
-import { BaseShape } from "./BaseShape.js";
+import { Point } from "../Point";
+import { Sprite } from "../Sprite";
+import { BaseShape } from "./BaseShape";
 
 
 /**
@@ -23,12 +23,12 @@ export class Collider extends BaseShape
     }
 
     getX():number{
-        let xx = this.parent?this.parent.getX():0;
+        const xx = this.parent?this.parent.getX():0;
         return xx+this.points[0].x;
     }
 
     getY():number{
-        let yy = this.parent?this.parent.getY():0;
+        const yy = this.parent?this.parent.getY():0;
         return yy+this.points[0].y;
     }
 

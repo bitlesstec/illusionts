@@ -1,4 +1,4 @@
-import { Audio } from "./Audio.js";
+import { Audio } from "./Audio";
 //import { Audioable } from "./Audioable.js";
 
 

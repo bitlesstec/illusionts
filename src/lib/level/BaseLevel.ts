@@ -1,12 +1,12 @@
-import {Renderable} from "../ntfc/Renderable.js";
-import {Updatable} from "../ntfc/Updatable.js";
-import { Touchable } from "../ntfc/input/Touchable.js";
-import { Mousable } from "../ntfc/input/Mousable.js";
-import { Keyable } from "../ntfc/input/Keyable.js";
-import { GameState } from "../manager/GameState.js";
-import { Camera } from "../camera/Camera.js";
-import {AudioManager} from "../audio/AudioManager.js";
-import { Sprite } from "../graphic/Sprite.js";
+import {Renderable} from "../ntfc/Renderable";
+import {Updatable} from "../ntfc/Updatable";
+import { Touchable } from "../ntfc/input/Touchable";
+import { Mousable } from "../ntfc/input/Mousable";
+import { Keyable } from "../ntfc/input/Keyable";
+import { GameState } from "../game/GameState";
+import { Camera } from "../camera/Camera";
+import {AudioManager} from "../audio/AudioManager";
+import { Sprite } from "../graphic/Sprite";
 
 /**
  * this class will represent a level in the game, will
@@ -39,23 +39,23 @@ levelHeight:number;
 /**
  * this constructors set level width and height which is not the same as viewWidth and viewHeight.
  * viewWidth/viewHeight are measures used by camera.
- * @param levelWidht 
+ * @param levelWidth 
  * @param levelHeight 
  * @param viewWidth 
  * @param viewHeight 
  */
-constructor( levelWidht:number, levelHeight:number, viewWidth?:number, viewHeight?:number )
+constructor( levelWidth:number, levelHeight:number, viewWidth?:number, viewHeight?:number )
 { 
     this.gameState = GameState.LOADING;
     // this.imageMap = new Map<string, HTMLImageElement>();
     this.spriteMap = new Map<string, Sprite>();
-    this.levelWidth = levelWidht; 
+    this.levelWidth = levelWidth; 
     this.levelHeight = levelHeight;
 
     if( viewWidth !== undefined && viewHeight !== undefined )
-        this.camera = new Camera( levelWidht, levelHeight, viewWidth, viewHeight );
+        this.camera = new Camera( levelWidth, levelHeight, viewWidth, viewHeight );
     else
-        this.camera = new Camera( levelWidht, levelHeight );
+        this.camera = new Camera( levelWidth, levelHeight );
 }//
 
 

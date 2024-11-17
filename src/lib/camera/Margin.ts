@@ -1,5 +1,6 @@
-import { Sprite } from "../graphic/Sprite.js";
-import { Camera } from "./Camera.js";
+import { Config } from "../cfg/Config";
+import { Sprite } from "../graphic/Sprite";
+import { Camera } from "./Camera";
 
 
 /**
@@ -29,10 +30,10 @@ export class Margin
 
 
      constructor( camera:Camera ){
-        this.marginLeft=0;
-        this.marginRight=0;
-        this.marginTop=0;
-        this.marginBottom=0;
+        this.marginLeft=-1;
+        this.marginRight=-1;
+        this.marginTop=-1;
+        this.marginBottom=-1;
         this.camera = camera;
         this.color="#FFF";
      }
@@ -102,27 +103,68 @@ export class Margin
     }
 
 
-    /**
-     * 
+   /**
+     * this function must be used in update method.
+     * this will check the player agains top, bottom, right or left margin if set ( if they are different -1)
+     * will return the side of the margin checked,
+     * moveIt means if the camera will move at spd defined, if not, means
+     * you would have to implement your owm camera movement depending on the edge
      */
-    checkMargins(spd:number)
-    {
-        //check is sprite is set to move camera on sprite margins
-        if(this.sprite)
-        {
-            console.log("ENTERING SPRITE")
+   checkMargins(spd:number, moveIt:boolean=true):string
+   {
+       let side:string = "";
+       //check is sprite is set to move camera on sprite margins
+       
+      side += this.checkXMargin( spd, moveIt );
+      side += this.checkYMargin( spd, moveIt )
 
-            //check x margins
-            if( this.sprite.getX()+8 < this.camera.viewX+this.marginLeft ) this.camera.moveX( -spd );
-            if( this.sprite.getX()+8 > this.camera.viewX+this.marginRight ) this.camera.moveX( spd );
+       return side;
+   }
 
-            //cehck y margins
-            if( this.sprite.getY()+8 < this.camera.viewY+this.marginTop ) this.camera.moveY( -spd );
-            if( this.sprite.getY()+8 > this.camera.viewY+this.marginBottom ) this.camera.moveY( spd );
-        }
+   checkYMargin(spd:number, moveIt:boolean=true):string
+   {
+       let side:string = "";
+       if(this.sprite)
+       {
+           //cehck y margins
+           if( this.sprite.getY()+8 < this.camera.viewY+this.marginTop && this.marginTop !== -1 ){
+               if(moveIt)
+                   this.camera.moveY( -spd );
+               side = Config.SIDE_TOP;
+           }
 
-    }
+           if( this.sprite.getY()+8 > this.camera.viewY+this.marginBottom && this.marginBottom !== -1){
+               if(moveIt)
+                   this.camera.moveY( spd );
+               side = Config.SIDE_BOTTOM;
+           } 
+       }
+       return side;
+   }
+   
 
+   checkXMargin(spd:number, moveIt:boolean=true):string
+   {
+       let side:string = "";
+       if(this.sprite)
+       {
+           //check x margins
+           if( this.sprite.getX()+8 < this.camera.viewX+this.marginLeft && this.marginLeft !== -1 )
+           {
+               if(moveIt)
+                   this.camera.moveX( -spd );
+               side = Config.SIDE_LEFT;
+           }
+
+           if( this.sprite.getX()+8 > this.camera.viewX+this.marginRight && this.marginRight !== -1)
+           {   if(moveIt) 
+                   this.camera.moveX( spd );
+               side = Config.SIDE_RIGHT;
+           }
+       }
+       return side;
+       
+   }
     
     /**
      * this will render the margins at the posision set but only if margins

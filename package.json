@@ -1,19 +1,19 @@
 {
   "name": "illusionts",
-  "version": "1.0.0",
+  "version": "0.0.2",
   "description": "",
-  "main": "index.js",
+  "main": "game/game.js",
   "scripts": {
-    "build": "tsc && cp src/game.html game/ && cp -r src/assets/ game/",
-    "build.win": "tsc && Xcopy /Y src\\game.html game && Xcopy /E/I/Y src\\assets game\\assets\\",
-    "start": "cd game && http-server",
-    "reset": "npm run build && npm run start",
-    "reset.win": "npm run build.win && npm run start"
+    "build": "tsc && webpack ",
+    "start": "npx webpack serve"
   },
   "repository": {
     "type": "git",
     "url": "git+https://gitlab.com/pavul/illusionts.git"
   },
+  "files": [
+    "game/lib"
+  ],
   "keywords": [],
   "author": "pavulzavala <pavulzavala@gmail.com>",
   "license": "ISC",
@@ -22,10 +22,20 @@
   },
   "homepage": "https://gitlab.com/pavul/illusionts#readme",
   "devDependencies": {
-    "typescript": "^4.1.3"
+    "@types/node": "^20.6.0",
+    "@types/webpack": "^5.28.5",
+    "clean-webpack-plugin": "^4.0.0",
+    "copy-webpack-plugin": "^11.0.0",
+    "declaration-bundler-webpack-plugin": "^1.0.3",
+    "ts-loader": "^9.5.1",
+    "typescript": "^5.6.3",
+    "webpack": "^5.95.0",
+    "webpack-cli": "^5.1.4"
   },
   "dependencies": {
     "axios": "^0.21.1",
-    "http-server": "^0.12.3"
+    "html-webpack-plugin": "^5.6.3",
+    "http-server": "^0.12.3",
+    "webpack-dev-server": "^5.1.0"
   }
 }

@@ -1,13 +1,16 @@
-import { BaseTile } from "../graphic/BaseTile.js";
-import { Point } from "../graphic/Point.js";
-import { Collider } from "../graphic/shape/Collider.js";
-import { LineShape } from "../graphic/shape/LineShape.js";
-import { PolygonShape } from "../graphic/shape/PolygonShape.js";
-import { Sprite } from "../graphic/Sprite.js";
-import { Tile } from "../graphic/Tile.js";
+import { Camera } from "../camera/Camera";
+import { BaseTile } from "../graphic/BaseTile";
+import { Point } from "../graphic/Point";
+import { Collider } from "../graphic/shape/Collider";
+import { LineShape } from "../graphic/shape/LineShape";
+import { PolygonShape } from "../graphic/shape/PolygonShape";
+import { Sprite } from "../graphic/Sprite";
+import { Tile } from "../graphic/Tile";
+import { Game } from "../game/Game";
 
 
 /**
+ * NOTE, LINE FUNCTIONS NEEDS MORE TESTNG BUT lineCollision method
  * this class is a singleton that will be used in the level, 
  * it provides basic collision stuff...
  * if you want to use your own collision library or BOX2dJs then
@@ -330,7 +333,7 @@ lineCollision( line1:LineShape, line2:LineShape):boolean
 
     if( u2 >= 0 && u2 <= 1)
     {
-        let u1 = ( vx2 ^ v3.y - vy2 * v3.x ) / cross;
+        let u1 = ( vx2 * v3.y - vy2 * v3.x ) / cross;
         return (u1 >= 0 && u1 <= 1);
     }
 
@@ -485,76 +488,185 @@ pointAndCircleCollision( point:Point, x:number, y:number, radius:number )
  * @param spr 
  * @param tiles 
  */
-tileCollision(spr:Sprite | Collider, tiles:Tile[]|BaseTile[]):string
-{
+// tileCollision(spr:Sprite | Collider, tiles:Tile[]|BaseTile[], camera?:Camera):string
+// {
 
-    let response = "";
-    let counter = 0;
+//     let response = "";
+//     let counter = 0;
 
-    for( let idx=0; idx < tiles.length; idx++ )
-    {
-        // console.log(`iterating tile: ${idx}`)
-        let tile:Tile | BaseTile = tiles[idx];
-        let tileIndex = tile.index;
+//     let viewX:number = 0;
+//     let viewY:number = 0;
+//     let viewW:number = 0;
+//     let viewH:number = 0;
+    
 
-        switch(tileIndex)
-        {
+//     if( camera )
+//     {
+//         viewX = camera.viewX - camera.offset.left;
+//         viewY = camera.viewY - camera.offset.top;
+//         viewW = camera.viewWidth + camera.offset.right;
+//         viewH = camera.viewHeight + camera.offset.bottom;
+//     }
+//     else
+//     {
+//         viewX = 0 - camera.offset.left;
+//         viewY = 0 - camera.offset.top;
+//         viewW = Game.getInstance().currentLevel.levelWidth + camera.offset.right;
+//         viewH = Game.getInstance().currentLevel.levelHeight + camera.offset.bottom;
+//     }
 
-            case 2:
-            case 3:
+//     for( let idx=0; idx < tiles.length; idx++ )
+//     {
+//         // console.log(`iterating tile: ${idx}`)
+//         let tile:Tile | BaseTile = tiles[idx];
+//         let tileIndex = tile.index;
 
-                let isColiding:boolean = this.rectangleCollision( spr.getX(), spr.getY(), spr.w, spr.h,
-                                                                  tile.x, tile.y, tile.w, tile.h );
-                // const sprX:number = spr.getX() + (spr.anchor?spr.anchor.x:0);
-                // const sprY:number = spr.getY() + (spr.anchor?spr.anchor.y:0);
-                // let isColiding:boolean =  this.pointCollision( sprX, sprY, tile.x, tile.y, tile.w, tile.h );
+//         //if tile is not inside view, continue with the next
+//         const isInside:boolean = (tile.x + tile.w >= viewX && tile.x <= viewX + viewW 
+//         && tile.y + tile.h >= viewY && tile.y <= viewY + viewH); 
+//         if ( !isInside )
+//         { continue; }
 
-                if( isColiding )
-                {
+
+
+//         switch(tileIndex)
+//         {
+
+//             case 2:
+//             case 3:
+
+//                 let isColiding:boolean = this.rectangleCollision( spr.getX(), spr.getY(), spr.w, spr.h,
+//                                                                   tile.x, tile.y, tile.w, tile.h );
+//                 // const sprX:number = spr.getX() + (spr.anchor?spr.anchor.x:0);
+//                 // const sprY:number = spr.getY() + (spr.anchor?spr.anchor.y:0);
+//                 // let isColiding:boolean =  this.pointCollision( sprX, sprY, tile.x, tile.y, tile.w, tile.h );
+
+//                 if( isColiding )
+//                 {
                     
-                    let colpos:number =  (spr.getX() + spr.anchor.x) - tile.x;// + tile.w)
-                    if( colpos > 0 && colpos <= tile.w )
-                    {
+//                     let colpos:number =  (spr.getX() + spr.anchor.x) - tile.x;// + tile.w)
+//                     if( colpos > 0 && colpos <= tile.w )
+//                     {
                         
-                        let yval:number = colpos;
-                        // console.log("yval", yval)
-                        if( tile.index === 3 )
-                            yval = (tile.h - colpos) +1; //+1 here fixes to get stuck with solid tile ( with value 1 )
+//                         let yval:number = colpos;
+//                         // console.log("yval", yval)
+//                         if( tile.index === 3 )
+//                             yval = (tile.h - colpos) +1; //+1 here fixes to get stuck with solid tile ( with value 1 )
 
-                            if( spr instanceof Collider && spr.parent )
-                            {
-                                spr.parent.setY( ( tile.y - spr.h ) + ( tile.h - yval ) )
-                            }
-                            else
-                            {
-                                spr.setY( ( tile.y - spr.h ) + ( tile.h - yval ) );
-                            }
+//                             if( spr instanceof Collider && spr.parent )
+//                             {
+//                                 spr.parent.setY( ( tile.y - spr.h ) + ( tile.h - yval ) )
+//                             }
+//                             else
+//                             {
+//                                 spr.setY( ( tile.y - spr.h ) + ( tile.h - yval ) );
+//                             }
                         
-                        response += ".bottom";
-                        return response;// "bottom";
-                    }
+//                         response += ".bottom";
+//                         return response;// "bottom";
+//                     }
 
-                }
-            break;
-            case 1:
+//                 }
+//             break;
+//             case 1:
                 
-                let col = new Collider( tile.x, tile.y, tile.w, tile.h );
-                let colside = this.sideAndPushOnYAxisCollision( spr, col );
+//                 let col = new Collider( tile.x, tile.y, tile.w, tile.h );
+//                 let colside = this.sideAndPushOnYAxisCollision( spr, col );
 
-                if( colside )
-                {
-                    response += "." + colside+"tile"+idx;
-                }
-            break;
+//                 if( colside )
+//                 {
+//                     response += "." + colside+"tile"+idx;
+//                 }
+//             break;
             
 
-        }
+//         }
         
 
-    }//for
-    if( response )
-    console.log( "returning response:", response )
-return response;
+//     }//for
+
+//     if( response )//remove this after
+//     console.log( "returning response:", response )
+
+//     return response;
+// }
+
+
+
+
+tileCollision(sprites: (Sprite | Collider)[], tiles: Tile[] | BaseTile[], camera?: Camera, margin: number = 32): string[]
+{
+    // const collisionMap: Record<string, string[]> = {};
+    const collisions:string[] = new Array(sprites.length).fill("");
+
+    const viewX: number = camera ? camera.viewX - margin : 0 - margin;
+    const viewY: number = camera ? camera.viewY - margin : 0 - margin;
+    const viewW: number = camera ? camera.viewWidth + margin : camera.levelWidth + margin;
+    const viewH: number = camera ? camera.viewHeight + margin : camera.levelHeight + margin;
+
+    for (let idx = 0; idx < tiles.length; idx++) {
+        const tile: Tile | BaseTile = tiles[idx];
+        const tileIndex = tile.index;
+
+        if (tile.x + tile.w >= viewX && tile.x <= viewX + viewW && tile.y + tile.h >= viewY && tile.y <= viewY + viewH) {
+            
+            for (let sidx:number = 0; sidx < sprites.length; sidx++ ) 
+            {
+                const spr = sprites[sidx];
+                // if (spr instanceof Sprite || spr instanceof Collider) 
+                // {
+                    // if (!collisionMap[spr.id]) 
+                    // {
+                    //     collisionMap[spr.id] = [];
+                    // }
+
+                    switch (tileIndex) {
+                        case 2:
+                        case 3:
+                            const isColiding: boolean = this.rectangleCollision(spr.getX(), spr.getY(), spr.w, spr.h, tile.x, tile.y, tile.w, tile.h);
+
+                            if (isColiding) {
+                                const colpos: number = (spr.getX() + spr.anchor.x) - tile.x;
+
+                                if (colpos > 0 && colpos <= tile.w) 
+                                {
+                                    let yval: number = colpos;
+
+                                    if (tile.index === 3) {
+                                        yval = (tile.h - colpos) + 1;
+                                    }
+
+                                    if (spr instanceof Collider && spr.parent) {
+                                        spr.parent.setY((tile.y - spr.h) + (tile.h - yval));
+                                    } else {
+                                        spr.setY((tile.y - spr.h) + (tile.h - yval));
+                                    }
+
+                                    collisions[sidx] += `.bottom`;
+                                    // collisionMap[spr.id].push(".bottom");
+                                }
+                            }
+                            break;
+
+                        case 1:
+                            const col = new Collider(tile.x, tile.y, tile.w, tile.h);
+                            const colside = this.sideAndPushOnYAxisCollision(spr, col);
+
+                            if (colside) 
+                            {
+                                // console.log("SI COLSIDE: ", colside)
+                                collisions[sidx] += `.${colside}tile${idx}`;
+                                // collisionMap[spr.id].push(`.${colside}tile${idx}`);
+                            }
+                            // else{ console.log("NO COLSIDE")}
+                            break;
+                    }//switch
+                // }
+            }//for sidx
+        }
+    }
+
+    return collisions;
 }
 
 
@@ -641,6 +753,51 @@ return response;
          }
          return collisionSide;
  }//
+
+
+ /**
+ * check intersection between the sprite and a line defined by point1 and point2
+ * @param sprite 
+ * @param point1 
+ * @param point2 
+ * @returns 
+ */
+lineSpriteCollision( sprite: Sprite | Collider, point1: Point, point2: Point): boolean {
+    // Verificar si alguno de los extremos de la línea está dentro del sprite
+    if (
+      (point1.x >= sprite.getX() && point1.x <= sprite.getX() + sprite.w && point1.y >= sprite.getY() && point1.y <= sprite.getY() + sprite.h) ||
+      (point2.x >= sprite.getX() && point2.x <= sprite.getX() + sprite.w && point2.y >= sprite.getY() && point2.y <= sprite.getY() + sprite.h)
+    ) {
+      return true;
+    }
+  
+    // Verificar si la línea intersecta alguno de los lados del sprite
+    // Usar la fórmula de intersección de líneas
+    const x1 = sprite.getX();
+    const y1 = sprite.getY();
+    const x2 = sprite.getX() + sprite.w;
+    const y2 = sprite.getY();
+    const x3 = sprite.getX();
+    const y3 = sprite.getY() + sprite.h;
+    const x4 = sprite.getX() + sprite.w;
+    const y4 = sprite.getY() + sprite.h;
+  
+    const denom = (y4 - y3) * (x2 - x1) - (x4 - x3) * (y2 - y1);
+    if (denom === 0) {
+      return false; // Las líneas son paralelas
+    }
+  
+    const ua = ((x4 - x3) * (y1 - y3) - (y4 - y3) * (x1 - x3)) / denom;
+    const ub = ((x2 - x1) * (y1 - y3) - (y2 - y1) * (x1 - x3)) / denom;
+  
+    if (ua >= 0 && ua <= 1 && ub >= 0 && ub <= 1) {
+      return true;
+    }
+  
+    return false;
+  }
+
+
 
 
 }//

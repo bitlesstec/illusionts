@@ -1,6 +1,6 @@
 
-import { GameManager } from "../manager/GameManager.js";
-import { BaseShape } from "./shape/BaseShape.js";
+import { Game } from "../game/Game";
+import { BaseShape } from "./shape/BaseShape";
 
 /**
  * this class creates text that can be displayed as HUD
@@ -40,7 +40,7 @@ export class TextSprite extends BaseShape
 
         if( message !== "" )
         {
-            let metrics = GameManager.getInstance().context2D.measureText( message );
+            let metrics = Game.getInstance().context2D.measureText( message );
             this.w = metrics.width;
             this.h = metrics.actualBoundingBoxAscent + metrics.actualBoundingBoxDescent;
         }

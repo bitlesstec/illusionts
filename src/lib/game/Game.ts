@@ -1,8 +1,10 @@
 
 
-import {Runnable} from "../ntfc/Runnable.js";
-import {BaseLevel} from "../level/BaseLevel.js";
-import {Config} from "../cfg/Config.js";
+import {Runnable} from "../ntfc/Runnable";
+import {BaseLevel} from "../level/BaseLevel";
+import {Config} from "../cfg/Config";
+import { AssetUtil } from "../util/AssetUtil";
+
 
 /**
  * gameManager will be responsible to initialize the game:
@@ -14,10 +16,10 @@ import {Config} from "../cfg/Config.js";
  *   something more convenient for your project.
  * 
  */
-   export class  GameManager
+   export class Game
                  implements Runnable
 {
-    private static instance:GameManager;
+    private static instance:Game;
     currentLevel:BaseLevel; 
     
     //this can be used to store some persistent data in player browser 
@@ -25,7 +27,7 @@ import {Config} from "../cfg/Config.js";
 
     delta: number;
     lastUpdate: number;
-    fps:number;
+    targetFPS:number;
     millisPerFrame:number; // this is 1000 / fps
     fpsCounter:number;
     calculateFps:boolean;
@@ -50,18 +52,38 @@ import {Config} from "../cfg/Config.js";
 
     private firstLevelLoaded:boolean;//used to add evenListeners only once in canvas
 
+
+    framesCount:number=0;
+    frames:number = 0;
+    fps:number = 0;
+    lastFPSUpdate:number = Date.now();
+    
+/**
+ * this var is used to specify if the game should start from webContext or electron context
+ * if is webContext will start normally like if it starts from the browser
+ * if is electronContext will start fue an event from main process of electron
+ */
+    targetMode:string;
+
     /**
      * create a GameManager Instance, this manager starts the 
      * game loop, if width and height are not defined, it will get that
      * value from level when loaded or the view if that level has a camera
      * @param canvasId id of teh canvas to show the game if not specified id will be 'canvas' 
      */
-    private constructor( canvasId:string = "canvas", width?:number, height?:number )
+    private constructor( canvasId:string = "canvas", width?:number, height?:number , mode:string="web")
     {
+
+
+        this.targetMode = mode;
+
+       
+       
+
         this.delta = 0;
         this.lastUpdate = 0;
-        this.fps = 60;// 1000/30;  //30 fps, use 1000/60 to set it to 60 fps
-        this.millisPerFrame = 1/this.fps;
+        this.targetFPS = 60;// 1000/30;  //30 fps, use 1000/60 to set it to 60 fps
+        this.millisPerFrame = 1/this.targetFPS;
         //below are tho show and set FPS counter
         this.fpsCounter = 0;
         this.calculateFps = false;
@@ -85,8 +107,11 @@ import {Config} from "../cfg/Config.js";
         this.yScale=1;
         this.context2D.scale(this.xScale, this.yScale);
 
-        document.getElementById("gameTitle").innerHTML=Config.GAME_NAME;
-        document.getElementById("gameDesc").setAttribute( "content", Config.GAME_DESC );
+        const gameTitle = document.getElementById("gameTitle");
+        if( gameTitle ) gameTitle.innerHTML=Config.GAME_NAME;
+
+        const gameDesc = document.getElementById("gameDesc");
+        if( gameDesc ) gameDesc.setAttribute( "content", Config.GAME_DESC );
     }
 
     /**
@@ -96,10 +121,10 @@ import {Config} from "../cfg/Config.js";
      * @param width 
      * @param height 
      */
-    static getInstance(canvasId:string = "canvas", width?:number, height?:number):GameManager
+    static getInstance(canvasId:string = "canvas", width?:number, height?:number):Game
     {
         if( this.instance ==  null || undefined)
-            this.instance = new GameManager(canvasId, width, height); 
+            this.instance = new Game(canvasId, width, height); 
         return this.instance;
     }
 
@@ -121,22 +146,55 @@ import {Config} from "../cfg/Config.js";
 
     run()
     {
+        //OLD IMPLEMENTATION WORKS, BUT LOOKING A BETTER ONE
+        // let now = Date.now();
+        // // this.delta = now - this.lastUpdate;
+        // this.delta = ( now - this.lastUpdate ) / 1000; //this will give like 0.016 which is ok for delta
+        
+        // this.updateFpsCounter();
+
+        // if( this.delta >= this.millisPerFrame )
+        // {
+        //     if( this.currentLevel )
+        //     {
+        //         this.currentLevel.update( this.delta );
+        //         this.currentLevel.render( this.context2D );
+        //         this.lastUpdate = now;
+        //     }
+
+        // }
+
         let now = Date.now();
         // this.delta = now - this.lastUpdate;
         this.delta = ( now - this.lastUpdate ) / 1000; //this will give like 0.016 which is ok for delta
         
+        // console.log("delta: ", this.delta)
         this.updateFpsCounter();
 
-        if( this.delta >= this.millisPerFrame )
+        if( this.delta >= 1 / this.targetFPS )
         {
             if( this.currentLevel )
             {
                 this.currentLevel.update( this.delta );
                 this.currentLevel.render( this.context2D );
                 this.lastUpdate = now;
+                this.frames++;
             }
 
         }
+
+        if( this.calculateFps )
+        {
+            if (now - this.lastFPSUpdate >= 1000) 
+            {
+                
+                this.fps =this.frames;
+                this.frames = 0;
+                this.lastFPSUpdate = now;
+                // console.log("FPS: ", this.fps)
+            }
+        }
+        
 
         // if(this.currentLevel)this.currentLevel.render( this.context2D );
         requestAnimationFrame( this.run.bind(this) );
@@ -248,6 +306,8 @@ import {Config} from "../cfg/Config.js";
                 this.canvas.addEventListener("gamepadconnected", (event) => this.currentLevel.keyDown(event) );
                 this.canvas.addEventListener("gamepaddisconnected", (event) => this.currentLevel.keyDown(event) );
             }
+
+
 
         }//firstLevelLoaded
       
@@ -373,27 +433,39 @@ import {Config} from "../cfg/Config.js";
      */
     scaleToWindow( bgColor:string="#000" )
     {
+        const addressBar:number=0; //experimental
         let scaleX, scaleY, scale;// center;
 
         scaleX = window.innerWidth / this.canvas.width;
-        scaleY = window.innerHeight / this.canvas.height;
+        scaleY = (window.innerHeight-addressBar) / this.canvas.height;
 
         scaleX = Math.trunc(scaleX)
         scaleY = Math.trunc(scaleY)
+        // console.log("scaleX:", scaleX)
+        // console.log("scaleY:", scaleY)
 
         scale = Math.min(scaleX, scaleY);
         this.canvas.style.transformOrigin = "0 0";
         this.canvas.style.transform = "scale(" + scale + ")";
 
+        // if (this.canvas.width > this.canvas.height) {
+        //     center = "vertically";
+        // }
+        // else {
+        //     center = "horizontally";
+        // }
+
+        // if (center === "horizontally") {
+            
         //to center canvas horizontally
-            let margin = (window.innerWidth - this.canvas.width * scaleY) / 2;
+            let margin = ( (window.innerWidth - addressBar) - this.canvas.width * scaleY) / 2;
             this.canvas.style.marginLeft = margin + "px";
             this.canvas.style.marginRight = margin + "px";
-       
+        // }
 
         // if (center === "vertically") {
             //to center canvas vertically
-            margin = (window.innerHeight - this.canvas.height * scaleX) / 2;
+            margin = ( (window.innerHeight-addressBar) - this.canvas.height * scaleX) / 2;
             this.canvas.style.marginTop = "0px"// margin + "px";
             // this.canvas.style.marginBottom = margin + "px";
         // }
@@ -407,7 +479,7 @@ import {Config} from "../cfg/Config.js";
         //setting proper scale after change canvas for pointers
         this.xScale = scale;
         this.yScale = scale;
-        // console.log(`XS:${this.xScale} - YS:${ this.yScale} - scale:${scale}`);
+        console.log(`XS:${this.xScale} - YS:${ this.yScale} - scale:${scale}`);
         // this.pointer.scale = scale;
         // scale = scale;
     }

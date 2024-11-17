@@ -1,10 +1,10 @@
 {
   "name": "illusionts",
-  "version": "0.0.2",
-  "description": "",
-  "main": "game/game.js",
+  "version": "0.0.3",
+  "description": "a simple 2D typescript game library that uses canvas for html5 games, has gamepad support you can save/load game data and it can help you to create simple/small games or prototypes.",
+  "main": "game/lib/index.js",
   "scripts": {
-    "build": "tsc && webpack ",
+    "build": "tsc && webpack",
     "start": "npx webpack serve"
   },
   "repository": {
@@ -14,9 +14,9 @@
   "files": [
     "game/lib"
   ],
-  "keywords": [],
-  "author": "pavulzavala <pavulzavala@gmail.com>",
-  "license": "ISC",
+  "keywords": [ "illusionts game library", "typescript game library", "game", "videogame", "game library", "typescript", "canvas", "canvas game library"],
+  "author": "bitless <bitlesstec@gmail.com>",
+  "license": "MIT",
   "bugs": {
     "url": "https://gitlab.com/pavul/illusionts/issues"
   },

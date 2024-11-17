@@ -1,34 +1,46 @@
 ### IllusionTS
-###### Typescript 2D game library
+###### Typescript 2D canvas game library
 
-## Before Start
-1. you need to have npm and node installed in your computer ( verify you have correct versions )
-2. then you can execute command ```npm install``` this will install all devDependencies and dependencies needed (including typescript)
-3. download or clone this repository from master branch
-4. open repo or add it to your workspace in visual studio code ( you need this installed also )
+## how to install
+```npm install illusionts```
 
-## To Start the game
-- execute ```npm run build``` command if you are in linux/mac or ```npm run build.win``` if you are in windows after that execute:
-- ```npm run start``` this will start an http-server where game is hosted
-- enter url provided for ```npm run start``` command (http://localhost:8080/game.html)
+## repository
+- gitlab ```https://gitlab.com/pavul/illusionts```
+- github ```https://github.com/bitlesstec/illusionts```
 
 ## Branches Content
-- **master** this is the clean copy of the library ready to use
-- **develop** this is my working branch where i test new features dont use this for your games it may change without noticing
-- **examples** this contains several levels to show you how to use the library to make collisions, rotations, sprites, levels, etc.
-
-## Troubleshooting
-- when you add a new asset it wont be reflected in game/asset folder when build, until you delete game folder and build again
-- every time you start http-server you have to clean browser cache or data otherwise new changes won't be reflected
-
-## Work in progress
-Transitions
-Dialogs
-Particles ( not much convinced of this )
+- **master** this is the most stable copy of the library ready to use
+- **develop** this is my development branch use it under your own risk
 
 
 ## Youtube Channel
 - Here i show how to use the library, installation, level, sprite and some game examples, here you have a list of videos: https://www.youtube.com/watch?v=txcBRog8BhM&list=PLHzmvRibTrMdAaW02Yg3kvsTLrTbjwTW5&index=1
+- new channel with updated content: https://www.youtube.com/@BitlessTec
 
-## Notes 
-- at this moment i have content only in spanish, will be creating the same content but in english soon, stay tuned! 
+
+## how to use it
+
+- put this code in your index.ts:
+```typescript
+ import { Game } from "illusionts";
+ import Level1 from "./Level1";
+ const game:Game = Game.getInstance("canvas", 640, 480);
+    game.loadLevel( new Level1() )
+    window.onload =function(){ game.run(); } 
+```
+
+- then in you can create your level like:
+```typescript
+import { BaseLevel } from "illusionts"
+export default class Level1 extends BaseLevel
+{
+    constructor(){ super(640, 480) }
+    render(ctx: CanvasRenderingContext2D): void 
+    {
+        ctx.fillStyle = "#000"
+        ctx.fillRect( 0,0, 640, 480)
+        ctx.fillStyle = "#FFF"
+        ctx.fillText(" HI FROM ILLUSIONTS...", 20, 20)
+    }
+}
+```

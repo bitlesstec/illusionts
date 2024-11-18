@@ -77,6 +77,8 @@ export { Touchable } from "./ntfc/input/Touchable"
 
 
 export { Task } from "./task/Task"
+export { SubTask } from "./task/SubTask"
+// export { TaskAction } from "./task/TaskAction" //need to implement this
 
 export { Timer } from "./time/Timer"
 export { AssetUtil } from "./util/AssetUtil"

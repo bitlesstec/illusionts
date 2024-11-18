@@ -1,35 +1,96 @@
-
+import { SubTask } from "./SubTask";
+import { Updatable } from "../ntfc/Updatable";
 
 /**
- * a task can ejecute diferent functions at every number of steps
- * - curIndex: is the index of the function to be ejecuted next, 
- * after the function is ejecuted succesfully, curIndex will be increased
- * so the next steps reached and ejecute what is next
- * - curStep: when curStep reach maxSTep function will be ejecuting the function at current index
- * - subtasks: are all the functions to be executed in that order, subtasks needs to be initialized
+ * @TODO need to add TASKACTION.ts implementation to change what heppens after task is complete
+ * this can potentially execute a series of subtasks, 
+ * it starts from taskIndex 0 onwards until the last one,
+ * every subTask has it own counter and maxStep, also their own function to be executed
+ * when the currentStep reaches maxStep,
  * 
- * execute() : must be called in level.update 
- *  
+ * if a task is not enabled wont be executed.
+ * 
+ * you must call update function in level.update method in order to make it work.
+ * 
+ * ### HOW TO IMPLEMENT:
+ *      const subTask1:SubTask = 
+        {
+            "curStep": 0,
+            "maxStep": 200,
+            "fn": ()=>{ this.text = " first task executed" },
+        }
+
+        const subTask2:SubTask = 
+        {
+            "curStep": 0,
+            "maxStep": 200,
+            "fn": ()=>{ this.text = "second task executed" },
+        }
+
+
+        this.task = new Task([ subTask1, subTask2] )
+
+
+        ###call this in level.update(delta, args?)###
+        this.update(delta, args)
  */
-export class Task
+export class Task implements Updatable
 {
 
-    curIndex:number;
-    curStep:number;
-    maxStep:number;
-    subTasks:any[];
+    taskIndex:number; //indicates current function to be executed
+    subTasks:SubTask[];
+    isTaskComplete:boolean;
+    enable:boolean;
 
-    constructor(maxStep?:number, tasks?:any[])
+    constructor( tasks:SubTask[] = [] )
     {
-        this.curIndex=0;
-        this.curStep=0;
-        this.maxStep = maxStep?maxStep:30;
-        this.subTasks = tasks?tasks:[];
+        this.taskIndex=0;
+        this.subTasks = tasks;
+        this.isTaskComplete=false;
+        this.enable=true;
     }
 
 
-    execute(args?:any[]): void 
-    {}
+    update(delta: number, args?: any[]): void 
+    {
+
+        if( !this.enable ) return; //if not enabled dont process the logic belo
+
+        if (this.isTaskComplete) return; //if complete we won't execute below logic anymore until reset
+
+
+        console.log(` taskIndex process: ${this.taskIndex}  `)
+        if ( this.taskIndex > this.subTasks.length-1 ) 
+        {
+            //if we reach task
+            if( !this.isTaskComplete ){ this.isTaskComplete = true;  console.log(`task index complete: ${this.taskIndex}`) }
+            return;
+        }
+
+
+        const currentTask = this.subTasks[this.taskIndex];
+        // currentTask.curStep += delta; //use this for time
+        currentTask.curStep += 1; //use this for frame count
+
+        if (currentTask.curStep >= currentTask.maxStep) 
+        {
+            console.log(` taskIndex executed: ${this.taskIndex}`)
+            currentTask.curStep = 0; // Reset step count
+            currentTask.fn( delta, args ); // Execute the task function
+            this.taskIndex++; // Move to the next task
+        }
+    
+    }
+
+    /**
+     * reset index and each subtask curStep
+     */
+    reset():void
+    {
+        this.subTasks.forEach( (subTask:SubTask) => { subTask.curStep=0; } );
+        this.taskIndex = 0;
+        this.isTaskComplete = false;
+    }
 
 
 }

@@ -59,17 +59,20 @@ export class SpriteUtil
 
     /**
      * gets the angle of the sprite pointing to X & Y coordinates
+     * if inRadians is true returns angle in radians if false, returns a value between 0 and 360
      * @param spr 
      * @param x 
      * @param y 
+     * @param inRadians - Whether to return the angle in radians (default: true).
+     * @returns The angle in radians or degrees.
      */
-    static getAngle<T extends Sprite>( spr:T, x:number, y:number ):number
+    static getAngle<T extends Sprite>( spr:T, x:number, y:number, inRadians:boolean = true ):number
     {
         let vx:number = x -( spr.points[0].x + spr.w / 2 );
         let vy:number = y -( spr.points[0].y + spr.h / 2 );
         let angle = Math.atan2( vy, vx );// * (180 / Math.PI);
         // return angle; //if we want the value in radians
-        return (angle * 180 / Math.PI + 360) % 360;
+        return inRadians ? angle : (angle * 180 / Math.PI + 360) % 360;
     }//
 
 

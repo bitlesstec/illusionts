@@ -24,8 +24,23 @@ export abstract class BaseShape
     visible:boolean;// to know if is visible in screen
     xScale:number; // changes the scale on X axis, default 1
     yScale:number; // changes the scale on Y axis, default 1
-
     label:string;
+
+    /**
+     * by default true;
+     * if enable = false, means update or render won't be executed
+     * this will disable the instance from Game point of view used
+     * for instance to disable all instances when game is paused
+     * or game state changes
+     */
+    enable:boolean; 
+
+    /**
+     * by default true
+     * if active = false, means the instance is still enabled but will be momentanly
+     * inactive in the case is out of the view and is waiting to enter
+     */
+    active:boolean;
 
     /**
      * pivot is used to decide the center of the sprite
@@ -44,7 +59,7 @@ export abstract class BaseShape
      */
     anchor:Point;
     
-    constructor(basePoint?:Point)
+    constructor(basePoint:Point = new Point(0,0) )
     {
         this.id = ++Config.SPRITE_ID_COUNTER;
         this.label = "";
@@ -61,6 +76,9 @@ export abstract class BaseShape
         this.strokeColor="#EAE";//gray
         this.strokeLineWidth=1;
         this.displayOutline=false;
+
+        this.enable = true;
+        this.active = true;
 
     }
 

@@ -146,4 +146,69 @@ export class MathUtil
         return args[randChoose];
     }
     
+
+    //MATH FUNCTION
+    // y = sin(x * 2pi / period) * amplitude + midpoint
+    // y is the property we want to change
+    // x is time (increasing constantly)
+    // 2pi is a mathematical constant (it's the circumference of a circle with radius 1)
+    // period is how long one cycle of the sine wave takes
+    // amplitude is how high up and down the sine wave goes
+
+    /**
+     * creates a sine wave
+     * @param time 
+     * @param period   is how long one cycle of the sine wave takes
+     * @param amplitude  is how high up and down the sine wave goes
+     * @param midpoint 
+     * USAGE:
+     * #1
+     * y = sine_wave(current_time / 1000, 1, 64, 0);
+     * 
+     * #2
+     * var time = current_time / 1000;
+        image_yscale = sine_between(time, 1, 0.75, 1);
+        image_angle = sine_wave(time, 2, 15, 0);
+
+        #3
+        * image_angle = sineWave(current_time / 1000, 1, 45, 270);
+     */
+        static sineWave( time:number, period:number, amplitude:number, midpoint:number)
+        {
+            return Math.sin(time * 2 * Math.PI / period) * amplitude + midpoint;
+        }
+    
+        /**
+         * 
+         * @param time 
+         * @param period 
+         * @param minimum 
+         * @param maximum 
+         * @returns 
+         * USAGE:
+         * image_alpha = sineBetween(current_time / 1000, 2, 0, 1);
+         
+         */
+        static sineBetween(  time:number, period:number,  minimum:number, maximum:number ) 
+        {
+            var midpoint =  MathUtil.mean([minimum, maximum]);
+            var amplitude = maximum - midpoint;
+            return MathUtil.sineWave(time, period, amplitude, midpoint);
+        }
+    
+    /**
+     * This function works by adding up all the input values and then dividing them by their own number.
+     * You can have as many arguments as you require (note that more arguments will mean that the function will be slower to parse).
+     *  So, mean(2, 6, 9, 32) returns 12.25 as 2+6+9+32=49 and 49/4=12.25.
+     * @param values 
+     * @returns 
+     * es para sacar promedio en espanol
+     */
+        static mean(values: number[]):number
+        {
+            if (values.length === 0) return 0; 
+            return values.reduce((sum, value) => sum + value, 0) / values.length;
+        }
+
+        
 }//

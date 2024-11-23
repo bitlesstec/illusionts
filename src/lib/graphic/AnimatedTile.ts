@@ -1,6 +1,11 @@
+import { AnimationLoop } from "./AnimationLoop";
 import { BaseTile } from "./BaseTile";
+import { Tile } from "./Tile";
 
 
+/**
+ * 
+ */
 export class AnimatedTile extends BaseTile
 {
 
@@ -12,16 +17,25 @@ export class AnimatedTile extends BaseTile
     animationStep: number;
     animationStepLimit:number;
     lastIndex:number;
+    animationLoop:AnimationLoop;
+    animationFrames:Tile[];
+    enable:boolean;
+
+    animationIndex: number; //index position of animationFrames
 
 
-    constructor( x:number, y:number, w:number, h:number, srcX:number, srcY:number, index:number, lastIndex:number )
+    constructor( animationFrames:Tile[] = [] )
     {
-        super(x,y,w,h,index);
-        this.srcX = srcX;
-        this.srcY = srcY?srcY:0;
+
+        super( 0, 0, 0, 0, animationFrames.length > 0 ? animationFrames[0].index : 0 );
+        this.srcX = 0;
+        this.srcY = 0;
         this.animationStep=0;
         this.animationStepLimit=15;
-        this.lastIndex=lastIndex;
+        this.lastIndex = animationFrames.length === 0 ? 0: animationFrames.length-1;
+        this.animationLoop = AnimationLoop.FORWARD;
+        this.enable = true;
+        this.animationIndex = 0;
     }
 
 
@@ -31,13 +45,14 @@ export class AnimatedTile extends BaseTile
 
         this.updateAnimation();
 
+        const tile =  this.animationFrames[ this.lastIndex ]
         ctx.drawImage
         (
             image,
-            this.srcX, this.srcY, //srcX changes inside updateAnimation()
-            this.w, this.h,
-            Math.floor( this.x ), Math.floor( this.y ),
-            this.w, this.h
+            tile.srcX, tile.srcY, //srcX changes inside updateAnimation()
+            tile.w, tile.h,
+            Math.floor( tile.x ), Math.floor( tile.y ),
+            tile.w, tile.h
         );
 
 
@@ -49,19 +64,52 @@ export class AnimatedTile extends BaseTile
      */
     updateAnimation()
     {
-            this.animationStep ++;
+        if( !this.enable || this.animationFrames.length === 0 ) return;
 
+            this.animationStep ++;
+        
         if( this.animationStep >= this.animationStepLimit )
         {
             this.animationStep = 0;
 
-            this.srcX = this.index * this.w;
-            this.index++;
-            if( this.index > this.lastIndex )
+            switch(this.animationLoop)
             {
-                this.index = 0;
-            }
-        }
+                case AnimationLoop.FORWARD:
+                
+                this.animationIndex++;
+                if (this.animationIndex >= this.animationFrames.length) 
+                {
+                    this.animationIndex = 0; 
+                }
+                    
+                    break;
+                
+                    case AnimationLoop.BACKWARD:
+                        this.animationIndex--;
+                        if (this.animationIndex < 0) 
+                        {
+                            this.animationIndex = this.animationFrames.length - 1;
+                        }
+                    break;
+
+            }//switch
+
+
+        }//
+
+        
+
+        // if( this.animationStep >= this.animationStepLimit )
+        // {
+        //     this.animationStep = 0;
+
+        //     this.srcX = this.index * this.w;
+        //     this.index++;
+        //     if( this.index > this.lastIndex )
+        //     {
+        //         this.index = 0;
+        //     }
+        // }
     }
 
 }//

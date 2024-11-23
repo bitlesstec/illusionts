@@ -169,7 +169,7 @@ export class Sprite extends BaseShape
                 let centerY:number= this.pivot !== undefined?this.pivot.y:this.h/2;
 
                 ctx.translate( this.getX() + centerX, this.getY() + centerY );
-                ctx.rotate( this.angle );
+                ctx.rotate( this.angle ); //uses angle in radians
                 ctx.scale( this.xScale, this.yScale );
                 ctx.translate( -( this.getX() + centerX ), -( this.getY() + centerY ) );
             }

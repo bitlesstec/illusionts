@@ -1,5 +1,6 @@
 import { SubTask } from "./SubTask";
 import { Updatable } from "../ntfc/Updatable";
+import { TaskAction } from "./TaskAction";
 
 /**
  * @TODO need to add TASKACTION.ts implementation to change what heppens after task is complete
@@ -41,6 +42,7 @@ export class Task implements Updatable
     subTasks:SubTask[];
     isTaskComplete:boolean;
     enable:boolean;
+    onEndAction:TaskAction;
 
     constructor( tasks:SubTask[] = [] )
     {
@@ -48,22 +50,37 @@ export class Task implements Updatable
         this.subTasks = tasks;
         this.isTaskComplete=false;
         this.enable=true;
+        this.onEndAction = TaskAction.NONE;
     }
 
 
-    update(delta: number, args?: any[]): void 
+    update(delta?: number, args?: any[]): void 
     {
 
         if( !this.enable ) return; //if not enabled dont process the logic belo
 
-        if (this.isTaskComplete) return; //if complete we won't execute below logic anymore until reset
+        if (this.isTaskComplete) //if complete we won't execute below logic anymore until reset
+        {
+            switch( this.onEndAction )
+            {
+                case TaskAction.NONE:
+                    return;
+                case TaskAction.RESTART:
+                    this.reset();
+                    break;
+                    //@TODO implement other actions
 
+            }
+        }
 
-        console.log(` taskIndex process: ${this.taskIndex}  `)
+        // console.log(` taskIndex process: ${this.taskIndex}  `)
+        //this will check if we reached the end of task, if so will set isTaskComplete to true
         if ( this.taskIndex > this.subTasks.length-1 ) 
         {
             //if we reach task
-            if( !this.isTaskComplete ){ this.isTaskComplete = true;  console.log(`task index complete: ${this.taskIndex}`) }
+            if( !this.isTaskComplete ){ this.isTaskComplete = true; 
+                //  console.log(`task index complete: ${this.taskIndex}`) 
+                }
             return;
         }
 
@@ -88,7 +105,7 @@ export class Task implements Updatable
     reset():void
     {
         this.subTasks.forEach( (subTask:SubTask) => { subTask.curStep=0; } );
-        this.taskIndex = 0;
+        this.taskIndex = -1;
         this.isTaskComplete = false;
     }
 

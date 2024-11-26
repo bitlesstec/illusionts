@@ -4,6 +4,7 @@
  */
 export enum TaskAction
 { 
+NONE,
 STOP,
 REVERSE,
 START,

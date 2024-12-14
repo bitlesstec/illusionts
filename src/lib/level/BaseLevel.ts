@@ -53,9 +53,16 @@ constructor( levelWidth:number, levelHeight:number, viewWidth?:number, viewHeigh
     this.levelHeight = levelHeight;
 
     if( viewWidth !== undefined && viewHeight !== undefined )
+    {
         this.camera = new Camera( levelWidth, levelHeight, viewWidth, viewHeight );
+    }    
     else
-        this.camera = new Camera( levelWidth, levelHeight );
+    {
+        //in case we don't have viewWidth and viewHeight, the level viewWidth and viewHeight
+        //will be the same as levelWidth and levelHeight 
+        this.camera = new Camera( levelWidth, levelHeight, levelWidth, levelHeight );
+    }
+       
 }//
 
 

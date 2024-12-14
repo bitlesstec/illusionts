@@ -7,15 +7,30 @@ export { Audioable } from "./audio/Audioable"
 
 
 export { Camera } from "./camera/Camera"
-export { FlashEffect } from "./camera/FlashEffect"
+// export { FlashEffect } from "./camera/FlashEffect"
 export { Margin } from "./camera/Margin"
 export { Offset } from "./camera/Offset"
-export { ShakeEffect } from "./camera/ShakeEffect"
+// export { ShakeEffect } from "./camera/ShakeEffect"
 
 
 export { Config } from "./cfg/Config"
 export { Keys } from "./cfg/Keys"
 
+
+export {BaseEffect} from "./effect/BaseEffect"
+export {EffectType} from "./effect/EffectType"
+export {FadeEffect} from "./effect/FadeEffect"
+export {FlashEffect} from "./effect/FlashEffect"
+export {FlashOptions} from "./effect/FlashOptions"
+export {FlashTarget} from "./effect/FlashTarget"
+export {PulseEffect} from "./effect/PulseEffect"
+export {ShakeEffect} from "./effect/ShakeEffect"
+export {SlideEffect} from "./effect/SlideEffect"
+export {Spline} from "./effect/Spline"
+export {Tween} from "./effect/Tween"
+export {TweenOptions} from "./effect/TweenOptions"
+export {TweenResetOptions} from "./effect/TweenResetOptions"
+export {WobbleEffect} from "./effect/WobbleEffect"
 
 export { BaseGameController } from "./game/BaseGameController"
 export { Game } from "./game/Game"

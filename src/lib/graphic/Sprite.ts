@@ -147,7 +147,7 @@ export class Sprite extends BaseShape
      * in canvas
      * @param ctx 
      */
-    render(ctx: CanvasRenderingContext2D): void 
+    render(ctx: CanvasRenderingContext2D): any 
     {
     
         //display sprite if is visible
@@ -178,7 +178,7 @@ export class Sprite extends BaseShape
             ctx.drawImage
             (
                 this.image,
-                this.srcX + ( this.currentFrame * this.w), this.srcY, //srcX changes inside updateAnimation()
+                this.srcX + ( this.currentFrame * this.w ), this.srcY, //srcX changes inside updateAnimation()
                 this.w, this.h,
                 Math.floor( this.getX() ), Math.floor( this.getY() ),
                 this.dstW, this.dstH

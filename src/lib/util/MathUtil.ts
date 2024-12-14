@@ -97,11 +97,13 @@ export class MathUtil
      * -----------------
      * 50 --> 100%
      * 25 --> ?
+     * 
+     * commonly named as rule of 3
      * @param a 
      * @param b 
      * @param c 
      */
-    static directRuleOf3( a:number, b:number, c:number ):number
+    static directProportion( a:number, b:number, c:number ):number
     {
         return( ( b * c ) / a );
     }
@@ -114,7 +116,7 @@ export class MathUtil
      * @param b 
      * @param c 
      */
-    static reverseRuleOf3( a:number, b:number, c:number ):number
+    static reverseDirectProportion( a:number, b:number, c:number ):number
     {
         return( ( a * b ) / c );
     }

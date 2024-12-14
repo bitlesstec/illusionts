@@ -13,6 +13,9 @@ export class Collider extends BaseShape
 
    w:number;
    h:number;
+   dstW:number;
+   dstH:number;
+   
    parent:Sprite;
    //type:string;
 
@@ -20,6 +23,8 @@ export class Collider extends BaseShape
     {
     super();
     this.updateCollider(x,y,w,h,parent);
+    this.dstW = w;
+    this.dstH = h;
     }
 
     getX():number{
@@ -45,6 +50,8 @@ export class Collider extends BaseShape
         this.points[0]=new Point(x,y);
         this.w=w;
         this.h=h;
+        this.dstW=w;
+        this.dstH=h;
         //an sprite (parent) can have multiple colliders inside, if so
         //x & y coordinates will be afected by parent.x and parent.y
         this.parent=parent?parent:undefined;

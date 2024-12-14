@@ -149,4 +149,23 @@ export abstract class BaseShape
     {
         return this.points[0].y= y;
     }
+
+    /**
+     * Getters y Setters fir x e y, that modify points[0]
+     */
+    get x(): number {
+        return this.points[0].x;
+    }
+
+    set x(value: number) {
+        this.points[0].x = value;
+    }
+
+    get y(): number {
+        return this.points[0].y;
+    }
+
+    set y(value: number) {
+        this.points[0].y = value;
+    }
 }

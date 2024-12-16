@@ -9,7 +9,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://gitlab.com/pavul/illusionts.git"
+    "url": "git+https://github.com/bitlesstec/illusionts"
   },
   "files": [
     "game/lib"
@@ -18,9 +18,9 @@
   "author": "bitless <bitlesstec@gmail.com>",
   "license": "MIT",
   "bugs": {
-    "url": "https://gitlab.com/pavul/illusionts/issues"
+    "url": "https://github.com/bitlesstec/illusionts/issues"
   },
-  "homepage": "https://gitlab.com/pavul/illusionts#readme",
+  "homepage": "https://github.com/bitlesstec/illusionts#readme",
   "devDependencies": {
     "@types/node": "^20.6.0",
     "@types/webpack": "^5.28.5",

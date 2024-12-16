@@ -91,9 +91,13 @@ export { Mousable } from "./ntfc/input/Mousable"
 export { Touchable } from "./ntfc/input/Touchable"
 
 
+export {Particle} from "./particle/Particle"
+export {ParticleEmitter} from "./particle/ParticleEmitter"
+export {ParticleShape} from "./particle/ParticleShape"
+
 export { Task } from "./task/Task"
 export { SubTask } from "./task/SubTask"
-// export { TaskAction } from "./task/TaskAction" //need to implement this
+export { TaskAction } from "./task/TaskAction" //need to implement this
 
 export { Timer } from "./time/Timer"
 export { AssetUtil } from "./util/AssetUtil"

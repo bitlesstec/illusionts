@@ -1,9 +1,7 @@
 
 import { Moveable } from "../ntfc/Moveable";
-import { FlashEffect } from "./FlashEffect";
 import { Margin } from "./Margin";
 import { Offset } from "./Offset";
-import { ShakeEffect } from "./ShakeEffect";
 
 export class Camera implements Moveable
 {
@@ -28,8 +26,8 @@ export class Camera implements Moveable
     viewX: number;
     viewY: number;
 
-    shakeEffect:ShakeEffect;
-    flashEffect:FlashEffect;
+    // shakeEffect:ShakeEffect;
+    // flashEffect:FlashEffect;
 
     margin:Margin;
     offset:Offset;
@@ -78,8 +76,8 @@ export class Camera implements Moveable
        
 
         //effects camera can effectuate
-        this.shakeEffect = new ShakeEffect( this );
-        this.flashEffect = new FlashEffect( this );
+        // this.shakeEffect = new ShakeEffect( this );
+        // this.flashEffect = new FlashEffect( this );
 
         this.margin = new Margin( this );
         this.offset = new Offset();
@@ -99,7 +97,7 @@ export class Camera implements Moveable
 
     moveX(xspd: number) 
     {
-        if(this.shakeEffect.isShaking)return;//ww aren't moving camera if is shaking
+        // if(this.shakeEffect.isShaking)return;//ww aren't moving camera if is shaking
         //      to move camera to right we have to substract x to camx(in negative way),
         //      at the same time x it should be added to ViewX to have the correct position
         //      in order to display some text in the same position of the view 
@@ -130,7 +128,7 @@ export class Camera implements Moveable
     moveY(yspd: number) 
     {
 
-        if(this.shakeEffect.isShaking)return;//ww aren't moving camera if is shaking
+        // if(this.shakeEffect.isShaking)return;//ww aren't moving camera if is shaking
 
         this.y -= yspd; 
         this.viewY += yspd;

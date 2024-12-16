@@ -147,7 +147,7 @@ export class Sprite extends BaseShape
      * in canvas
      * @param ctx 
      */
-    render(ctx: CanvasRenderingContext2D): void 
+    render(ctx: CanvasRenderingContext2D): any 
     {
     
         //display sprite if is visible
@@ -169,7 +169,7 @@ export class Sprite extends BaseShape
                 let centerY:number= this.pivot !== undefined?this.pivot.y:this.h/2;
 
                 ctx.translate( this.getX() + centerX, this.getY() + centerY );
-                ctx.rotate( this.angle );
+                ctx.rotate( this.angle ); //uses angle in radians
                 ctx.scale( this.xScale, this.yScale );
                 ctx.translate( -( this.getX() + centerX ), -( this.getY() + centerY ) );
             }
@@ -178,7 +178,7 @@ export class Sprite extends BaseShape
             ctx.drawImage
             (
                 this.image,
-                this.srcX + ( this.currentFrame * this.w), this.srcY, //srcX changes inside updateAnimation()
+                this.srcX + ( this.currentFrame * this.w ), this.srcY, //srcX changes inside updateAnimation()
                 this.w, this.h,
                 Math.floor( this.getX() ), Math.floor( this.getY() ),
                 this.dstW, this.dstH

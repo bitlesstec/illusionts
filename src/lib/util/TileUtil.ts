@@ -54,7 +54,16 @@ static parse( tileMap:number[], cols:number, rows:number, tileWidth:number, tile
 }//
 
 
-
+/**
+ * 
+ * @param tileMap 
+ * @param cols 
+ * @param rows 
+ * @param tileWidth 
+ * @param tileHeight 
+ * @returns 
+ * @deprecated FIX THIS with new animated tiles
+ */
 static parseAnimatedTiles( tileMap:any[], cols:number, rows:number, tileWidth:number, tileHeight:number):AnimatedTile[]
 {
     let tileList:AnimatedTile[] = [];
@@ -79,10 +88,10 @@ static parseAnimatedTiles( tileMap:any[], cols:number, rows:number, tileWidth:nu
                         //other tiles used as sprite positions, etc.
                         if(  Object.entries( tileObject ).length == 0 ) continue;
                                 
-                        let at = new AnimatedTile( tileX, tileY, tileWidth, tileHeight, 
-                                                   0, tileObject.srcY, tileObject.index, tileObject.lastIndex );
+                        // let at = new AnimatedTile( tileX, tileY, tileWidth, tileHeight, 
+                        //                            0, tileObject.srcY, tileObject.index, tileObject.lastIndex );
 
-                        tileList.push( at );//tile added
+                        // tileList.push( at );//tile added
                     }//j
             } //i       
 

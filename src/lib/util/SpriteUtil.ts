@@ -295,5 +295,22 @@ export class SpriteUtil
     }
 
 
+    static drawBoundingBox<T extends Sprite>(spr:T, ctx:CanvasRenderingContext2D ,  color:string="red"):void
+    {
+        ctx.strokeStyle = color;
+        ctx.strokeRect( spr.x, spr.y, spr.dstW, spr.dstH )
+    }
+
+    static drawBoundingCircle<T extends Sprite>(spr:T, ctx:CanvasRenderingContext2D ,color:string="red"):void
+    {
+        ctx.strokeStyle = color;
+        ctx.beginPath();
+        ctx.arc(spr.x + spr.dstW/2, spr.y + spr.dstH/2, spr.dstW/2 , 0, Math.PI * 2); // Dibuja un arco completo (círculo)
+        ctx.lineWidth = 1; // Establece el ancho del contorno
+        ctx.stroke(); // Dibuja el contorno
+        ctx.closePath(); // Cierra el camino
+    }
+
+
 
 }//

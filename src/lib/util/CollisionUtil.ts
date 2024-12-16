@@ -126,7 +126,7 @@ pointCollision( x:number, y:number,
  */
 spritePointCollision( x:number, y:number, spr:Sprite | Collider ):boolean
 {
-    return this.pointCollision( x, y, spr.getX(), spr.getY(), spr.w, spr.h );
+    return this.pointCollision( x, y, spr.getX(), spr.getY(), spr.dstW, spr.dstW );
 }//
 
 
@@ -150,17 +150,26 @@ circleCollision( cenx:number, ceny:number, rad:number,
     return magnitude < totalRadio;
 }
 
-
+/**
+ * this will check if there is a collision between the sprite/collider and a circle by its
+ * centerX , centerY and radius
+ * @param spr 
+ * @param cenx 
+ * @param ceny 
+ * @param rad 
+ * @param fixOverlap 
+ * @returns 
+ */
 spriteCircleColision( spr:Sprite | Collider, cenx:number, ceny:number, rad:number, fixOverlap:boolean = true ):boolean
 {
-let vx:number = (spr.getX() + spr.w/2) - cenx;
-let vy:number = (spr.getY() + spr.h/2) - ceny;
+let vx:number = (spr.getX() + spr.dstW/2) - cenx;
+let vy:number = (spr.getY() + spr.dstH/2) - ceny;
 
  //calculate distance between circles
-let magnitude:number = Math.sqrt( (vx * vx) + (vy * vy) );
+let magnitude:number = Math.sqrt( (vx * vx) + (vy * vy) );//use get magnitude method
            
  //get total radio of two circles
- let totalRadio:number = spr.w/2 + rad;
+ let totalRadio:number = spr.dstW/2 + rad;
 
  let res:boolean = magnitude < totalRadio;
 
@@ -187,7 +196,7 @@ return res;
 spritesCircleCollision( spr1:Sprite| Collider, spr2:Sprite| Collider, fixOverlap:boolean = true):boolean
 {
 return this.spriteCircleColision( spr1, 
-    spr2.getX() + spr2.w/2, spr2.getY() + spr2.h/2, spr2.w/2, fixOverlap);
+    spr2.getX() + spr2.dstW/2, spr2.getY() + spr2.dstH/2, spr2.dstW/2, fixOverlap);
 }
 
 /**
@@ -219,8 +228,8 @@ return ( Math.abs( this.getDistance( x, w, x2, w2 ) ) < combinedHalfWidth &&
  */
 spriteRectangleCollision( spr1:Sprite | Collider, spr2:Sprite | Collider ):boolean
 {
-return this.rectangleCollision( spr1.getX(), spr1.getY(), spr1.w, spr1.h, 
-                                spr2.getX(), spr2.getY(), spr2.w, spr2.h );
+return this.rectangleCollision( spr1.getX(), spr1.getY(), spr1.dstW, spr1.dstH, 
+                                spr2.getX(), spr2.getY(), spr2.dstW, spr2.dstH );
 }
 
 /**
@@ -244,11 +253,11 @@ if(spr1 instanceof Collider && spr1.parent !== undefined)
     colliderParent = spr1.parent;
 }
 
-let vx:number = this.getDistance( spr2.getX(), spr2.w, spr1.getX(), spr1.w );
-let vy:number = this.getDistance( spr2.getY(), spr2.h, spr1.getY(), spr1.h );
+let vx:number = this.getDistance( spr2.getX(), spr2.dstW, spr1.getX(), spr1.dstW );
+let vy:number = this.getDistance( spr2.getY(), spr2.dstH, spr1.getY(), spr1.dstH );
 
-let combinedHalfWidth = this.getCombinedHalf( spr1.w, spr2.w );
-let combinedHalfHeight= this.getCombinedHalf( spr1.h, spr2.h );
+let combinedHalfWidth = this.getCombinedHalf( spr1.dstW, spr2.dstW );
+let combinedHalfHeight= this.getCombinedHalf( spr1.dstH, spr2.dstH );
 
 let vxabs = Math.abs( vx );
 let vyabs = Math.abs( vy );
@@ -623,7 +632,7 @@ tileCollision(sprites: (Sprite | Collider)[], tiles: Tile[] | BaseTile[], camera
                     switch (tileIndex) {
                         case 2:
                         case 3:
-                            const isColiding: boolean = this.rectangleCollision(spr.getX(), spr.getY(), spr.w, spr.h, tile.x, tile.y, tile.w, tile.h);
+                            const isColiding: boolean = this.rectangleCollision(spr.getX(), spr.getY(), spr.dstW, spr.dstH, tile.x, tile.y, tile.w, tile.h);
 
                             if (isColiding) {
                                 const colpos: number = (spr.getX() + spr.anchor.x) - tile.x;
@@ -637,9 +646,9 @@ tileCollision(sprites: (Sprite | Collider)[], tiles: Tile[] | BaseTile[], camera
                                     }
 
                                     if (spr instanceof Collider && spr.parent) {
-                                        spr.parent.setY((tile.y - spr.h) + (tile.h - yval));
+                                        spr.parent.setY((tile.y - spr.dstH) + (tile.h - yval));
                                     } else {
-                                        spr.setY((tile.y - spr.h) + (tile.h - yval));
+                                        spr.setY((tile.y - spr.dstH) + (tile.h - yval));
                                     }
 
                                     collisions[sidx] += `.bottom`;
@@ -692,11 +701,11 @@ tileCollision(sprites: (Sprite | Collider)[], tiles: Tile[] | BaseTile[], camera
      colliderParent = spr1.parent;
  }
  
- let vx:number = this.getDistance( spr2.getX(), spr2.w, spr1.getX(), spr1.w );
- let vy:number = this.getDistance( spr2.getY(), spr2.h, spr1.getY(), spr1.h );
+ let vx:number = this.getDistance( spr2.getX(), spr2.dstW, spr1.getX(), spr1.dstW );
+ let vy:number = this.getDistance( spr2.getY(), spr2.dstH, spr1.getY(), spr1.dstH );
  
- let combinedHalfWidth = this.getCombinedHalf( spr1.w, spr2.w );
- let combinedHalfHeight= this.getCombinedHalf( spr1.h, spr2.h );
+ let combinedHalfWidth = this.getCombinedHalf( spr1.dstW, spr2.dstW );
+ let combinedHalfHeight= this.getCombinedHalf( spr1.dstH, spr2.dstH );
  
  let vxabs = Math.abs( vx );
  let vyabs = Math.abs( vy );
@@ -765,8 +774,8 @@ tileCollision(sprites: (Sprite | Collider)[], tiles: Tile[] | BaseTile[], camera
 lineSpriteCollision( sprite: Sprite | Collider, point1: Point, point2: Point): boolean {
     // Verificar si alguno de los extremos de la línea está dentro del sprite
     if (
-      (point1.x >= sprite.getX() && point1.x <= sprite.getX() + sprite.w && point1.y >= sprite.getY() && point1.y <= sprite.getY() + sprite.h) ||
-      (point2.x >= sprite.getX() && point2.x <= sprite.getX() + sprite.w && point2.y >= sprite.getY() && point2.y <= sprite.getY() + sprite.h)
+      (point1.x >= sprite.getX() && point1.x <= sprite.getX() + sprite.dstW && point1.y >= sprite.getY() && point1.y <= sprite.getY() + sprite.dstH) ||
+      (point2.x >= sprite.getX() && point2.x <= sprite.getX() + sprite.dstW && point2.y >= sprite.getY() && point2.y <= sprite.getY() + sprite.dstH)
     ) {
       return true;
     }
@@ -775,12 +784,12 @@ lineSpriteCollision( sprite: Sprite | Collider, point1: Point, point2: Point): b
     // Usar la fórmula de intersección de líneas
     const x1 = sprite.getX();
     const y1 = sprite.getY();
-    const x2 = sprite.getX() + sprite.w;
+    const x2 = sprite.getX() + sprite.dstW;
     const y2 = sprite.getY();
     const x3 = sprite.getX();
-    const y3 = sprite.getY() + sprite.h;
-    const x4 = sprite.getX() + sprite.w;
-    const y4 = sprite.getY() + sprite.h;
+    const y3 = sprite.getY() + sprite.dstH;
+    const x4 = sprite.getX() + sprite.dstW;
+    const y4 = sprite.getY() + sprite.dstH;
   
     const denom = (y4 - y3) * (x2 - x1) - (x4 - x3) * (y2 - y1);
     if (denom === 0) {

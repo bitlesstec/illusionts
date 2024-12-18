@@ -55,46 +55,34 @@ static parse( tileMap:number[], cols:number, rows:number, tileWidth:number, tile
 
 
 /**
- * 
- * @param tileMap 
- * @param cols 
- * @param rows 
- * @param tileWidth 
- * @param tileHeight 
- * @returns 
- * @deprecated FIX THIS with new animated tiles
+ * this function will parse an animated tilemap json object ( animated tiles created with tilered )
+ * and will return the list of animated tiles
  */
-static parseAnimatedTiles( tileMap:any[], cols:number, rows:number, tileWidth:number, tileHeight:number):AnimatedTile[]
+static parseAnimatedTileMap( tileMap:any[] ):AnimatedTile[]
 {
     let tileList:AnimatedTile[] = [];
 
-    let tileIndex:number = 0;
-        
-        for( let i = 0; i < rows; i++ )
+        for( const jsonTile of tileMap)
+        {
+
+            const tiles:Tile[]=[]
+            for(  let idx:number = 0; idx < jsonTile.animationFrames.length ;idx++)
             {
-                let tileY = i * tileHeight;
-            
-                    //for de columnas
-                    for( let j = 0; j < cols; j++ )
-                    {
-                        let tileX = j * tileWidth;
-                      
-                        //value of tileMap, can be image or solid tile
-                        let tileObject:AnimatedTileConfig = tileMap[ tileIndex ];
-                       
-                        tileIndex++;
-                         
-                        //all tiles with 0 values are ignored so they can be used to sort
-                        //other tiles used as sprite positions, etc.
-                        if(  Object.entries( tileObject ).length == 0 ) continue;
-                                
-                        // let at = new AnimatedTile( tileX, tileY, tileWidth, tileHeight, 
-                        //                            0, tileObject.srcY, tileObject.index, tileObject.lastIndex );
+                const srcX = jsonTile.animationFrames[idx].srcX;
+                const srcY = jsonTile.animationFrames[idx].srcY;
+                const index = jsonTile.animationFrames[idx].index;
+                const tileW = jsonTile.animationFrames[idx].tileW;
+                const tileH = jsonTile.animationFrames[idx].tileH;
 
-                        // tileList.push( at );//tile added
-                    }//j
-            } //i       
+                const tile:Tile = new Tile( jsonTile.x, jsonTile.y, tileW, tileH, srcX, srcY, index )
 
+                tiles.push(tile);
+            }
+
+            const animTile:AnimatedTile = new AnimatedTile( tiles );
+            tileList.push(animTile);
+
+        }
         return tileList;
 }//
 

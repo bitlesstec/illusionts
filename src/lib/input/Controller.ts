@@ -50,53 +50,53 @@ export class Controller implements Gamepadable
     //XBOX ONE MAPPING
     //XBOX360 - Xbox 360 Controller (XInput STANDARD GAMEPAD 
 
-    static readonly XBOXONE_BTN_A:number = Controller.GEN_BTN_0;
-    static readonly XBOXONE_BTN_B:number = Controller.GEN_BTN_1;
-    static readonly XBOXONE_BTN_X:number = Controller.GEN_BTN_2;
-    static readonly XBOXONE_BTN_Y:number = Controller.GEN_BTN_3;
-    static readonly XBOXONE_LEFT_BUMPER:number = Controller.GEN_BTN_4;
-    static readonly XBOXONE_RIGTH_BUMPER:number = Controller.GEN_BTN_5;
-    static readonly XBOXONE_LEFT_TRIGGER:number = Controller.GEN_BTN_6; //analogic value
-    static readonly XBOXONE_RIGTH_TRIGGER:number = Controller.GEN_BTN_7;//analogic value
-    static readonly XBOXONE_BTN_VIEW:number = Controller.GEN_BTN_8;
-    static readonly XBOXONE_BTN_MENU:number = Controller.GEN_BTN_9;
-    static readonly XBOXONE_LEFT_STICK_BTN:number = Controller.GEN_BTN_10;
-    static readonly XBOXONE_RIGTH_STICK_BTN:number = Controller.GEN_BTN_11;
-    static readonly XBOXONE_DPAD_UP:number = Controller.GEN_BTN_12;
-    static readonly XBOXONE_DPAD_DOWN:number = Controller.GEN_BTN_13;
-    static readonly XBOXONE_DPAD_LEFT:number = Controller.GEN_BTN_14;
-    static readonly XBOXONE_DPAD_RIGTH:number = Controller.GEN_BTN_15;
-    static readonly XBOXONE_XBOX_BTN:number = Controller.GEN_BTN_16;
-    static readonly XBOXONE_LEFTSTICK_XAXIS:number = Controller.GEN_LEFTSTICK_XAXIS;
-    static readonly XBOXONE_LEFTSTICK_YAXIS:number = Controller.GEN_LEFTSTICK_YAXIS;
-    static readonly XBOXONE_RIGTHSTICK_XAXIS:number = Controller.GEN_RIGTHSTICK_XAXIS;
-    static readonly XBOXONE_RIGTHSTICK_YAXIS:number = Controller.GEN_RIGTHSTICK_YAXIS;
+    static readonly XBOX_BTN_A:number = Controller.GEN_BTN_0;
+    static readonly XBOX_BTN_B:number = Controller.GEN_BTN_1;
+    static readonly XBOX_BTN_X:number = Controller.GEN_BTN_2;
+    static readonly XBOX_BTN_Y:number = Controller.GEN_BTN_3;
+    static readonly XBOX_LEFT_BUMPER:number = Controller.GEN_BTN_4;
+    static readonly XBOX_RIGTH_BUMPER:number = Controller.GEN_BTN_5;
+    static readonly XBOX_LEFT_TRIGGER:number = Controller.GEN_BTN_6; //analogic value
+    static readonly XBOX_RIGTH_TRIGGER:number = Controller.GEN_BTN_7;//analogic value
+    static readonly XBOX_BTN_VIEW:number = Controller.GEN_BTN_8;
+    static readonly XBOX_BTN_MENU:number = Controller.GEN_BTN_9;
+    static readonly XBOX_LEFT_STICK_BTN:number = Controller.GEN_BTN_10;
+    static readonly XBOX_RIGTH_STICK_BTN:number = Controller.GEN_BTN_11;
+    static readonly XBOX_DPAD_UP:number = Controller.GEN_BTN_12;
+    static readonly XBOX_DPAD_DOWN:number = Controller.GEN_BTN_13;
+    static readonly XBOX_DPAD_LEFT:number = Controller.GEN_BTN_14;
+    static readonly XBOX_DPAD_RIGTH:number = Controller.GEN_BTN_15;
+    static readonly XBOX_XBOX_BTN:number = Controller.GEN_BTN_16;
+    static readonly XBOX_LEFTSTICK_XAXIS:number = Controller.GEN_LEFTSTICK_XAXIS;
+    static readonly XBOX_LEFTSTICK_YAXIS:number = Controller.GEN_LEFTSTICK_YAXIS;
+    static readonly XBOX_RIGTHSTICK_XAXIS:number = Controller.GEN_RIGTHSTICK_XAXIS;
+    static readonly XBOX_RIGTHSTICK_YAXIS:number = Controller.GEN_RIGTHSTICK_YAXIS;
 
     // XBOX 360 MAPPING
 
     // PS4 MAPPING
     // Sony Interactive Entertainment Wireless Controller (STANDARD GAMEPAD Vendor: 054c Product: 09cc)
-    static readonly PS4_BTN_X:number = Controller.GEN_BTN_0;
-    static readonly PS4_BTN_O:number = Controller.GEN_BTN_1;  
-    static readonly PS4_BTN_SQUARE:number = Controller.GEN_BTN_2; 
-    static readonly PS4_BTN_TRIANGLE:number = Controller.GEN_BTN_3; 
-    static readonly PS4_BTN_L1:number = Controller.GEN_BTN_4;
-    static readonly PS4_BTN_R1:number = Controller.GEN_BTN_5;
-    static readonly PS4_BTN_L2:number = Controller.GEN_BTN_6; //analog value
-    static readonly PS4_BTN_R2:number = Controller.GEN_BTN_7; //analog value
-    static readonly PS4_BTN_SHARE:number = Controller.GEN_BTN_8;
-    static readonly PS4_BTN_OPTIONS:number = Controller.GEN_BTN_9;
-    static readonly PS4_LEFT_STICK_BTN:number = Controller.GEN_BTN_10;
-    static readonly PS4_RIGTH_STICK_BTN:number = Controller.GEN_BTN_11;
-    static readonly PS4_DPAD_UP:number = Controller.GEN_BTN_12;
-    static readonly PS4_DPAD_DOWN:number = Controller.GEN_BTN_13;
-    static readonly PS4_DPAD_LEFT:number = Controller.GEN_BTN_14;
-    static readonly PS4_DPAD_RIGTH:number = Controller.GEN_BTN_15;
-    static readonly PS4_PS_BTN:number = Controller.GEN_BTN_16;
-    static readonly PS4_LEFTSTICK_XAXIS:number = Controller.GEN_LEFTSTICK_XAXIS;
-    static readonly PS4_LEFTSTICK_YAXIS:number = Controller.GEN_LEFTSTICK_YAXIS;
-    static readonly PS4_RIGTHSTICK_XAXIS:number = Controller.GEN_RIGTHSTICK_XAXIS;
-    static readonly PS4_RIGTHSTICK_YAXIS:number = Controller.GEN_RIGTHSTICK_YAXIS;
+    static readonly PS_BTN_X:number = Controller.GEN_BTN_0;
+    static readonly PS_BTN_O:number = Controller.GEN_BTN_1;  
+    static readonly PS_BTN_SQUARE:number = Controller.GEN_BTN_2; 
+    static readonly PS_BTN_TRIANGLE:number = Controller.GEN_BTN_3; 
+    static readonly PS_BTN_L1:number = Controller.GEN_BTN_4;
+    static readonly PS_BTN_R1:number = Controller.GEN_BTN_5;
+    static readonly PS_BTN_L2:number = Controller.GEN_BTN_6; //analog value
+    static readonly PS_BTN_R2:number = Controller.GEN_BTN_7; //analog value
+    static readonly PS_BTN_SHARE:number = Controller.GEN_BTN_8;
+    static readonly PS_BTN_OPTIONS:number = Controller.GEN_BTN_9;
+    static readonly PS_LEFT_STICK_BTN:number = Controller.GEN_BTN_10;
+    static readonly PS_RIGTH_STICK_BTN:number = Controller.GEN_BTN_11;
+    static readonly PS_DPAD_UP:number = Controller.GEN_BTN_12;
+    static readonly PS_DPAD_DOWN:number = Controller.GEN_BTN_13;
+    static readonly PS_DPAD_LEFT:number = Controller.GEN_BTN_14;
+    static readonly PS_DPAD_RIGTH:number = Controller.GEN_BTN_15;
+    static readonly PS_PS_BTN:number = Controller.GEN_BTN_16;
+    static readonly PS_LEFTSTICK_XAXIS:number = Controller.GEN_LEFTSTICK_XAXIS;
+    static readonly PS_LEFTSTICK_YAXIS:number = Controller.GEN_LEFTSTICK_YAXIS;
+    static readonly PS_RIGTHSTICK_XAXIS:number = Controller.GEN_RIGTHSTICK_XAXIS;
+    static readonly PS_RIGTHSTICK_YAXIS:number = Controller.GEN_RIGTHSTICK_YAXIS;
 
     // ps3 MAPPING
 

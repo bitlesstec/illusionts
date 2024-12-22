@@ -28,10 +28,17 @@ export class SpriteUtil
     {
         if( spd <= 0 )return;
 
-        let vx:number = toX - spr.points[0].x + spr.w/2;
-        let vy:number = toY - spr.points[0].y + spr.h/2;
+        let vx: number = toX - (spr.x + spr.w / 2);
+        let vy: number = toY - (spr.y + spr.h / 2);
 
         let mag:number = Math.sqrt( ( vx * vx ) + ( vy * vy ) );
+        
+        if (mag === 0) {
+            // if destination is actual possition dont move the sprite
+            spr.spdX = 0;
+            spr.spdY = 0;
+            return;
+        }
 
         spr.spdX = ( vx / mag ) * spd;
         spr.spdY = ( vy / mag ) * spd;
@@ -41,8 +48,8 @@ export class SpriteUtil
     /**
      * this will set sprite spdX & spdY to the angle defined, with defined speed
      * @param spr 
-     * @param angle 
-     * @param spd 
+     * @param angle value of direction to move the sprite ( IN RADIANS )
+     * @param spd use any speed value, you may need it to multiply it by DELTA first
      * @param setAngle if this is set to true, spr:Sprite angle will be set
      */
     static moveToAngle<T extends Sprite>( spr:T, angle:number, spd:number, setAngle:boolean=false )

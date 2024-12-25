@@ -4,6 +4,7 @@ import { Sprite } from "../graphic/Sprite";
 import { Game } from "../game/Game";
 import { Bidim } from "../ntfc/Bidim";
 import { CollisionUtil } from "./CollisionUtil";
+import { Collider } from "../graphic/shape/Collider";
 
 /**
  * this class provides some generic functions
@@ -302,7 +303,7 @@ export class SpriteUtil
     }
 
 
-    static drawBoundingBox<T extends Sprite>(spr:T, ctx:CanvasRenderingContext2D ,  color:string="red"):void
+    static drawBoundingBox<T extends Sprite | Collider>(spr:T, ctx:CanvasRenderingContext2D ,  color:string="red"):void
     {
         ctx.strokeStyle = color;
         ctx.strokeRect( spr.x, spr.y, spr.dstW, spr.dstH )

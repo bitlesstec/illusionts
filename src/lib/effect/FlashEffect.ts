@@ -82,7 +82,7 @@ export class FlashEffect
 
     }
 
-    update() {
+    update():void  {
         if (this.active && this.tween)
         {
             this.tween.update();

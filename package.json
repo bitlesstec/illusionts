@@ -1,6 +1,6 @@
 {
   "name": "illusionts",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "a simple 2D typescript game library that uses canvas for html5 games, has gamepad support you can save/load game data and it can help you to create simple/small games or prototypes.",
   "main": "game/lib/index.js",
   "scripts": {

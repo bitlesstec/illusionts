@@ -26,7 +26,6 @@ export class AnimatedTile extends BaseTile
 
     constructor( animationFrames:Tile[] = [] )
     {
-
         super( 0, 0, 0, 0, animationFrames.length > 0 ? animationFrames[0].index : 0 );
         this.srcX = 0;
         this.srcY = 0;
@@ -45,7 +44,7 @@ export class AnimatedTile extends BaseTile
 
         this.updateAnimation();
 
-        const tile =  this.animationFrames[ this.lastIndex ]
+        const tile =  this.animationFrames[ this.animationIndex ]
         ctx.drawImage
         (
             image,

@@ -1,7 +1,9 @@
 import { ImageMeasures } from "./ImageMeasures";
 
 
-
+/**
+ * @NOTE: check this later agains Image class maybe it should be a subclass of it   
+ */
 export class Atlas
 {
 

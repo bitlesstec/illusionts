@@ -107,12 +107,33 @@ import { AssetUtil } from "../util/AssetUtil";
         this.yScale=1;
         this.context2D.scale(this.xScale, this.yScale);
 
-        const gameTitle = document.getElementById("gameTitle");
-        if( gameTitle ) gameTitle.innerHTML=Config.GAME_NAME;
+        this.setGameName(Config.GAME_NAME)
+        this.setGameDesc(Config.GAME_DESC)
 
-        const gameDesc = document.getElementById("gameDesc");
-        if( gameDesc ) gameDesc.setAttribute( "content", Config.GAME_DESC );
+        
+
+        
     }
+
+     /**
+     * set html title with the name of the game
+     * @param name 
+     */
+     setGameName(name:string)
+     {
+        const gameTitle = document.getElementById("gameTitle");
+        if( gameTitle ) gameTitle.innerHTML=name;
+     }
+ 
+     /**
+      * set metadata content tag of html with description
+      * @param desc 
+      */
+     setGameDesc(desc:string)
+     {
+        const gameDesc = document.getElementById("gameDesc");
+        if( gameDesc ) gameDesc.setAttribute( "content", desc );
+     }
 
     /**
      * creates and return the instance of the GameManager which
@@ -183,16 +204,12 @@ import { AssetUtil } from "../util/AssetUtil";
 
         }
 
-        if( this.calculateFps )
+        if( ( now - this.lastFPSUpdate >= 1000 ) && this.calculateFps )
         {
-            if (now - this.lastFPSUpdate >= 1000) 
-            {
-                
                 this.fps =this.frames;
                 this.frames = 0;
                 this.lastFPSUpdate = now;
                 // console.log("FPS: ", this.fps)
-            }
         }
         
 
@@ -272,9 +289,21 @@ import { AssetUtil } from "../util/AssetUtil";
 
         if(!this.firstLevelLoaded)
         {
+            this.addInputListeners();
             this.firstLevelLoaded=true;
-              // mouse events
-            if(this.enableMouseControl)
+        }//firstLevelLoaded
+      
+    }
+
+    /**
+     * this function will add the event listeners to the canvas for those flags that are enabled, 
+     * the first time the game starts, once set this cannot change
+     */
+    private addInputListeners()
+    {
+
+          // mouse events
+          if(this.enableMouseControl)
             {
                 this.canvas.addEventListener("mousedown", (event) => this.currentLevel.mouseDown(event));
                 this.canvas.addEventListener("mousemove", (event) => this.currentLevel.mouseMove(event));
@@ -307,11 +336,6 @@ import { AssetUtil } from "../util/AssetUtil";
                 this.canvas.addEventListener("gamepaddisconnected", (event) => this.currentLevel.keyDown(event) );
             }
 
-
-
-        }//firstLevelLoaded
-      
-        
     }
 
     /**

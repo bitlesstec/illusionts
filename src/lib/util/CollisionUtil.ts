@@ -160,7 +160,7 @@ circleCollision( cenx:number, ceny:number, rad:number,
  * @param fixOverlap 
  * @returns 
  */
-spriteCircleColision( spr:Sprite | Collider, cenx:number, ceny:number, rad:number, fixOverlap:boolean = true ):boolean
+spriteCircleCollision( spr:Sprite | Collider, cenx:number, ceny:number, rad:number, fixOverlap:boolean = true ):boolean
 {
 let vx:number = (spr.getX() + spr.dstW/2) - cenx;
 let vy:number = (spr.getY() + spr.dstH/2) - ceny;
@@ -195,7 +195,7 @@ return res;
  */
 spritesCircleCollision( spr1:Sprite| Collider, spr2:Sprite| Collider, fixOverlap:boolean = true):boolean
 {
-return this.spriteCircleColision( spr1, 
+return this.spriteCircleCollision( spr1, 
     spr2.getX() + spr2.dstW/2, spr2.getY() + spr2.dstH/2, spr2.dstW/2, fixOverlap);
 }
 
@@ -771,7 +771,7 @@ tileCollision(sprites: (Sprite | Collider)[], tiles: Tile[] | BaseTile[], camera
  * @param point2 
  * @returns 
  */
-lineSpriteCollision( sprite: Sprite | Collider, point1: Point, point2: Point): boolean {
+ spriteLineCollision( sprite: Sprite | Collider, point1: Point, point2: Point): boolean {
     // Verificar si alguno de los extremos de la línea está dentro del sprite
     if (
       (point1.x >= sprite.getX() && point1.x <= sprite.getX() + sprite.dstW && point1.y >= sprite.getY() && point1.y <= sprite.getY() + sprite.dstH) ||

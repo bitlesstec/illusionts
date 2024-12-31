@@ -62,7 +62,7 @@ implements AssetLoadable, Initiable
                  this.init();
             break;
             case GameState.PLAYING:
-                this.changeLevelTask.process( );
+                this.changeLevelTask.update( );
             break;
         }
 

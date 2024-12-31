@@ -6,6 +6,6 @@
  */
 export interface  Updatable
 {
-    update(delta:number,args?:any[]):void;
+    update(delta?:number,args?:any[]):void;
 }//
 

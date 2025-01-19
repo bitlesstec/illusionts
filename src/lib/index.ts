@@ -7,10 +7,8 @@ export { Audioable } from "./audio/Audioable"
 
 
 export { Camera } from "./camera/Camera"
-// export { FlashEffect } from "./camera/FlashEffect"
 export { Margin } from "./camera/Margin"
 export { Offset } from "./camera/Offset"
-// export { ShakeEffect } from "./camera/ShakeEffect"
 
 
 export { Config } from "./cfg/Config"
@@ -109,5 +107,3 @@ export { MathUtil } from "./util/MathUtil"
 export { ParticleUtil } from "./util/ParticleUtil"
 export { SpriteUtil } from "./util/SpriteUtil"
 export { TileUtil } from "./util/TileUtil"
-// export {  } from "./"
-// export {  } from "./"

@@ -27,13 +27,10 @@ implements AssetLoadable, Initiable
     async init(): Promise<void>  {
         await this.loadImages();
 
-        this.changeLevelTask = new Timer();
-        this.changeLevelTask.setCounter(200);
-
-        this.changeLevelTask.callback = ()=>
+        this.changeLevelTask = new Timer( 200, ()=>
             {
                 Game.getInstance().loadLevel( new SampleLevel() );
-            }
+            });
 
         this.alphaVal = 0;
 

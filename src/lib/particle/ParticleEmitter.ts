@@ -1,3 +1,5 @@
+import { Point } from "../graphic/Point";
+import { Bidim } from "../ntfc/Bidim";
 import { MathUtil } from "../util/MathUtil";
 import { Particle } from "./Particle";
 import { ParticleShape } from "./ParticleShape";
@@ -41,6 +43,10 @@ import { ParticleShape } from "./ParticleShape";
 export class ParticleEmitter {
     x: number;
     y: number;
+    width:number;
+    height:number;
+
+
     particles: Particle[] = [];
     numberOfParticles: number;
     active: boolean = true;
@@ -63,8 +69,7 @@ export class ParticleEmitter {
 
 
     constructor(
-        x: number,
-        y: number,
+        position: Point | Bidim,
         numberOfParticles: number = 10,
         randomSpacing: boolean = true,
         minAngle: number = 0,
@@ -86,9 +91,24 @@ export class ParticleEmitter {
         middleColor?: string,
         finalColor?: string,
         particleShape: ParticleShape = ParticleShape.ARC,
-        onComplete: (() => void) | null = null) {
-        this.x = x;
-        this.y = y;
+        onComplete: (() => void) | null = null)
+        {
+
+        // this.x = x;
+        // this.y = y;
+
+        if ('w' in position && 'h' in position) {
+            // Es un área (Bidim)
+            this.x = position.x;
+            this.y = position.y;
+            this.width = position.w;
+            this.height = position.h;
+        } else {
+            // Es un punto (Point)
+            this.x = position.x;
+            this.y = position.y;
+        }
+
         this.numberOfParticles = numberOfParticles;
         this.gravity = gravity;
         this.initialColor = initialColor;
@@ -112,7 +132,12 @@ export class ParticleEmitter {
             particleAlpha = MathUtil.getRandomRange(minAlphaSpeed, maxAlphaSpeed)
         }
 
-        angles.forEach(angle => {
+        angles.forEach(angle => 
+        {
+
+            const posX = this.width > 0 ? MathUtil.getRandomRange(this.x, this.x + this.width) : this.x;
+            const posY = this.height > 0 ? MathUtil.getRandomRange(this.y, this.y + this.height) : this.y;
+
 
             const speed = {
                 x: MathUtil.getRandomRange(minSpeed, maxSpeed) * Math.cos(angle),
@@ -121,7 +146,7 @@ export class ParticleEmitter {
 
             this.particles.push(
                 new Particle(
-                    x, y,
+                    posX, posY,
                     MathUtil.getRandomRange(minSize, maxSize),
                     speed,
                     MathUtil.getRandomRange(minScaleSpeed, maxScaleSpeed),
@@ -167,7 +192,9 @@ export class ParticleEmitter {
 
             // reset particles only if emitterLife is null, meaning 
             //will run endlessly
-            if (this.emitterLife === null && particle.alpha <= 0) {
+            if (this.emitterLife === null && particle.alpha <= 0) 
+            {
+                console.log(`particle reseted`)
                 this.resetParticle(particle);
             }
         });
@@ -177,6 +204,11 @@ export class ParticleEmitter {
     private resetParticle(particle: Particle) {
         // Generar un nuevo ángulo basado en el rango definido en el constructor
         const angle = MathUtil.getRandomRange(this.minAngle, this.maxAngle); // Hacia arriba con variación
+
+        particle.x = this.width > 0 ?  MathUtil.getRandomRangeInt(this.x, this.x + this.width) : this.x;
+        particle.y = this.height > 0 ? MathUtil.getRandomRangeInt(this.y, this.y + this.height) : this.y;
+
+        console.log(`particle reseted w: ${particle.x} , h: ${particle.y}`)
 
         // Regenerar velocidad
         particle.vx = Math.cos(angle) * MathUtil.getRandomRange(this.minSpd, this.maxSpd); // Mismo rango de velocidad del emisor
@@ -188,8 +220,8 @@ export class ParticleEmitter {
         particle.height = size;
 
         // Resetear posición
-        particle.x = this.x;
-        particle.y = this.y;
+        // particle.x = this.x;
+        // particle.y = this.y;
 
         // Resetear otras propiedades
         particle.alpha = 1; // Totalmente visible
